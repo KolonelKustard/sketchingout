@@ -7,7 +7,7 @@ class GalleryInterface extends DrawInterface {
 	// The number of milliseconds a drawing takes to cross the screen
 	private static var TIME_TO_CROSS_TO_MIDDLE: Number = 10 * 1000;
 	private static var TIME_TO_WAIT_IN_MIDDLE: Number = 5 * 1000;
-	private static var TIME_TO_CROSS_FROM_MIDDLE: Number = 3 * 1000;
+	private static var TIME_TO_CROSS_FROM_MIDDLE: Number = 10 * 1000;
 	
 	private var startTime, endTime, startX, endX, totalStartX, totalEndX: Number = -1;
 	private var inMiddle, beenInMiddle: Boolean = false;
@@ -31,7 +31,7 @@ class GalleryInterface extends DrawInterface {
 		}
 		else {
 			// Move this instance by the correct amount
-			var percent: Number = (getTimer() - startTime) / endTime;
+			var percent: Number = (getTimer() - startTime) / (endTime - startTime);
 			var offset: Number = percent * (0 - (startX - endX));
 			var newX: Number = Math.round(startX + offset);
 			
@@ -39,7 +39,7 @@ class GalleryInterface extends DrawInterface {
 			if ((_x != newX) && (percent <= 1)) {
 				// Move this
 				_x = newX;
-				trace(Math.round(percent) + " " + Math.round(offset) + " " + Math.round(getTimer() / 1000) + " " + Math.round(startTime / 1000) + " " + Math.round(endTime / 1000) + " " + newX + " " + startX + " " + endX);
+				trace(percent + " " + Math.round(offset) + " " + Math.round(getTimer() / 1000) + " " + Math.round(startTime / 1000) + " " + Math.round(endTime / 1000) + " " + newX + " " + startX + " " + endX);
 			}
 			
 			// See whether been in middle before and if in middle
