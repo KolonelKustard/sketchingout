@@ -1,4 +1,4 @@
-﻿class DrawingPage {
+class DrawingPage {
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
 	// Objects public properties
@@ -47,7 +47,7 @@
 	 * Clears the main canvas
 	 */
 	public function clearDrawing(): Void {
-		nextDrawing.drawing.clearDrawing();
+		nextDrawing.clearDrawing();
 	}
 	
 	/**
