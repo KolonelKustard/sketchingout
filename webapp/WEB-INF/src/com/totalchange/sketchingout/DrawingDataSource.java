@@ -12,7 +12,7 @@ import java.io.Reader;
 
 import javax.activation.DataSource;
 
-import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParser;
 import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 
 /**
@@ -27,15 +27,14 @@ public class DrawingDataSource implements DataSource {
 	private ByteArrayOutputStream out;
 	private byte[] drawing = null;
 	
-	public DrawingDataSource(int version, int width, int height, int scale) throws
-		SketchingoutImageParserException {
+	public DrawingDataSource(int version, int width, int height, int scale,
+		SketchingoutImageParser imgParser) throws SketchingoutImageParserException {
 		
 		// Make somewhere to store the image data
 		out = new ByteArrayOutputStream();
 		
 		// Make the parser
-		parser = new ImageParser(version, width, height, scale, 0, out, 
-			new BufferedImageParser("png"));
+		parser = new ImageParser(version, width, height, scale, 0, out, imgParser);
 	}
 
 	/**
