@@ -3,7 +3,7 @@
 
 <consequences>
   <user id="unique01234" name="simondo" email="simon@bluestone.co.uk">
-    <signature>signaturepicturedrawing</signature>
+    <signature>signaturepicture</signature>
   </user>
   <drawing>
     <bodypart part="head">
