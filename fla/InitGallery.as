@@ -19,17 +19,19 @@ function drawingOnMovieClipPlayed() {
 
 // The event that is fired by the gallery when the next drawing is ready
 function galleryOnNext(drawing: GalleryDrawing) {
-	// Create a new GalleryInterface on the stage
-	var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
-	newDrawing._x = 687;
-	newDrawing._xscale = 40;
-	newDrawing._yscale = 40;
-	
-	// Make sure when it finishes we catch its finished event
-	newDrawing.onMovieClipPlayed = drawingOnMovieClipPlayed;
-	
-	// Now load the drawing into it
-	newDrawing.loadDrawing(drawing);
+	if (drawing != null) {
+		// Create a new GalleryInterface on the stage
+		var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
+		newDrawing._x = 687;
+		newDrawing._xscale = 40;
+		newDrawing._yscale = 40;
+		
+		// Make sure when it finishes we catch its finished event
+		newDrawing.onMidPoint = drawingOnMovieClipPlayed;
+		
+		// Now load the drawing into it
+		newDrawing.loadDrawing(drawing);
+	}
 };
 
 // Link gallery onNext event and get first pic
