@@ -314,6 +314,8 @@ public class ImageParser extends DefaultHandler{
 			if ((outFile.exists()) && (!outFile.isDirectory())) throw new IOException("outfile must specify a " +
 				"directory");
 			
+			System.out.println("InFile: " + inFile.getName() + ", OutFile: " + outFile.getName());
+			
 			// If doesn't exist, make the directory
 			if (!outFile.exists()) outFile.mkdir();
 			
@@ -322,6 +324,8 @@ public class ImageParser extends DefaultHandler{
 			for (int num = 0; num < files.length; num++) {
 				// Only work on .xml files
 				if (files[num].getName().endsWith(".xml")) {
+					System.out.println("Parsing " + files[num].getName());
+					
 					// Convert this file to one in the outFile directory
 					String fileName = files[num].getName().substring(0, files[num].getName().length() - 4);
 					
@@ -357,6 +361,8 @@ public class ImageParser extends DefaultHandler{
 			}
 		}
 		else {
+			System.out.println("Parsing " + inFile + " to " + args[5]);
+			
 			OutputStream out = new FileOutputStream(args[5]); 
 			ImageParser parse = new ImageParser(SketchingoutSettings.PRESENT_DRAWING_VERSION,
 					Integer.parseInt(args[P_WIDTH]), Integer.parseInt(args[P_HEIGHT]),
