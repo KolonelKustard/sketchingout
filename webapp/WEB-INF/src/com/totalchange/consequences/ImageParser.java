@@ -6,7 +6,9 @@
  */
 package com.totalchange.consequences;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -14,10 +16,12 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -134,12 +138,24 @@ public class ImageParser extends DefaultHandler{
 		}
 	}
 	
-	public void addStage(InputStream xmlData) throws Exception {
+	public void addStage(InputStream xmlData) throws ParserConfigurationException,
+		SAXException, IOException {
+			
 		// Setup SAX XML Parser
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser parser = factory.newSAXParser();
 		
 		parser.parse(xmlData, this);
+	}
+	
+	public void addStage(Reader xmlData) throws ParserConfigurationException,
+		SAXException, IOException {
+			
+		// Setup SAX XML Parser
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser parser = factory.newSAXParser();
+		
+		parser.parse(new InputSource(xmlData), this);
 	}
 	
 	public RenderedImage getRenderedImage() {
