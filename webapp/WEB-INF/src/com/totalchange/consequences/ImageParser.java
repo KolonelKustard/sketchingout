@@ -8,13 +8,8 @@ package com.totalchange.consequences;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Reader;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -25,6 +20,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.totalchange.consequences.imageparsers.ConsequencesImageParser;
+import com.totalchange.consequences.imageparsers.ConsequencesImageParserException;
+
 /**
  * @author Ralph Jones
  *
@@ -33,51 +31,22 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class ImageParser extends DefaultHandler{
 	
-	private BufferedImage bufferedImage;
-	private Graphics2D graphics2d;
-	
-	private double offsetX, offsetY, nextOffsetX, nextOffsetY = 0.0d;
-	private double posX, posY = 0.0d;
-	private Line2D line = new Line2D.Double();
+	private ConsequencesImageParser parser;
 	
 	private boolean lineStart;
+	private int offsetX, offsetY, nextOffsetX, nextOffsetY = 0;
 
 	/**
 	 * Constructor makes the base rendered image
 	 */
-	public ImageParser(int width, int height) {
-		// Create image
-		bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	public ImageParser(int width, int height, OutputStream out,
+		ConsequencesImageParser parser) throws ConsequencesImageParserException {
 		
-		// Get drawing canvas for image
-		graphics2d = bufferedImage.createGraphics();
-		graphics2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-			RenderingHints.VALUE_ANTIALIAS_ON));
-			
-		// Set the background to white
-		graphics2d.setBackground(Color.WHITE);
+		// Set this parser in
+		this.parser = parser;
 		
-		// Set the line colours to black
-		graphics2d.setColor(Color.BLACK);
-		
-		// Clear the background of the current image
-		graphics2d.clearRect(0, 0, width, height);
-	}
-	
-	private void moveTo(double x, double y) {
-		// Set the current position
-		posX = x;
-		posY = y;
-	}
-	
-	private void lineTo(double x, double y) {
-		// Draw a line from courrent pos to new pos
-		line.setLine(posX, posY, x, y);
-		graphics2d.draw(line);
-		
-		// Set current pos to where we've drawn to
-		posX = x;
-		posY = y;
+		// Forward on the start of the image to the parser
+		parser.startImage(width, height, out);
 	}
 	
 	/**
@@ -92,19 +61,30 @@ public class ImageParser extends DefaultHandler{
 		
 		if (qName.equals(XMLConsts.EL_DRAWING_POINT)) {
 			// Get the x and y coords of the point
-			double x = Double.valueOf(attributes.getValue(XMLConsts.AT_DRAWING_POINT_X)).doubleValue();
-			double y = Double.valueOf(attributes.getValue(XMLConsts.AT_DRAWING_POINT_Y)).doubleValue();
+			double x = Double.parseDouble(attributes.getValue(XMLConsts.AT_DRAWING_POINT_X));
+			double y = Double.parseDouble(attributes.getValue(XMLConsts.AT_DRAWING_POINT_Y));
 			
 			// If drawing a point, decide what to do depending on if this is following
 			// new line
 			if (lineStart) {
-				// Start of a line, move the pen for first point
-				moveTo(offsetX + x, offsetY + y);
+				try {
+					// Start of a line, move the pen for first point
+					parser.moveTo(x, y);
+				}
+				catch (ConsequencesImageParserException cipe) {
+					throw new SAXException(cipe);
+				}
+				
 				lineStart = false;
 			}
 			else {
-				// Mid-line, draw to the point
-				lineTo(offsetX + x, offsetY + y);
+				try {
+					// Mid-line, draw to the point
+					parser.lineTo(x, y);
+				}
+				catch (ConsequencesImageParserException cipe) {
+					throw new SAXException(cipe);
+				}
 			}
 		}
 		else if (qName.equals(XMLConsts.EL_DRAWING_LINE)) {
@@ -112,16 +92,23 @@ public class ImageParser extends DefaultHandler{
 			lineStart = true;
 		}
 		else if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
-			// If at the start of a canvas, set the offsets to be set at the end of this
-			// canvas...
-			nextOffsetX = 0.0d; // (not yet used - not sure if will ever need to)
+			// Figure out the current offset based on this canvas
+			nextOffsetX = 0;
+			nextOffsetY = offsetY + 
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)) -
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y));
 			
-			// Set the next offset to the current offset + the height of this image - the
-			// offsety value (thats the bit at the bottom that overlaps with the next
-			// stage)
-			nextOffsetY = offsetY +
-				Double.valueOf(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)).doubleValue() -
-				Double.valueOf(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y)).doubleValue();
+			try {
+				parser.startCanvas(
+					offsetX,
+					offsetY,
+					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH)),
+					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT))
+				);
+			}
+			catch (ConsequencesImageParserException cipe) {
+				throw new SAXException(cipe);
+			}
 		}
 	}
 	
@@ -133,8 +120,16 @@ public class ImageParser extends DefaultHandler{
 		
 		// If at the end of a canvas, need to set the offsets
 		if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
-			offsetX = nextOffsetX;
-			offsetY = nextOffsetY;
+			try {
+				// Set current offset to next offset
+				offsetX = nextOffsetX;
+				offsetY = nextOffsetY;
+				
+				parser.endCanvas();
+			}
+			catch (ConsequencesImageParserException cipe) {
+				throw new SAXException(cipe);
+			}
 		}
 	}
 	
@@ -158,18 +153,18 @@ public class ImageParser extends DefaultHandler{
 		parser.parse(new InputSource(xmlData), this);
 	}
 	
-	public RenderedImage getRenderedImage() {
-		return bufferedImage;
+	public void close() throws ConsequencesImageParserException {
+		parser.endImage();
 	}
 	
 	public static void main(String[] args) throws Exception {
-		ImageParser parser = new ImageParser(200, 400); 
-		parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
+		//ImageParser parser = new ImageParser(200, 400); 
+		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
+		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
+		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
+		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
 		
-		RenderedImage image = parser.getRenderedImage();
-		javax.imageio.ImageIO.write(image, "png", new java.io.File("C:\\test.png"));
+		//RenderedImage image = parser.getRenderedImage();
+		//javax.imageio.ImageIO.write(image, "png", new java.io.File("C:\\test.png"));
 	}
 }

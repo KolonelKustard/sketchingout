@@ -15,13 +15,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.totalchange.consequences.imageparsers.BufferedImageParser;
+import com.totalchange.consequences.imageparsers.ConsequencesImageParser;
+import com.totalchange.consequences.imageparsers.ConsequencesImageParserException;
+import com.totalchange.consequences.imageparsers.SwfImageParser;
+
 /**
  * @author RalphJones
  */
 public class DrawingServlet extends HttpServlet {
 	
 	private void parseRequest(String type, String drawingID, OutputStream out)
-		throws SQLException, IOException, ClassNotFoundException {
+		throws SQLException, ClassNotFoundException, ConsequencesImageParserException {
 		
 		// Make connection
 		Connection conn = SQLWrapper.makeConnection();
@@ -34,10 +39,21 @@ public class DrawingServlet extends HttpServlet {
 			// Check got a drawing
 			if (!res.first()) throw new SQLException("Could not find drawing with id: " +
 				drawingID);
+				
+			// Make a parser depending on the type
+			ConsequencesImageParser parser;
+			if (type.equals("png")) parser = new BufferedImageParser(type);
+			else if (type.equals("jpg")) parser = new BufferedImageParser(type);
+			else if (type.equals("swf")) parser = new SwfImageParser();
+			else throw new ConsequencesImageParserException(type + " not a supported type.");
 			
 			// Make an image parser
-			ImageParser parser = new ImageParser(ConsequencesSettings.IMG_DEFAULT_WIDTH,
-				ConsequencesSettings.IMG_DEFAULT_HEIGHT);
+			ImageParser imageParser = new ImageParser(
+				ConsequencesSettings.IMG_DEFAULT_WIDTH,
+				ConsequencesSettings.IMG_DEFAULT_HEIGHT,
+				out, 
+				parser
+			);
 				
 			// Find the number of stages
 			int numStages = res.getInt("stage");
@@ -45,7 +61,7 @@ public class DrawingServlet extends HttpServlet {
 			// Run through the stages adding them to the parser
 			for (int num = 0; num < numStages; num++) {
 				try {
-					parser.addStage(res.getCharacterStream("stage_" + (num + 1)));
+					imageParser.addStage(res.getCharacterStream("stage_" + (num + 1)));
 				}
 				catch (Exception e) {
 					// If have an exception just print it to the console
@@ -53,8 +69,8 @@ public class DrawingServlet extends HttpServlet {
 				}
 			}
 			
-			// Now output the resulting image to the output stream
-			javax.imageio.ImageIO.write(parser.getRenderedImage(), type, out);
+			// Close parser
+			imageParser.close();
 		}
 		finally {
 			res.close();
@@ -72,6 +88,7 @@ public class DrawingServlet extends HttpServlet {
 	private String getAllowedMimeType(String type) {
 		if (type.equals("png")) return "image/png";
 		else if (type.equals("jpg")) return "image/jpeg";
+		else if (type.equals("swf")) return "application/x-shockwave-flash";
 		else return null;
 	}
 	
