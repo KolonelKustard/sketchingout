@@ -1,8 +1,10 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <!DOCTYPE consequences SYSTEM "consequences.dtd">
 
 <consequences>
-  <user id="unique01234" name="simondo" email="simon@bluestone.co.uk"/>
+  <user id="unique01234" name="simondo" email="simon@bluestone.co.uk">
+    <signature>sig</signature>
+  </user>
   <drawing>
     <bodypart part="head">
       <line>
