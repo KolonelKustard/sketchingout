@@ -4,6 +4,8 @@
  */
 package com.totalchange.consequences;
 
+import java.io.CharArrayReader;
+import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,8 +24,7 @@ public class ClobRequest implements RequestHandler {
 	private int paramNum;
 	
 	private ConsequencesErrors errs;
-	
-	private String clobStr = "";
+	private CharArrayWriter clobChrs = new CharArrayWriter();
 	
 	public ClobRequest(PreparedStatement pstmt, int paramNum) throws IOException {
 			
@@ -50,7 +51,7 @@ public class ClobRequest implements RequestHandler {
 	public void data(char[] ch, int start, int length)
 		throws HandlerException {
 			
-		clobStr += String.copyValueOf(ch, start, length);
+		clobChrs.write(ch, start, length);
 	}
 
 	/**
@@ -65,7 +66,10 @@ public class ClobRequest implements RequestHandler {
 	 */
 	public void end() throws HandlerException {
 		try {
-			pstmt.setString(paramNum, clobStr);
+			char[] clob = clobChrs.toCharArray();
+			CharArrayReader reader = new CharArrayReader(clob);
+			pstmt.setCharacterStream(paramNum, reader, clob.length);
+			
 		}
 		catch (Exception e) {
 			errs.addException(this.getClass(), e);
