@@ -81,11 +81,11 @@ public class ConsequencesSettings {
 	 * When a drawing is requested back, this is the width of the image that will be
 	 * returned.
 	 */
-	public static final int IMG_DEFAULT_WIDTH = 200;
+	public static final int IMG_DEFAULT_WIDTH = 300;
 	
 	/**
 	 * When a drawing is requested back, this is the height of the image that will be
 	 * returned.
 	 */
-	public static final int IMG_DEFAULT_HEIGHT = 400;
+	public static final int IMG_DEFAULT_HEIGHT = 800;
 }
