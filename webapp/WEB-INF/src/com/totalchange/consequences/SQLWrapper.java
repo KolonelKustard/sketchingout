@@ -331,7 +331,8 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
-	public static final PreparedStatement getLatestGalleryDrawings(Connection conn) 
+	public static final PreparedStatement getLatestGalleryDrawings(Connection conn, 
+		int offset, int rowCount) 
 		throws SQLException {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
@@ -347,7 +348,8 @@ public class SQLWrapper {
 			"WHERE " +
 			"  completed = 'Y' " +
 			"ORDER BY " +
-			"  friendly_id DESC"
+			"  friendly_id DESC" +
+			"LIMIT " + offset + ", " + rowCount
 		);
 			
 		return pstmt;

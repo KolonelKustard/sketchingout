@@ -81,16 +81,6 @@ public class GalleryDrawingsRequest implements RequestHandler {
 		ResultSet res = pstmt.executeQuery();
 		
 		try {
-			// Run through the specified number of gallery items until the start
-			// is reached
-			boolean resHasMore = true;
-			for (int num = 0; num < start; num++) {
-				resHasMore = res.next();
-				
-				// If result set is at the end, no point trying to get more
-				if (!resHasMore) break;
-			}
-			
 			// Now run through the specified quantity
 			int sentSoFar = 0;
 			while (res.next()) {
@@ -145,7 +135,7 @@ public class GalleryDrawingsRequest implements RequestHandler {
 			PreparedStatement pstmt = null;
 			switch(type) {
 				case GALLERY_REQUEST_TYPE_LATEST:
-					pstmt = SQLWrapper.getLatestGalleryDrawings(conn);
+					pstmt = SQLWrapper.getLatestGalleryDrawings(conn, start, quantity);
 					break;
 				default:
 					throw new HandlerException("Type: " + type + " is not a valid gallery request type");
