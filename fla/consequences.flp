@@ -23,4 +23,9 @@
     <project_file path="./GuiGallery.as" filetype="as" />
     <project_file path="./GuiDraw.as" filetype="as" />
     <project_file path="./consequences.fla" filetype="fla" profile="" def_file="true" />
+    <project_file path="./GuiValidationClip.as" filetype="as" />
+    <project_file path="./InitMain.as" filetype="as" />
+    <project_file path="./UserDetails.as" filetype="as" />
+    <project_file path="./DragMovieClip.as" filetype="as" />
+    <project_file path="./DrawingPage.as" filetype="as" />
 </flash_project>

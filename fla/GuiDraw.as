@@ -1,4 +1,8 @@
-﻿
+﻿//validation
+// Create an instance of the GuiValidationClip, named mcBubble
+    _root.attachMovie("GuiValidationClip", "mcBubble", 1000);
+
+
 //find OffsetY (area chosen by user as visible) and store/display(for debug)
 var positionOfBottomOfCanvas:Number = mainCanvas._y+mainCanvas._height;
 var positionOfBottomOfDragClip:Number = hideClip._y+mainCanvas._height;
@@ -71,7 +75,7 @@ function getFirstRequest() {
 				if (responses[num] instanceof UserDetailsResponse) {
 					// This is a user details response, get a user object from it
 					var userDetails:User = UserDetailsResponse(responses[num]).user;
-					trace("User: ["+userDetails.id+"] "+userDetails.name+" <"+userDetails.email+"> Signature: "+userDetails.signature.toString());
+					//trace("User: ["+userDetails.id+"] "+userDetails.name+" <"+userDetails.email+"> Signature: "+userDetails.signature.toString());
 					//set text fields with userDetails
 					if (userDetails.name != null && userDetails.email != null) {
 						yourName_txt.text = userDetails.name;
@@ -81,8 +85,15 @@ function getFirstRequest() {
 				} else if (responses[num] instanceof NextDrawingResponse) {
 					var nextDrawing:NextDrawingResponse = NextDrawingResponse(responses[num]);
 					nextStage = nextDrawing.stage;
+					//actions based on stage number
+					
+					//hide drag clip on feet - stage 2? seems a bit odd..
+					if (nextStage > 2) {
+						hideClip._visible = false;
+					}
+						
 					//nextDrawing.drawing.shrink();
-					trace("next draw height: " +nextDrawing.drawing.height)
+					//trace("next draw height: " +nextDrawing.drawing.height)
 					
 					//reset the hideClip to the top of the canvas
 					hideClip._y = mainCanvas._y - mainCanvas._height;
@@ -99,7 +110,7 @@ function getFirstRequest() {
 					
 					nextDrawingID = nextDrawing.drawingID;
 					//trace(nextDrawingID)
-					trace("Next Drawing: ["+nextDrawing.drawingID+"], Stage: "+nextDrawing.stage+", Locked Secs: "+nextDrawing.lockedSecs+", Drawing: "+nextDrawing.drawing.toString());
+					//trace("Next Drawing: ["+nextDrawing.drawingID+"], Stage: "+nextDrawing.stage+", Locked Secs: "+nextDrawing.lockedSecs+", Drawing: "+nextDrawing.drawing.toString());
 					// Set the drawing into the canvas movie clip!  The Flash linkage stuff is quite clever
 					// really!!!
 					lastDrawCanvas.drawing = nextDrawing.drawing;
@@ -117,15 +128,25 @@ function getFirstRequest() {
 		}
 	};
 	// Send and load the request
+	
 	xmlRequest.sendAndLoad("http://localhost:8080/consequences/consequences", xmlResponse);
 }
+
+//do validation before sending data to server
 send_btn.onPress = function() {
+	
+	//create new drawing request
 	var sub:SubmitDrawingRequest = new SubmitDrawingRequest();
 	sub.userID = "1";
 	sub.drawingID = nextDrawingID;
 	sub.stage = nextStage + 1;
 	sub.drawing = mainCanvas.drawing;
 	sub.drawing.shrink();
+	
+	
+	//call validate function and pass drawing height
+	//validate(sub.drawing.height)
+	
 	 
 	//find offsetY
 	var positionOfBottomOfCanvas:Number = mainCanvas._y + sub.drawing.height;
@@ -135,17 +156,37 @@ send_btn.onPress = function() {
 	//needs to be more than +n (100? half height of canvas) 
 	//pixels from top of canvas
 	//and -n less than bottom of drawing
-	if (positionOfBottomOfDragClip > sub.drawing.height){
-		//hideClip._y = mainCanvas._y + 100 - mainCanvas._height;
-	}
+	
+	//*FLAWED* - catches people covering up all drawing ok
+	//but dosent leave much scope for revealing a bit more drawing..
+	//maybe need a rule that says "if you havent covered up at least
+	//half of your drawing set it to cover half?
+	
+	//*TODO* dont calculate if feet section
+
+		if (positionOfBottomOfDragClip > sub.drawing.height){
+			hideClip._y = mainCanvas._y + sub.drawing.height - mainCanvas._height - 30;
+			positionOfBottomOfDragClip = hideClip._y + hideClip._height;
+			_root.mcBubble.showMessage("You didn't want to cover up your drawing. sorted!", hideClip, false, 150, 200);
+			
+		}
+		//cover up half the drawing if revealed more than half..(!?)
+		if (positionOfBottomOfDragClip < sub.drawing.height/2){
+			hideClip._y = mainCanvas._y + (sub.drawing.height/2 - mainCanvas._height) + 30;
+			positionOfBottomOfDragClip = hideClip._y + hideClip._height;
+			_root.mcBubble.showMessage("You needed to cover up more than that. sorted!", hideClip, false, 150, 200);
+			
+		}
+	
+	
+	//if (validate(sub.drawing.height)) {
 	
 	var distanceBetween:Number = positionOfBottomOfCanvas - positionOfBottomOfDragClip;
 	offsetYPos_txt.text = Math.round(distanceBetween);
 	trace("drawing height: " + sub.drawing.height)
 	trace("bottom of canvas: " +positionOfBottomOfCanvas)
 	trace("bottom of drag clip: " +positionOfBottomOfDragClip)
-	
-	
+	//set the final offset!
 	sub.drawing.offsetY = Math.round(Number(distanceBetween));
 
 	//create user
@@ -161,9 +202,40 @@ send_btn.onPress = function() {
 	req.addRequest(newUserSubmit);
 	req.addRequest(sub);
 	var xmlCrap:XML = req.getXML();
-	trace(xmlCrap);
+	trace("sending");
 	var tmpResponse:XML = new XML();
 	xmlCrap.sendAndLoad("http://localhost:8080/consequences/consequences", tmpResponse);
-	trace(tmpResponse);
-};
+	trace(xmlCrap);
+	
+	//}//end validate
+}
+
+function validate(drawingHeight:Number){
+	
+	//check for no drawing - testing for height 
+	if (drawingHeight < 1){
+		_root.mcBubble.showMessage("You've not drawn anything!", mainCanvas, false, 150, 100);
+	return false;
+	}
+		
+	if (yourName_txt.text == '') {
+     	 _root.mcBubble.showMessage("Who are you? Please enter a name, thanks!", yourName_txt, true);
+    return false;
+    };
+	
+	if (yourEmail_txt.text == '') {
+      	_root.mcBubble.showMessage("Please enter your email address!", yourEmail_txt, true);
+      return false;
+	}
+	if (yourEmail_txt.text.indexOf("@") < 1) {
+      	_root.mcBubble.showMessage("Your email address must contain an '@'", yourEmail_txt, true);
+    return false;
+	}
+    if (yourEmail_txt.text.lastIndexOf("@") > yourEmail_txt.text.lastIndexOf(".")  ) {
+      	_root.mcBubble.showMessage("There must be a dot after the @ sign.", yourEmail_txt, true);
+     return false;
+	}
+	return true
+}
+
 stop();
