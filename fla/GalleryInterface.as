@@ -12,6 +12,10 @@ class GalleryInterface extends DrawInterface {
 	private var startTime, endTime, startX, endX, totalStartX, totalEndX: Number = -1;
 	private var inMiddle, beenInMiddle: Boolean = false;
 	
+	private var firedMidPoint, firedReachedEnd: Boolean = false;
+	public var onMidPoint: Function = null;
+	public var onReachedEnd: Function = null;
+	
 	public function onEnterFrame(): Void {
 		// Make sure the parent class' (DrawInterface) onEnterFrame is called
 		super.onEnterFrame();
@@ -28,6 +32,12 @@ class GalleryInterface extends DrawInterface {
 				startX = _x;
 				endX = totalEndX;
 			}
+			
+			// When reach mid point send event
+			if ((!firedMidPoint) && (getTimer() >= (((endTime - startTime) / 2) + startTime))) {
+				firedMidPoint = true;
+				if (onMidPoint != null) onMidPoint();
+			}
 		}
 		else {
 			// Move this instance by the correct amount
@@ -39,17 +49,26 @@ class GalleryInterface extends DrawInterface {
 			if ((_x != newX) && (percent <= 1)) {
 				// Move this
 				_x = newX;
-				trace(percent + " " + Math.round(offset) + " " + Math.round(getTimer() / 1000) + " " + Math.round(startTime / 1000) + " " + Math.round(endTime / 1000) + " " + newX + " " + startX + " " + endX);
 			}
 			
-			// See whether been in middle before and if in middle
-			if (!beenInMiddle && (percent >= 1)) {
-				inMiddle = true;
-				
-				startTime = getTimer();
-				endTime = startTime + TIME_TO_WAIT_IN_MIDDLE;
-				startX = _x;
-				endX = _x;
+			// See whether reached the end
+			if (percent >= 1) {
+				// See whether been in the middle before
+				if (!beenInMiddle) {
+					inMiddle = true;
+					
+					startTime = getTimer();
+					endTime = startTime + TIME_TO_WAIT_IN_MIDDLE;
+					startX = _x;
+					endX = _x;
+				}
+				else {
+					// Been in middle already so fire event to say reached the end then destroy thyself
+					firedReachedEnd = true;
+					if (onReachedEnd != null) onReachedEnd();
+					
+					removeMovieClip(this);
+				}
 			}
 		}
 	}
