@@ -47,8 +47,48 @@ public class DrawingReducer extends DefaultHandler {
 		this.out = new XMLWriter(out);
 	}
 	
+	private void newCanvas(int width, int height, int offsetX, int offsetY) 
+		throws SAXException {
+			
+		// The offsets are the height/width minus the offsetx/offsety
+		this.offsetX = width - offsetX;
+		this.offsetY = height - offsetY;
+			
+		// Regenerate the canvas to the client to say it's only the height of the
+		// offset y value but the same width, and with no offset at all.
+		AttributesImpl attr = new AttributesImpl();
+		attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_WIDTH, null, String.valueOf(width));
+		attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_HEIGHT, null, String.valueOf(offsetY));
+		attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_OFFSET_X, null, "0");
+		attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y, null, "0");
+			
+		try {
+			out.startElement(XMLConsts.EL_DRAWING_CANVAS, attr);
+		}
+		catch (IOException ie) {
+			throw new SAXException(ie);
+		}
+	}
+	
+	private void newLine() {
+		
+	}
+	
+	private void newPoint() {
+		
+	}
+	
+	private void endPoint() {
+	}
+	
+	private void endLine() {
+	}
+	
+	private void endCanvas() {
+	}
+	
 	/**
-	 * <p>Decides if a point ona line is relevant.  If it is then it gets drawn.</p>
+	 * <p>Decides if a point on a line is relevant.  If it is then it gets drawn.</p>
 	 * 
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
@@ -60,32 +100,19 @@ public class DrawingReducer extends DefaultHandler {
 		throws SAXException {
 			
 		// See what type of element this is
-		if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
-			// Take the width, height, offsetx and offsety to use to decide how much of
-			// the drawing to allow through
-			int canvasW = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH));
-			int canvasH = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT));
-			int canvasX = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_X));
-			int canvasY = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y));
-			
-			// The offsets are the height/width minus the offsetx/offsety
-			offsetX = canvasW - canvasX;
-			offsetY = canvasH - canvasY;
-			
-			// Regenerate the canvas to the client to say it's only the height of the
-			// offset y value but the same width, and with no offset at all.
-			AttributesImpl attr = new AttributesImpl();
-			attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_WIDTH, null, String.valueOf(canvasW));
-			attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_HEIGHT, null, String.valueOf(canvasY));
-			attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_OFFSET_X, null, "0");
-			attr.addAttribute(null, null, XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y, null, "0");
-			
-			try {
-				out.startElement(qName, attr);
-			}
-			catch (IOException ie) {
-				throw new SAXException(ie);
-			}
+		if (qName.equals(XMLConsts.EL_DRAWING_POINT)) {
+			// If is a point, need to know if it's 
+		}
+		else if (qName.equals(XMLConsts.EL_DRAWING_LINE)) {
+			// If it's a line need to record the lines details.
+		}
+		else if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
+			newCanvas(
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH)),
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)),
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_X)),
+				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y))
+			);
 		}
 	}
 	
