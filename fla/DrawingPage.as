@@ -1,4 +1,6 @@
 ﻿class DrawingPage {
+	private var nextDrawingResponse: NextDrawingResponse = null;
+	
 	public var nextDrawing: CanvasMovieClip;
 	public var prevDrawing: CanvasMovieClip;
 	public var userDetails: UserDetails;
@@ -22,12 +24,6 @@
 		// cover up
 		dragClip.nextDrawing = nextDrawing;
 		dragClip.resetPos();
-	}
-	
-	/**
-	 * This function is the event handler for clicking the submit button
-	 */
-	public function submitUserAndDrawing(): Void {
 	}
 	
 	/**
@@ -67,11 +63,80 @@
 		return request.getXML();
 	}
 	
+	private function validateSubmitRequest(): Boolean {
+		return true;
+	}
+	
+	private function makeSubmitDrawingRequest(): SubmitDrawingRequest {
+		var subDraw: SubmitDrawingRequest = new SubmitDrawingRequest();
+		
+		subDraw.userID = userDetails.userID;
+		subDraw.drawingID = nextDrawingResponse.drawingID;
+		subDraw.stage = nextDrawingResponse.stage + 1;
+		
+		if (friendsEmailEdit.text == "")
+		  subDraw.nextUserEmail = null
+		else
+		  subDraw.nextUserEmail = friendsEmailEdit.text;
+		
+		// The drawing has to be shrunk and the offset calculated before submission
+		subDraw.drawing = nextDrawing.drawing;
+		subDraw.drawing.shrink();
+		subDraw.drawing.offsetY = dragClip.getOffsetY(subDraw.drawing.height);
+		
+		return subDraw;
+	}
+	
+	/**
+	 * Constructs a request to send a drawing and any user details that have changed.
+	 * This function will return null if a validation error occurs.
+	 */
+	public function getSubmitRequest(): XML {
+		// Validate
+		if (!validateSubmitRequest()) return null;
+		
+		// Construct request
+		var request: Request = new Request();
+		
+		// Check to see if any user details have changed.
+		if (userDetails.modified()) {
+			request.addRequest(userDetails.getSubmitUserRequest());
+		}
+		
+		// Always want the submit drawing request
+		request.addRequest(makeSubmitDrawingRequest());
+		
+		// Lastly, get a new drawing to work with
+		var nextDrawingRequest: PublicDrawingRequest = new PublicDrawingRequest();
+		nextDrawingRequest.userID = userDetails.userID;
+		request.addRequest(nextDrawingRequest);
+		
+		return request.getXML();
+	}
+	
 	/**
 	 * Sets up the next drawing
 	 */
-	private function setNextDrawing(nextDrawing: NextDrawingResponse): Void {
-		// TODO: Implement!
+	private function setNextDrawing(next: NextDrawingResponse): Void {
+		// Keep reference of drawing currently being used
+		this.nextDrawingResponse = next;
+		
+		// Reset next drawing
+		nextDrawing.drawing = null;
+		
+		// Reset the height of the drag clip
+		dragClip.resetPos();
+		
+		// Get the previous drawing
+		var prevDraw: Drawing = next.drawing;
+		
+		// Move the previous drawing to overlap the current drawing according to the
+		// offset value.
+		prevDrawing._x = nextDrawing._x;
+		prevDrawing._y = nextDrawing._y - (prevDraw.height - prevDraw.offsetY);
+		
+		// Set in the previous drawing
+		prevDrawing.drawing = prevDraw;
 	}
 	
 	/**
