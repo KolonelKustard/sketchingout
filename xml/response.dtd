@@ -1,0 +1,22 @@
+<!ELEMENT response (user_details?, next_drawing?, errors?)>
+
+  <!ELEMENT user_details (id, name?, email?, signature?)>
+    <!ELEMENT id (#PCDATA)>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT email (#PCDATA)>
+    <!ELEMENT signature (#PCDATA)>
+
+  <!ELEMENT next_drawing (drawing_id, locked_secs, drawing)>
+    <!ELEMENT drawing_id (#PCDATA)>
+    <!ELEMENT locked_secs (#PCDATA)>
+    <!ELEMENT drawing (#PCDATA)>
+    
+  <!ELEMENT errors (error+)>
+    <!ELEMENT error (src, type, message, stacktrace?)>
+      <!ELEMENT src (#PCDATA)>
+      <!ELEMENT type (#PCDATA)>
+      <!ELEMENT message (#PCDATA)>
+      <!ELEMENT stacktrace (trace+)>
+        <!ELEMENT trace (#PCDATA)>
+    
+<!ATTLIST drawing bodypart (head|body|legs) #REQUIRED>
