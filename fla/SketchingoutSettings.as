@@ -17,4 +17,6 @@
 	
 	// A reminder gets sent out after this period in milliseconds.
 	public static var COUNTDOWN_TIMER_REMINDER: Number = 1000 * 60;
+	
+	public static var LAST_STAGE_NUM: Number = 4;
 }
