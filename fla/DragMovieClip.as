@@ -1,11 +1,25 @@
 ﻿class DragMovieClip extends MovieClip {
 	public var nextDrawing: CanvasMovieClip;
 	
+	private function mouseOverCanvas(): Boolean {
+		if (nextDrawing == null) return false;
+		
+		var actualX: Number = _xmouse + _x;
+		var actualY: Number = _ymouse + _y;
+		
+//		if (
+	}
+	
 	public function onPress(): Void {
-		var maxHeight: Number = nextDrawing._y - nextDrawing._height;
+		// Determine if mouse is over the main canvas.  If it is, do nothing.
+		if (mouseOverCanvas()) return;
+		
+		var theTop: Number = nextDrawing._y - _height;
+//		var theBottom: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - 10) - _height;
+		var theBottom: Number = (nextDrawing._y + nextDrawing._height) - _height;
 		
 		//constrain (locked, left, top, right, bottom)
-		this.startDrag(false, _x, maxHeight, _x, 0);
+		this.startDrag(false, _x, theTop, _x, theBottom);
 		
 		// Need to set the next drawing to read only to make sure don't draw on it!
 		nextDrawing.drawing.readOnly = true;
@@ -28,6 +42,7 @@
 		var bottomOfDrawing: Number = nextDrawing._y + nextDrawing.drawing.getBottom();
 		var bottomOfDragBar: Number = this._y + this._height;
 		
+		//trace(Math.ceil(bottomOfDrawing - bottomOfDragBar) + " [" + bottomOfDrawing + ", " + bottomOfDragBar + "]");
 		return Math.ceil(bottomOfDrawing - bottomOfDragBar);
 	}
 	
@@ -36,7 +51,10 @@
 	 * canvas.
 	 */
 	public function resetPos(): Void {
-		_x = nextDrawing._x;
-		_y = nextDrawing._y - nextDrawing._height;
+		_y = nextDrawing._y - _height;
+	}
+	
+	public function onEnterFrame(): Void {
+		
 	}
 }
