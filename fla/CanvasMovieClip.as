@@ -4,6 +4,8 @@
 	
 	private var minX, minY, maxX, maxY: Number;
 	
+	public var modified: Boolean = false;
+	
 	private function clearCanvas(): Void {
 		clear();
 	}
@@ -45,6 +47,8 @@
 			if (inBounds(currX, currY)) {
 				currLine.addPoint(currX, currY);
 				lineTo(currX, currY);
+				
+				modified = true;
 			}
 		}
 	}
@@ -98,6 +102,16 @@
 				}
 			}
 		}
+		
+		modified = false;
+	}
+	
+	public function clearDrawing() {
+		// Set the drawing to null to clear it
+		drawing = null;
+		
+		// But make sure records that it's modified
+		modified = true;
 	}
 	
 	/**
