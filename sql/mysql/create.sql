@@ -5,7 +5,7 @@ CREATE TABLE users(
   password		VARCHAR(20) NULL,
   signature_width	SMALLINT NULL,
   signature_height	SMALLINT NULL,
-  signature		TEXT NULL
+  signature		LONGTEXT NULL
 );
 
 CREATE TABLE drawings(
@@ -21,23 +21,23 @@ CREATE TABLE drawings(
   stage_1_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
   stage_1_author_name	VARCHAR(100) NULL,
   stage_1_author_email	VARCHAR(100) NULL,
-  stage_1		TEXT NOT NULL,
-  stage_1_signature	TEXT NULL,
+  stage_1		LONGTEXT NOT NULL,
+  stage_1_signature	LONGTEXT NULL,
   stage_2_author_id	VARCHAR(36) NULL REFERENCES users(id),
   stage_2_author_name	VARCHAR(100) NULL,
   stage_2_author_email	VARCHAR(100) NULL,
-  stage_2		TEXT NULL,
-  stage_2_signature	TEXT NULL,
+  stage_2		LONGTEXT NULL,
+  stage_2_signature	LONGTEXT NULL,
   stage_3_author_id	VARCHAR(36) NULL REFERENCES users(id),
   stage_3_author_name	VARCHAR(100) NULL,
   stage_3_author_email	VARCHAR(100) NULL,
-  stage_3		TEXT NULL,
-  stage_3_signature	TEXT NULL,
+  stage_3		LONGTEXT NULL,
+  stage_3_signature	LONGTEXT NULL,
   stage_4_author_id	VARCHAR(36) NULL REFERENCES users(id),
   stage_4_author_name	VARCHAR(100) NULL,
   stage_4_author_email	VARCHAR(100) NULL,
-  stage_4		TEXT NULL,
-  stage_4_signature	TEXT NULL,
+  stage_4		LONGTEXT NULL,
+  stage_4_signature	LONGTEXT NULL,
   
   INDEX incomplete_drawings(completed, locked, stage),
   INDEX awaiting_drawing(distinguished_id),
