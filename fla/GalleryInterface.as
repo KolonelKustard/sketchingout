@@ -78,8 +78,8 @@ class GalleryInterface extends DrawInterface {
 		
 		startTime = getTimer();
 		endTime = startTime + TIME_TO_CROSS_TO_MIDDLE;
-		totalStartX = 687;
-		totalEndX = -50;
+		totalStartX = 800;
+		totalEndX = -100;
 		
 		// Move to the middle
 		startX = totalStartX;
