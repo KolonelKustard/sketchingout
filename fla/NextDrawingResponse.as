@@ -2,9 +2,13 @@
 	public var drawingID: String;
 	public var stage: Number;
 	public var lockedSecs: Number;
-	public var drawing: Drawing = null;
+	public var drawing: Drawing;
 	
 	public function parseXML(responseNode: XMLNode): Void {
+		// Make sure using a blank (read-only) drawing
+		drawing = new Drawing();
+		drawing.readOnly = true;
+		
 		// Go through the nodes that are defined and fill in the blanks on
 		// the user object linked to this response.
 		for (var num: Number = 0; num < responseNode.childNodes.length; num++) {
@@ -21,7 +25,6 @@
 					lockedSecs = Number(node.firstChild.nodeValue);
 					break;
 				case "drawing":
-					drawing = new Drawing();
 					drawing.fromString(node.firstChild.nodeValue);
 					break;
 			}
