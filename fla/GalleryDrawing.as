@@ -1,13 +1,16 @@
-class GalleryDrawing {
+﻿class GalleryDrawing {
 	public var id: String;
 	public var width: Number;
 	public var height: Number;
-	public var scale: Number;
 	public var numStages: Number;
 	public var authors: Array = new Array();
 	
 	private function getDrawingURL(): String {
-		return SketchingoutSettings.GALLERY_URL + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
+		return SketchingoutSettings.GALLERY_URL + "?id=" + id + "&scale=100&type=";
+	}
+	
+	public function get urlPDF(): String {
+		return getDrawingURL() + "pdf";
 	}
 	
 	public function get urlPNG(): String {
