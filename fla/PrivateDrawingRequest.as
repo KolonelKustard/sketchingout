@@ -15,7 +15,7 @@
 	
 	private function constructXML(xmlDoc: XML): XMLNode {
 		// Create the root element of this request
-		var requestNode: XMLNode = xmlDoc.createElement("submit_drawing");
+		var requestNode: XMLNode = xmlDoc.createElement("next_drawing");
 		
 		// Set the attributes
 		requestNode.attributes.user_id = userID;
