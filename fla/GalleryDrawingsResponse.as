@@ -1,6 +1,6 @@
 ﻿class GalleryDrawingsResponse implements ResponseOperator {
 	
-	public var galleryDrawings: Array = new Array();
+	public var galleryDrawings: Array;
 	
 	private function parseAuthorXML(authorNode: XMLNode): GalleryDrawingAuthor {
 		// Make a new author
@@ -48,6 +48,12 @@
 				case "stage_author":
 					galleryDrawing.authors.push(parseAuthorXML(node));
 					break;
+				case "anim_swf_url":
+					galleryDrawing.urlAnimatedSWF = node.firstChild.nodeValue;
+					break;
+				case "pdf_url":
+					galleryDrawing.urlPDF = node.firstChild.nodeValue;
+					break;
 			}
 		}
 		
@@ -66,5 +72,9 @@
 					break;
 			}
 		}
+	}
+	
+	public function GalleryDrawingsResponse() {
+		galleryDrawings = new Array();
 	}
 }
