@@ -5,42 +5,28 @@ package com.totalchange.sketchingout;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  * @author RalphJones
  */
 public class PrivateDrawingProcessor {
 	public static final void sendDrawingOn(String fromName, String fromEmail,
-		String toEmail, String distinguishedID) throws MessagingException,
+		String toEmail, int stage, String distinguishedID) throws MessagingException,
 		UnsupportedEncodingException {
-			
-		// Get SMTP session
+		
+		// Get SMTP Session
 		Session session = SMTPSessionFactory.getSMTPSession();
 		
-		// Setup a new mail message
-		MimeMessage msg = new MimeMessage(session);
-		
-		// Who from
-		msg.setFrom(new InternetAddress(SketchingoutSettings.EMAIL_FROM_EMAIL,
-			SketchingoutSettings.EMAIL_FROM_NAME));
-			
-		// Who to
-		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-		
-		// Set subject and message body
-		msg.setSubject("You're being hassled by Consequences");
-		msg.setText(fromName + " <" + fromEmail + ">" + " thinks you'll want to " +
-			"draw something.  Click this link to do some drawing: " +
-			SketchingoutSettings.URL_DRAWING + "?" +
-			SketchingoutSettings.URL_PARAM_DRAWING_ID + "=" + distinguishedID);
-		
-		// Send the message
-		Transport.send(msg);
+		// Create and send message
+		SketchingoutEmail email = new SketchingoutEmail(session, SketchingoutEmails.EMAILS_TO_FRIENDS);
+		email.setSenderName(fromName);
+		email.setSenderEmail(fromEmail);
+		email.setToName(toEmail);
+		email.setToEmail(toEmail);
+		email.setStage(stage);
+		email.setDistinguishedID(distinguishedID);
+		email.send();
 	}
 }
