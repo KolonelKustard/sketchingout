@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<!DOCTYPE request_user_details SYSTEM "request_user.dtd">
+<!DOCTYPE request SYSTEM "request.dtd">
 
-<request_user_details
-  user_id="40BB3610-A6C3-4E63-802B-519FFD7BFC6D"
-/>
+<request>
+  <user_details
+    id="40BB3610-A6C3-4E63-802B-519FFD7BFC6D"
+  />
+</request>

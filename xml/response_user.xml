@@ -1,4 +1,10 @@
 <?xml version="1.0"?>
-<!DOCTYPE user_details SYSTEM "response_user.dtd">
+<!DOCTYPE response SYSTEM "response.dtd">
 
-<user_details id="AC83818E-C9BE-4177-8655-546C226C7715" />
+<response>
+  <user_details>
+    <id>AC83818E-C9BE-4177-8655-546C226C7715</id>
+    <name>Some Person</name>
+    <email>someperson@somewhere.com</email>
+  </user_details>
+</response>

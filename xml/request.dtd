@@ -1,4 +1,4 @@
-<!ELEMENT request (request_user_details, request_next_drawing?)>
+<!ELEMENT request (user_details?, next_drawing?, user_submit?)>
   <!ELEMENT user_details EMPTY>
   <!ELEMENT next_drawing EMPTY>
   
