@@ -132,10 +132,10 @@
 	
 	// Now setup a loop to show drawings in various different states
 	// Setup the standard SQL template
-	String sqlFields = "SELECT friendly_id, id, distinguished_id, completed, locked, " +
-		"stage, stage_1_author_name, stage_1_author_email, stage_2_author_name, " +
-		"stage_2_author_email, stage_3_author_name, stage_3_author_email, " +
-		"stage_4_author_name, stage_4_author_email FROM drawings ";
+	String sqlFields = "SELECT friendly_id, id, distinguished_id, completed, width, " +
+		"height, locked, stage, stage_1_author_name, stage_1_author_email, " +
+		"stage_2_author_name, stage_2_author_email, stage_3_author_name, " +
+		"stage_3_author_email, stage_4_author_name, stage_4_author_email FROM drawings ";
 	String sqlOrder = " ORDER BY friendly_id";
 
 	// Run through a loop that will get the same values but different where clauses
@@ -202,6 +202,8 @@
 		    <td nowrap><b>Distinguished ID</b></td>
 		    <td nowrap><b>Complete</b></td>
 		    <td nowrap><b>Locked Until</b></td>
+		    <td nowrap><b>Width</b></td>
+		    <td nowrap><b>Height</b></td>
 		    <td nowrap><b>Stage</b></td>
 		    <td nowrap><b>Stage 1 Name</b></td>
 		    <td nowrap><b>Stage 1 Email</b></td>
@@ -225,6 +227,8 @@
 				  <td nowrap><a href="?pub_d=<%= res.getString("id") %>"><%= res.getString("distinguished_id") %></a></td>
 				  <td nowrap><%= res.getString("completed") %></td>
 				  <td nowrap><a href="?unl_d=<%= res.getString("id") %>"><%= res.getTimestamp("locked") %></a></td>
+				  <td nowrap><%= res.getInt("width") %></td>
+				  <td nowrap><%= res.getInt("height") %></td>
 				  <td nowrap><%= res.getInt("stage") %></td>
 				  <td nowrap><%= res.getString("stage_1_author_name") %></td>
 				  <td nowrap><%= res.getString("stage_1_author_email") %></td>
