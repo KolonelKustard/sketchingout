@@ -36,6 +36,8 @@ public class ImageParser extends DefaultHandler{
 	private static final int TYPE_SIGNATURE = 2;
 	
 	private int scale;
+	private int loss;
+	private int currPoint;
 	private ConsequencesImageParser parser;
 	private SAXParser saxParser;
 	
@@ -55,11 +57,13 @@ public class ImageParser extends DefaultHandler{
 	/**
 	 * Constructor makes the base rendered image
 	 */
-	public ImageParser(int version, int width, int height, int scale, OutputStream out,
-		ConsequencesImageParser parser) throws ConsequencesImageParserException {
+	public ImageParser(int version, int width, int height, int scale, int loss, 
+		OutputStream out, ConsequencesImageParser parser)
+		throws ConsequencesImageParserException {
 		
-		// Set the scaling factor
+		// Set the scaling factor and the number of points to skip
 		this.scale = scale;
+		this.loss = loss;
 		
 		// Set this parser in
 		this.parser = parser;
@@ -100,6 +104,7 @@ public class ImageParser extends DefaultHandler{
 				try {
 					// Start of a line, move the pen for first point
 					parser.moveTo(scaleIt(x), scaleIt(y));
+					currPoint = 0;
 				}
 				catch (ConsequencesImageParserException cipe) {
 					throw new SAXException(cipe);
@@ -109,8 +114,12 @@ public class ImageParser extends DefaultHandler{
 			}
 			else {
 				try {
-					// Mid-line, draw to the point
-					parser.lineTo(scaleIt(x), scaleIt(y));
+					// Mid-line, draw to the point (only if reached skip points value)
+					if (currPoint >= loss) {
+						parser.lineTo(scaleIt(x), scaleIt(y));
+						currPoint = 0;
+					}
+					else currPoint++;
 				}
 				catch (ConsequencesImageParserException cipe) {
 					throw new SAXException(cipe);
@@ -223,18 +232,19 @@ public class ImageParser extends DefaultHandler{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		if (args.length < 4) {
-			System.out.println("Usage: [width] [height] [scale] [infile.xml] [outfile.swf]");
+		if (args.length != 6) {
+			System.out.println("Usage: [width] [height] [scale] [skip_points] [infile.xml] [outfile.swf]");
 			return;
 		}
 		
-		OutputStream out = new FileOutputStream(args[4]); 
+		OutputStream out = new FileOutputStream(args[5]); 
 		ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
-				Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), out,				
+				Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), 
+				Integer.parseInt(args[3]), out,
 				new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
 		);
 		
-		parse.addStage(new FileReader(args[3]));
+		parse.addStage(new FileReader(args[4]));
 		parse.close();
 		out.close();
 	}
