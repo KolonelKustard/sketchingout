@@ -9,23 +9,25 @@ package com.totalchange.sketchingout;
  * <p>Contains an array of emails</p>
  */
 public class SketchingoutEmails {
-	public static final String SUBST_NAME = ":name:";
-	public static final String SUBST_EMAIL = ":email:";
+	public static final String SUBST_FROM_NAME = ":from_name:";
+	public static final String SUBST_FROM_EMAIL = ":from_email:";
+	public static final String SUBST_TO_NAME = ":to_name:";
+	public static final String SUBST_TO_EMAIL = ":to_email:";
 	public static final String SUBST_BODY_PART = ":body_part:";
 	public static final String SUBST_A_OR_SOME = ":a_or_some:";
 	public static final String SUBST_THOSE_ARE_OR_THAT_IS = ":those_are_or_that_is:";
 	public static final String SUBST_URL = ":url:";
 	
-	public static final int EMAILS_FROM_NAME = 0;
-	public static final int EMAILS_FROM_EMAIL = 1;
-	public static final int EMAILS_SUBJECT = 2;
-	public static final int EMAILS_BODY = 3;
+	public static final int EMAILS_FROM_NAME = SketchingoutEmail.EMAILS_ARRAY_FROM_NAME;
+	public static final int EMAILS_FROM_EMAIL = SketchingoutEmail.EMAILS_ARRAY_FROM_EMAIL;
+	public static final int EMAILS_SUBJECT = SketchingoutEmail.EMAILS_ARRAY_SUBJECT;
+	public static final int EMAILS_BODY = SketchingoutEmail.EMAILS_ARRAY_BODY;
 	public static final String[][] EMAILS = {
 		{
 			"Bobby McFerrin",
 			"bobbymcferrin@sketchingout.co.uk",
 			"SketchingOut Strikes Again",
-			"Hi " + SUBST_NAME + ",\n\n" +
+			"Hi " + SUBST_TO_NAME + ",\n\n" +
 			"The drawing you did on SketchingOut is completed! We think your " + SUBST_BODY_PART + " makes the drawing...!\n\n" +
 			"Kind regards,\n\n" +
 			"Bob"
@@ -174,5 +176,17 @@ public class SketchingoutEmails {
 			"Relax, don't do it,\n\n" +
 			"Frank"
 		}
-	}; 
+	};
+	
+	public static final String[][] EMAILS_TO_FRIENDS = {
+		{
+			"Bobby McFerrin",
+			"bobbymcferrin@sketchingout.co.uk",
+			"SketchingOut Strikes Again",
+			"Hi " + SUBST_TO_NAME + ",\n\n" +
+			"The drawing you did on SketchingOut is completed! We think your " + SUBST_BODY_PART + " makes the drawing...!\n\n" +
+			"Kind regards,\n\n" +
+			"Bob"
+		}
+	};
 }
