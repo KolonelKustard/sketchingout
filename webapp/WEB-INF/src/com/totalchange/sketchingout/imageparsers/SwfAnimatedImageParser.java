@@ -48,6 +48,7 @@ public class SwfAnimatedImageParser implements SketchingoutImageParser {
 		
 		// Make SWF Movie
 		SWFWriter writer = new SWFWriter(out);
+		writer.setCompression(true);
 		swf = new TagWriter(writer);
 		
 		try {
