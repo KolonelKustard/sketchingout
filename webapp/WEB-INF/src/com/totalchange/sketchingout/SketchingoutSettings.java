@@ -71,6 +71,11 @@ public class SketchingoutSettings {
 	 * The root URL to access Sketching Out
 	 */
 	public static final String URL_ROOT = "http://localhost:8080/sketchingout/";
+	
+	/**
+	 * The file system root to access Sketching Out
+	 */
+	public static final String FS_ROOT = "";
 
 	/**
 	 * The full URL to access the main drawing page
@@ -92,12 +97,12 @@ public class SketchingoutSettings {
 	/**
 	 * Where on the file system to find the truetype SketchingOut font
 	 */
-	public static final String SKETCHING_OUT_FONT = "DeannasHand.ttf";
+	public static final String SKETCHING_OUT_FONT = FS_ROOT + "DeannasHand.ttf";
 	
 	/**
 	 * The location on the file system in which to store completed drawings
 	 */
-	public static final String FS_DRAWING_STORE = "drawings/";
+	public static final String FS_DRAWING_STORE = FS_ROOT + "drawings/";
 	
 	/**
 	 * The url in which completed drawings can be found
