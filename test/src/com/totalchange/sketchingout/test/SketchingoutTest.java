@@ -1,14 +1,14 @@
 /*
  * Created on 21-Oct-2004
  */
-package com.totalchange.consequences.test;
+package com.totalchange.sketchingout.test;
 
 import java.util.ArrayList;
 
 /**
  * @author RalphJones
  */
-public class ConsequencesTest {
+public class SketchingoutTest {
 	private ArrayList clients;
 	
 	private void go() {
@@ -29,13 +29,13 @@ public class ConsequencesTest {
 		}
 	}
 	
-	public ConsequencesTest() {
+	public SketchingoutTest() {
 		clients = new ArrayList();
 	}
 
 	public static void main(String[] args) throws Exception {
 		System.out.println("Creating clients...");
-		ConsequencesTest tester = new ConsequencesTest();
+		SketchingoutTest tester = new SketchingoutTest();
 		tester.go();
 		
 		System.out.println("Running...  Type 'q' then press return to end.");

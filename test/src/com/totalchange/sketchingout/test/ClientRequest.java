@@ -4,7 +4,7 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package com.totalchange.consequences.test;
+package com.totalchange.sketchingout.test;
 
 import java.io.IOException;
 import java.io.InputStream;

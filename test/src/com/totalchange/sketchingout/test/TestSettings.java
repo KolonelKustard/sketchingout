@@ -1,7 +1,7 @@
 /*
  * Created on 21-Oct-2004
  */
-package com.totalchange.consequences.test;
+package com.totalchange.sketchingout.test;
 
 /**
  * @author RalphJones
