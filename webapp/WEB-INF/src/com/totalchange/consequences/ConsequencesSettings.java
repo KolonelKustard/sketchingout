@@ -76,16 +76,4 @@ public class ConsequencesSettings {
 	 * the GET query string.
 	 */
 	public static final String URL_PARAM_DRAWING_ID = "did";
-	
-	/**
-	 * When a drawing is requested back, this is the width of the image that will be
-	 * returned.
-	 */
-	public static final int IMG_DEFAULT_WIDTH = 300;
-	
-	/**
-	 * When a drawing is requested back, this is the height of the image that will be
-	 * returned.
-	 */
-	public static final int IMG_DEFAULT_HEIGHT = 800;
 }

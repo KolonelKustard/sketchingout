@@ -7,6 +7,7 @@ package com.totalchange.consequences;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 
 import org.xml.sax.Attributes;
 
@@ -22,6 +23,8 @@ public class UserSubmitRequest implements RequestHandler {
 	private int paramID = 0;
 	private int paramName = 0;
 	private int paramEmail = 0;
+	private int paramSignatureWidth = 0;
+	private int paramSignatureHeight = 0;
 	private int paramSignature = 0;
 
 	/**
@@ -59,6 +62,8 @@ public class UserSubmitRequest implements RequestHandler {
 				paramID = SQLWrapper.UPD_USER_ID;
 				paramName = SQLWrapper.UPD_USER_NAME;
 				paramEmail = SQLWrapper.UPD_USER_EMAIL;
+				paramSignatureWidth = SQLWrapper.UPD_USER_SIGNATURE_WIDTH;
+				paramSignatureHeight = SQLWrapper.UPD_USER_SIGNATURE_HEIGHT;
 				paramSignature = SQLWrapper.UPD_USER_SIGNATURE;
 			}
 			else {
@@ -67,6 +72,8 @@ public class UserSubmitRequest implements RequestHandler {
 				paramID = SQLWrapper.INS_USER_ID;
 				paramName = SQLWrapper.INS_USER_NAME;
 				paramEmail = SQLWrapper.INS_USER_EMAIL;
+				paramSignatureWidth = SQLWrapper.INS_USER_SIGNATURE_WIDTH;
+				paramSignatureHeight = SQLWrapper.INS_USER_SIGNATURE_HEIGHT;
 				paramSignature = SQLWrapper.INS_USER_SIGNATURE;
 			}
 			
@@ -77,6 +84,16 @@ public class UserSubmitRequest implements RequestHandler {
 			pstmt.setString(paramID, userID);
 			pstmt.setString(paramName, attributes.getValue(XMLConsts.AT_USER_NAME));
 			pstmt.setString(paramEmail, attributes.getValue(XMLConsts.AT_USER_EMAIL));
+			
+			// Check for signature width and height parameters
+			String widthStr = attributes.getValue(XMLConsts.AT_USER_SIGNATURE_WIDTH);
+			String heightStr = attributes.getValue(XMLConsts.AT_USER_SIGNATURE_HEIGHT);
+			
+			if (widthStr == null) pstmt.setNull(paramSignatureWidth, Types.INTEGER);
+			else pstmt.setInt(paramSignatureWidth, Integer.parseInt(widthStr));
+			
+			if (heightStr == null) pstmt.setNull(paramSignatureHeight, Types.INTEGER);
+			else pstmt.setInt(paramSignatureHeight, Integer.parseInt(heightStr));
 			
 			// Default to null for signature
 			pstmt.setString(paramSignature, null);

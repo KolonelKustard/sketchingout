@@ -51,8 +51,8 @@ public class DrawingServlet extends HttpServlet {
 			
 			// Make an image parser
 			ImageParser imageParser = new ImageParser(
-				ConsequencesSettings.IMG_DEFAULT_WIDTH,
-				ConsequencesSettings.IMG_DEFAULT_HEIGHT,
+				res.getInt("width"),
+				res.getInt("height"),
 				out, 
 				parser
 			);

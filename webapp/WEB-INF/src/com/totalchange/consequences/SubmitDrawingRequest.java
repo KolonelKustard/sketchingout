@@ -61,6 +61,26 @@ public class SubmitDrawingRequest implements RequestHandler {
 			throw new HandlerException("Must pass the stage your submitted drawing represents");
 		}
 		
+		String widthStr = attributes.getValue(XMLConsts.AT_SUBMIT_DRAWING_WIDTH);
+		if (widthStr == null) {
+			throw new HandlerException("Must pass the width of the submitted drawing");
+		}
+		
+		String heightStr = attributes.getValue(XMLConsts.AT_SUBMIT_DRAWING_HEIGHT);
+		if (heightStr == null) {
+			throw new HandlerException("Must pass the height of the submitted drawing");
+		}
+		
+		String offsetYStr = attributes.getValue(XMLConsts.AT_SUBMIT_DRAWING_OFFSET_Y);
+		if (heightStr == null) {
+			throw new HandlerException("Must pass the offset Y of the submitted drawing");
+		}
+		
+		// Convert the dimensions of this drawing.
+		int width = Integer.parseInt(widthStr);
+		int height = Integer.parseInt(heightStr) - Integer.parseInt(offsetYStr);
+		
+		// Get the sending on stuff
 		String nextUserEmail = attributes.getValue(XMLConsts.AT_SUBMIT_DRAWING_NEXT_USER_EMAIL);
 		String distinguishedID = null;
 		int lockSecs = 0;
@@ -73,7 +93,7 @@ public class SubmitDrawingRequest implements RequestHandler {
 		}
 		
 		// Convert stage to an int.
-		int stage = Integer.valueOf(stageStr).intValue();
+		int stage = Integer.parseInt(stageStr);
 		
 		// Make sure within the bounds
 		if ((stage < 1) || (stage > ConsequencesSettings.MAX_NUM_STAGES)) {
@@ -108,12 +128,14 @@ public class SubmitDrawingRequest implements RequestHandler {
 			String usrName = usrRes.getString("name");
 			String usrEmail = usrRes.getString("email");
 			
+			// Base the 
+			
 			// Decide on whether to insert or update.  If on stage 1 then insert.
 			// Otherwise update.
 			if (stage == 1) {
 				// Insert a drawing
-				pstmt = SQLWrapper.insertDrawing(conn, drawingID, distinguishedID, userID,
-					usrName, usrEmail, lockSecs);
+				pstmt = SQLWrapper.insertDrawing(conn, drawingID, distinguishedID,
+					width, height, userID, usrName, usrEmail, lockSecs);
 					
 				// Copy across signature
 				SQLWrapper.copyClob(usrRes.getClob("signature"), pstmt, SQLWrapper.INS_DRAW_SIGNATURE);
@@ -123,8 +145,8 @@ public class SubmitDrawingRequest implements RequestHandler {
 			}
 			else {
 				// Update a drawing
-				pstmt = SQLWrapper.updateDrawing(conn, drawingID, complete, 
-					distinguishedID, stage, userID,	usrName, usrEmail, lockSecs);
+				pstmt = SQLWrapper.updateDrawing(conn, drawingID, complete, distinguishedID,
+					height, stage, userID, usrName, usrEmail, lockSecs);
 					
 				// Copy across signature
 				SQLWrapper.copyClob(usrRes.getClob("signature"), pstmt, SQLWrapper.UPD_DRAW_SIGNATURE);

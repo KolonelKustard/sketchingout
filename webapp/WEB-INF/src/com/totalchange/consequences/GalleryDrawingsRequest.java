@@ -35,8 +35,8 @@ public class GalleryDrawingsRequest implements RequestHandler {
 		try {
 			// Send the values from this row in the database table
 			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_ID, String.valueOf(res.getInt("friendly_id")));
-			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_WIDTH, String.valueOf(ConsequencesSettings.IMG_DEFAULT_WIDTH));
-			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_HEIGHT, String.valueOf(ConsequencesSettings.IMG_DEFAULT_HEIGHT));
+			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_WIDTH, String.valueOf(res.getInt("width")));
+			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_HEIGHT, String.valueOf(res.getInt("height")));
 			
 			// Get the number of stages and output it
 			int numStages = res.getInt("stage");

@@ -32,6 +32,8 @@ public class XMLConsts {
 	public static final String EL_USER_NAME = "name";
 	public static final String AT_USER_EMAIL = "email";
 	public static final String EL_USER_EMAIL = "email";
+	public static final String AT_USER_SIGNATURE_WIDTH = "signature_width";
+	public static final String AT_USER_SIGNATURE_HEIGHT = "signature_height";
 	public static final String EL_USER_SIGNATURE = "signature";
 	
 	public static final String EL_NEXT_DRAWING = "next_drawing";
@@ -47,6 +49,9 @@ public class XMLConsts {
 	public static final String AT_SUBMIT_DRAWING_DRAWING_ID = "drawing_id";
 	public static final String AT_SUBMIT_DRAWING_STAGE = "stage";
 	public static final String AT_SUBMIT_DRAWING_NEXT_USER_EMAIL = "next_user_email";
+	public static final String AT_SUBMIT_DRAWING_WIDTH = "width";
+	public static final String AT_SUBMIT_DRAWING_HEIGHT = "height";
+	public static final String AT_SUBMIT_DRAWING_OFFSET_Y = "offsety";
 	public static final String EL_SUBMIT_DRAWING_DRAWING = "drawing";
 	
 	public static final String EL_GALLERY_DRAWINGS = "gallery_drawings";
