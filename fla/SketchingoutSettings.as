@@ -1,6 +1,6 @@
 ﻿class SketchingoutSettings {
-	public static var SKETCHINGOUT_URL: String = "http://localhost:8080/sketchingout/sketchingout";
-	public static var GALLERY_URL: String = "http://localhost:8080/sketchingout/drawing";
+	public static var SKETCHINGOUT_URL: String = "sketchingout";
+	public static var GALLERY_URL: String = "drawing";
 	
 	public static var MIN_OFFSET_Y: Number = 5;
 	public static var MAX_OFFSET_Y: Number = 30;
