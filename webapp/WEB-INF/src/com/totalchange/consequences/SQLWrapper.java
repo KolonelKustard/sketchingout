@@ -83,17 +83,17 @@ public class SQLWrapper {
 			"SELECT " +
 			"  id, " +
 			"  stage, " +
-			"  head, " +
-			"  body, " + 
-			"  legs " +
+			"  stage_1, " +
+			"  stage_2, " + 
+			"  stage_3 " +
 			"FROM " +
 			"  drawings " +
 			"WHERE " +
 			"  completed = 'N' AND " +
 			"  locked < ? AND " +
 			"  stage_1_author_id <> ? AND " +
-			"  stage_2_author_id <> ? AND " +
-			"  stage_3_author_id <> ? " +
+			"  (stage_2_author_id IS NULL OR stage_2_author_id <> ?) AND " +
+			"  (stage_3_author_id IS NULL OR stage_3_author_id <> ?) " +
 			"ORDER BY " +
 			"  stage DESC " +
 			"LIMIT 1"
@@ -114,9 +114,9 @@ public class SQLWrapper {
 			"SELECT " +
 			"  id, " +
 			"  stage, " +
-			"  head, " +
-			"  body, " + 
-			"  legs " +
+			"  stage_1, " +
+			"  stage_2, " + 
+			"  stage_3 " +
 			"FROM " +
 			"  drawings " +
 			"WHERE " +
@@ -138,7 +138,7 @@ public class SQLWrapper {
 			"SET " +
 			"  locked = ? " +
 			"WHERE " +
-			"  drawing_id = ?"
+			"  id = ?"
 		);
 		
 		// Convert seconds into milliseconds and add to the current time
@@ -234,7 +234,7 @@ public class SQLWrapper {
 		// Set drawing id into place
 		pstmt.setString(10, drawingID);
 		
-		return null;
+		return pstmt;
 	}
 	
 	/**
