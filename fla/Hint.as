@@ -1,5 +1,5 @@
 ﻿class Hint {
-	private static var FADE_OUT_TIME = 1000;
+	private static var FADE_OUT_TIME = 200;
 	private static var FADE_BACK_IN_TIME = 200;
 	
 	private var startedHiding: Number;
