@@ -1,4 +1,4 @@
-﻿class SketchingoutSettings {
+class SketchingoutSettings {
 	/*
 	 * The BASE_URL constant needs to be blank for in place use as this
 	 * indicates a relative path.  However for running within the Flash
@@ -9,7 +9,6 @@
 	public static var BASE_URL: String = "";
 	
 	public static var SKETCHINGOUT_URL: String = BASE_URL + "sketchingout";
-	public static var GALLERY_URL: String = BASE_URL + "drawing";
 	
 	public static var MIN_OFFSET_Y: Number = 20;
 	public static var MAX_OFFSET_Y: Number = 40;
