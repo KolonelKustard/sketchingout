@@ -2,6 +2,7 @@
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
 	// Objects public properties
+	public var nextDrawingID: String = null;
 	public var nextDrawing: CanvasMovieClip;
 	public var prevDrawing: CanvasMovieClip;
 	public var userDetails: UserDetails;
@@ -60,22 +61,31 @@
 	public function getInitRequest(): XML {
 		// Construct a request for the initial user details and for the next
 		// drawing to do.
+		var request: Request = new Request();
 		var userRequest: UserDetailsRequest = new UserDetailsRequest();
-		
-		// Set the user ID
 		userRequest.userID = userDetails.userID;
-		
-		// Make a next public drawing request
-		var nextDrawingRequest: PublicDrawingRequest = new PublicDrawingRequest();
-		
-		// Set your user id so server can avoid giving back a drawing you've
-		// already been involved in
-		nextDrawingRequest.userID = userDetails.userID;
-		
-		// Construct request
-		var request = new Request();
 		request.addRequest(userRequest);
-		request.addRequest(nextDrawingRequest);
+		
+		// See if public or private
+		if (nextDrawingID == null) {
+			// Make a next public drawing request
+			var nextDrawingRequest: PublicDrawingRequest = new PublicDrawingRequest();
+		
+			// Set your user id so server can avoid giving back a drawing you've
+			// already been involved in
+			nextDrawingRequest.userID = userDetails.userID;
+			request.addRequest(nextDrawingRequest);
+		}
+		else {
+			// Use the drawing id to make a next private drawing request
+			var nextPrivateRequest: PrivateDrawingRequest = new PrivateDrawingRequest();
+			nextPrivateRequest.userID = userDetails.userID;
+			nextPrivateRequest.drawingID = nextDrawingID;
+			request.addRequest(nextPrivateRequest);
+			
+			// Make sure can't use next drawing id by accident again
+			nextDrawingID = null;
+		}
 		
 		return request.getXML();
 	}
