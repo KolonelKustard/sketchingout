@@ -32,7 +32,8 @@ public class SketchingoutEmail {
 	
 	private MimeMessage msg;
 	private ArrayList attachments = new ArrayList();
-	private String fromName, fromEmail, toName, toEmail, subject, body;
+	private String fromName, fromEmail, senderName, senderEmail, toName, toEmail, subject, body;
+	private String distinguishedID;
 	private int stage;
 	
 	private void substStr(StringBuffer buff, String orig, String subst) {
@@ -46,10 +47,27 @@ public class SketchingoutEmail {
 	private String substStrs(String src) {
 		StringBuffer dest = new StringBuffer(src);
 		
-		// Substitute the easy strings
+		// Substitute who from (Sender overrides From)
+		if (senderName != null) substStr(dest, SketchingoutEmails.SUBST_FROM_NAME, senderName);
+		else substStr(dest, SketchingoutEmails.SUBST_FROM_NAME, fromName);
+		
+		if (senderEmail != null) substStr(dest, SketchingoutEmails.SUBST_FROM_EMAIL, senderEmail);
+		else substStr(dest, SketchingoutEmails.SUBST_FROM_EMAIL, fromEmail);
+		
+		// Substitute who being sent to
 		substStr(dest, SketchingoutEmails.SUBST_TO_NAME, toName);
 		substStr(dest, SketchingoutEmails.SUBST_TO_EMAIL, toEmail);
-		substStr(dest, SketchingoutEmails.SUBST_URL, SketchingoutSettings.URL_DRAWING);
+		
+		// The url depends on if a distinguished ID was sent in
+		if (distinguishedID == null) {
+			substStr(dest, SketchingoutEmails.SUBST_URL, SketchingoutSettings.URL_DRAWING);
+		}
+		else {
+			substStr(dest, SketchingoutEmails.SUBST_URL,
+					SketchingoutSettings.URL_DRAWING + "?" +
+					SketchingoutSettings.URL_PARAM_DRAWING_ID + "=" +
+					distinguishedID);
+		}
 		
 		// Change the stage into a body part
 		switch(stage) {
@@ -169,6 +187,18 @@ public class SketchingoutEmail {
 	public void setFromName(String fromName) {
 		this.fromName = fromName;
 	}
+	public String getSenderEmail() {
+		return senderEmail;
+	}
+	public void setSenderEmail(String senderEmail) {
+		this.senderEmail = senderEmail;
+	}
+	public String getSenderName() {
+		return senderName;
+	}
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
 	public int getStage() {
 		return stage;
 	}
@@ -193,6 +223,12 @@ public class SketchingoutEmail {
 	public void setToName(String toName) {
 		this.toName = toName;
 	}
+	public String getDistinguishedID() {
+		return distinguishedID;
+	}
+	public void setDistinguishedID(String distinguishedID) {
+		this.distinguishedID = distinguishedID;
+	}
 	
 	/**
 	 * Tests all the random emails
@@ -210,9 +246,6 @@ public class SketchingoutEmail {
 		if (args.length >= 3) toName = args[2];
 		if (args.length >= 4) toEmail = args[3];
 		
-		System.out.println("Sending " + SketchingoutEmails.EMAILS.length +
-				" emails to " + smtpHost + ":" + smtpPort);
-		
 		// Setup SMTP properties
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", smtpHost);
@@ -222,6 +255,9 @@ public class SketchingoutEmail {
 		Session session = Session.getDefaultInstance(props);
 		
 		// Run through each email making and sending
+		System.out.println("Sending " + SketchingoutEmails.EMAILS.length +
+				" emails to " + smtpHost + ":" + smtpPort);
+		
 		for (int num = 0; num < SketchingoutEmails.EMAILS.length; num++) {
 			SketchingoutEmail email = new SketchingoutEmail(session);
 			email.setFromName(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_FROM_NAME]);
@@ -230,6 +266,25 @@ public class SketchingoutEmail {
 			email.setBody(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_BODY]);
 			email.setToName(toName);
 			email.setToEmail(toEmail);
+			email.setStage(new Random().nextInt(SketchingoutSettings.MAX_NUM_STAGES + 1));
+			email.send();
+		}
+		
+		System.out.println("Sending " + SketchingoutEmails.EMAILS_TO_FRIENDS.length +
+				" emails to " + smtpHost + ":" + smtpPort);
+		
+		for (int num = 0; num < SketchingoutEmails.EMAILS_TO_FRIENDS.length; num++) {
+			SketchingoutEmail email = new SketchingoutEmail(session);
+			email.setFromName(SketchingoutEmails.EMAILS_TO_FRIENDS[num][EMAILS_ARRAY_FROM_NAME]);
+			email.setFromEmail(SketchingoutEmails.EMAILS_TO_FRIENDS[num][EMAILS_ARRAY_FROM_EMAIL]);
+			email.setSubject(SketchingoutEmails.EMAILS_TO_FRIENDS[num][EMAILS_ARRAY_SUBJECT]);
+			email.setBody(SketchingoutEmails.EMAILS_TO_FRIENDS[num][EMAILS_ARRAY_BODY]);
+			email.setSenderName(toName);
+			email.setSenderEmail(toEmail);
+			email.setToName(toEmail);
+			email.setToEmail(toEmail);
+			email.setStage(new Random().nextInt(SketchingoutSettings.MAX_NUM_STAGES + 1));
+			email.setDistinguishedID(new RandomGUID().toString());
 			email.send();
 		}
 		
