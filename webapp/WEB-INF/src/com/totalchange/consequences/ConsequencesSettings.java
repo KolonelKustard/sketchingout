@@ -34,4 +34,14 @@ public class ConsequencesSettings {
 	 * Currently set to 4.  This means 4 stages: "Head", "Body", "Legs", "Feet".
 	 */
 	public static final int MAX_NUM_STAGES = 4;
+	
+	/**
+	 * The SMTP server address to use when sending emails
+	 */
+	public static final String SMTP_SERVER_ADDR = "localhost";
+	
+	/**
+	 * The SMTP server port to use when sending emails
+	 */
+	public static final int SMTP_SERVER_PORT = 21;
 }
