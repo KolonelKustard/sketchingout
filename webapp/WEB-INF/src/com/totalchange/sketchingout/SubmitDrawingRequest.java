@@ -171,7 +171,7 @@ public class SubmitDrawingRequest implements RequestHandler {
 			if ((distinguishedID != null) && (!complete)) {
 				try {
 					PrivateDrawingProcessor.sendDrawingOn(usrName, usrEmail,
-						nextUserEmail, distinguishedID);
+						nextUserEmail, stage + 1, distinguishedID);
 				}
 				catch (MessagingException me) {
 					errs.addException(this.getClass(), me);
