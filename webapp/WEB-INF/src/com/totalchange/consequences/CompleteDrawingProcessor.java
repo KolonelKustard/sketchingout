@@ -15,6 +15,6 @@ public class CompleteDrawingProcessor {
 	public static final void process(Connection conn, 
 		String drawingID) throws SQLException {
 			
-		System.out.println("Drawing Complete!  ID: " + drawingID);
+		
 	}
 }
