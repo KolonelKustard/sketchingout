@@ -12,7 +12,7 @@
 		
 		// Submit submitted xml to the submitted url.
 		// First get a reference to the url and open a connection...
-		URL url = new URL(request.getParameter("sendto"));
+		URL url = new URL("http://localhost:8080/consequences/consequences");
 		HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
 		
 		// Make sure set to POST
@@ -43,16 +43,14 @@
   <title>Consequences Test XML Input/Output</title>
 </head>
 <body>
-  <p>
-    Enter XML in the text box below and click Submit to send data to consquences
-    and get xml response back.
-  </p>
   <form method="POST" target="testresult">
     <table>
-      <tr><td>Submit to:</td><td><input type="text" name="sendto" size="60" value="http://localhost:8080/consequences/consequences" /></td></tr>
-      <tr><td>XML:</td><td><input type="textarea" name="xmlin" size="60" /></td></tr>
+      <tr>
+        <td valign="top">XML:</td>
+        <td valign="top"><textarea name="xmlin" cols="60" rows="10"></textarea></td>
+        <td valign="top"><input type="submit" /></td>
+      </tr>
     </table>
-    <input type="submit" />
   </form>
 </body>
 </html>
