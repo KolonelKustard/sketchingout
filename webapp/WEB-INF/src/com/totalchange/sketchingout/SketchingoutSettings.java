@@ -41,6 +41,14 @@ public class SketchingoutSettings {
 	 * Currently set to 4.  This means 4 stages: "Head", "Body", "Legs", "Feet".
 	 */
 	public static final int MAX_NUM_STAGES = 4;
+	
+	/**
+	 * Set to false to make sure that completing a drawing does not spawn
+	 * a new thread.  Otherwise a new thread will be created to process a
+	 * completed drawing - thereby allowing the servlet to terminate a
+	 * connection.
+	 */
+	public static final boolean COMPLETE_THREADED = true;
 
 	/**
 	 * The SMTP server address to use when sending emails
