@@ -1,4 +1,4 @@
-<flash_project name="SketchingOut" version="1">
+﻿<flash_project name="SketchingOut" version="1">
     <project_file path="./Drawing.as" filetype="as" />
     <project_file path="./Line.as" filetype="as" />
     <project_file path="./Request.as" filetype="as" />
