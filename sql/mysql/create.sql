@@ -40,6 +40,23 @@ CREATE TABLE drawings(
   stage_4_signature	TEXT NULL,
   
   INDEX incomplete_drawings(completed, locked, stage),
-  INDEX awaiting_drawing(distinguished_id),
-  UNIQUE INDEX complete_drawings(friendly_id)
+  INDEX awaiting_drawing(distinguished_id)
+);
+
+CREATE TABLE gallery(
+  id			VARCHAR(36) NOT NULL PRIMARY KEY,
+  friendly_id		INTEGER NOT NULL,
+  width			SMALLINT NOT NULL,
+  height		SMALLINT NOT NULL,
+  stage			TINYINT NOT NULL,
+  stage_1_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
+  stage_1_author_name	VARCHAR(100) NULL,
+  stage_2_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
+  stage_2_author_name	VARCHAR(100) NULL,
+  stage_3_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
+  stage_3_author_name	VARCHAR(100) NULL,
+  stage_4_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
+  stage_4_author_name	VARCHAR(100) NULL,
+  anim_swf_filename	VARCHAR(20) NULL,
+  pdf_filename		VARCHAR(20) NULL
 );
