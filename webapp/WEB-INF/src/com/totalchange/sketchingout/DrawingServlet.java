@@ -52,45 +52,8 @@ public class DrawingServlet extends HttpServlet {
 			else if (type.equals("pdf")) parser = new PdfImageParser();
 			else throw new SketchingoutImageParserException(type + " not a supported type.");
 			
-			// Make an image parser
-			ImageParser imageParser = new ImageParser(
-				res.getInt("version"),
-				res.getInt("width"),
-				res.getInt("height"),
-				scale,
-				loss,
-				out, 
-				parser
-			);
-				
-			// Find the number of stages
-			int numStages = res.getInt("stage");
-			
-			// Run through the stages adding them to the parser
-			for (int num = 0; num < numStages; num++) {
-				try {
-					imageParser.addStage(res.getCharacterStream("stage_" + (num + 1)));
-				}
-				catch (Exception e) {
-					// If have an exception just print it to the console
-					e.printStackTrace();
-				}
-			}
-			
-			// Run through the signatures adding them to the parser
-			for (int num = 0; num < numStages; num++) {
-				try {
-					imageParser.addSignature(res.getCharacterStream("stage_" + 
-						(num + 1) + "_signature"));
-				}
-				catch (Exception e) {
-					// Again just print exception to the stage
-					e.printStackTrace();
-				}
-			}
-			
-			// Close parser
-			imageParser.close();
+			// Parse resultset to output stream
+			ImageParser.parseResultSet(res, scale, loss, out, parser);
 		}
 		finally {
 			res.close();
