@@ -1,8 +1,8 @@
 ﻿class Drawing {
-	public var width: Number;
-	public var height: Number;
-	public var offsetX: Number;
-	public var offsetY: Number;
+	public var width: Number = 0;
+	public var height: Number = 0;
+	public var offsetX: Number = 0;
+	public var offsetY: Number = 0;
 	
 	private var lines: Array;
 	
