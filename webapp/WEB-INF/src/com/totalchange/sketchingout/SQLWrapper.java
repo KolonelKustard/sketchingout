@@ -350,6 +350,19 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
+	public static final PreparedStatement getCompleteDrawings(Connection conn) throws 
+		SQLException {
+		
+		return conn.prepareStatement(
+			"SELECT " +
+			"  id " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  completed = 'Y'"
+		);
+	}
+	
 	public static final PreparedStatement getHomepageThumbnails(Connection conn,
 		int numToGet) throws SQLException {
 		
@@ -462,7 +475,7 @@ public class SQLWrapper {
 		throws SQLException {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
-			"DELETE FROM drawings WHERE drawing_id = ?"
+			"DELETE FROM drawings WHERE id = ?"
 		);
 		
 		pstmt.setString(1, drawingID);
