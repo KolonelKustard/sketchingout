@@ -25,17 +25,17 @@ public class SQLWrapper {
 	private static final String DB_USERNAME = "";
 	private static final String DB_PASSWORD = "";
 	
-	public static Connection makeConnection() throws ClassNotFoundException, 
+	public static final Connection makeConnection() throws ClassNotFoundException, 
 	  SQLException {
 		Class.forName(DB_CLASSNAME);
 		Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 		return conn;
 	}
 	
-	public static ResultSet getUser(Connection conn, String userID) throws
+	public static final ResultSet getUser(Connection conn, String userID) throws
 	  SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(
-		  "SELECT * FROM users WHERE user_id = ?"
+		  "SELECT * FROM users WHERE id = ?"
 		);
 		
 		pstmt.setString(1, userID);
