@@ -27,7 +27,7 @@ function galleryOnNext(drawing: GalleryDrawing) {
 		var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
 		
 		// Set the position on the Y coord to sit
-		newDrawing._y = 50;
+		newDrawing._y = 70;
 		
 		// Set the start and end points
 		newDrawing.rightX = 670;

@@ -262,7 +262,7 @@ clearSig_btn.onPress = function() {
 clearSig_btn.tabEnabled = false;
 
 viewGallery_btn.onPress = function() {
-	_root.loadMovie("gallery.swf",1)
+	getURL("gallery.jsp");
 }
 
 
