@@ -43,7 +43,7 @@ public class ConsequencesSettings {
 	/**
 	 * The SMTP server port to use when sending emails
 	 */
-	public static final int SMTP_SERVER_PORT = 25;
+	public static final String SMTP_SERVER_PORT = "25";
 	
 	/**
 	 * The email From name

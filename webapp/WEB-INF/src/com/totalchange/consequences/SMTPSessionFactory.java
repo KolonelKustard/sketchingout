@@ -18,6 +18,7 @@ public class SMTPSessionFactory {
 		// Setup SMTP properties
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", ConsequencesSettings.SMTP_SERVER_ADDR);
+		props.put("mail.smtp.port", ConsequencesSettings.SMTP_SERVER_PORT);
 		
 		// Get SMTP session
 		return Session.getDefaultInstance(props);
