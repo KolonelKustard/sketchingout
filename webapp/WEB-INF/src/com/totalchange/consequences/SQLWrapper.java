@@ -37,7 +37,12 @@ public class SQLWrapper {
 		SQLException {
 			
 		PreparedStatement pstmt = conn.prepareStatement(
-			"SELECT id, name, email, signature FROM users WHERE id = ?"
+			"SELECT " +
+			"  id, name, email, signature_width, signature_height, signature " +
+			"FROM " +
+			"  users " +
+			"WHERE " +
+			"  id = ?"
 		);
 		
 		pstmt.setString(1, userID);
@@ -48,26 +53,43 @@ public class SQLWrapper {
 	public static final int INS_USER_ID = 1;
 	public static final int INS_USER_NAME = 2;
 	public static final int INS_USER_EMAIL = 3;
-	public static final int INS_USER_SIGNATURE = 4; 
+	public static final int INS_USER_SIGNATURE_WIDTH = 4;
+	public static final int INS_USER_SIGNATURE_HEIGHT = 5;
+	public static final int INS_USER_SIGNATURE = 6;
 	public static final PreparedStatement insertUser(Connection conn) throws
 		SQLException {
 			
 		PreparedStatement pstmt = conn.prepareStatement(
-			"INSERT INTO users(id, name, email, signature) VALUES(?, ?, ?, ?)"
+			"INSERT INTO users(" +
+			"  id, name, email, signature_width, signature_height, signature" +
+			") VALUES(" +
+			"  ?, ?, ?, ?, ?, ?" +
+			")"
 		);
 		
 		return pstmt;
 	}
 	
-	public static final int UPD_USER_ID = 4;
+	public static final int UPD_USER_ID = 6;
 	public static final int UPD_USER_NAME = 1;
 	public static final int UPD_USER_EMAIL = 2;
-	public static final int UPD_USER_SIGNATURE = 3;
+	public static final int UPD_USER_SIGNATURE_WIDTH = 3;
+	public static final int UPD_USER_SIGNATURE_HEIGHT = 4;
+	public static final int UPD_USER_SIGNATURE = 5;
 	public static final PreparedStatement updateUser(Connection conn) throws
 		SQLException {
 			
 		PreparedStatement pstmt = conn.prepareStatement(
-			"UPDATE users SET name = ?, email = ?, signature = ? WHERE id = ?"
+			"UPDATE " +
+			"  users " +
+			"SET " +
+			"  name = ?, " +
+			"  email = ?, " +
+			"  signature_width = ?, " +
+			"  signature_height = ?, " +
+			"  signature = ? " +
+			"WHERE " +
+			"  id = ?"
 		);
 		
 		return pstmt;
@@ -153,19 +175,20 @@ public class SQLWrapper {
 		pstmt.close();
 	}
 	
-	public static final int INS_DRAW_DRAWING = 7;
-	public static final int INS_DRAW_SIGNATURE = 8;
+	public static final int INS_DRAW_DRAWING = 9;
+	public static final int INS_DRAW_SIGNATURE = 10;
 	public static final PreparedStatement insertDrawing(Connection conn, 
-		String drawingID, String distinguishedID, String userID, String userName, 
-		String userEmail, int lockSecs) throws SQLException{
+		String drawingID, String distinguishedID, int width, int height,
+		String userID, String userName, String userEmail, int lockSecs)
+		throws SQLException{
 			
 		PreparedStatement pstmt = conn.prepareStatement(
 			"INSERT INTO drawings(" +
-			"  id, completed, locked, distinguished_id, stage, " +
+			"  id, completed, locked, distinguished_id, width, height, stage, " +
 			"  stage_1_author_id, stage_1_author_name, stage_1_author_email, " +
 			"  stage_1, stage_1_signature" +
 			") VALUES( " +
-			"  ?, 'N', ?, ?, 1, ?, ?, ?, ?, ?" +
+			"  ?, 'N', ?, ?, ?, ?, 1, ?, ?, ?, ?, ?" +
 			")"
 		);
 		
@@ -173,9 +196,11 @@ public class SQLWrapper {
 		pstmt.setString(1, drawingID);
 		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis() + (lockSecs * 1000)));
 		pstmt.setString(3, distinguishedID);
-		pstmt.setString(4, userID);
-		pstmt.setString(5, userName);
-		pstmt.setString(6, userEmail);
+		pstmt.setInt(4, width);
+		pstmt.setInt(5, height);
+		pstmt.setString(6, userID);
+		pstmt.setString(7, userName);
+		pstmt.setString(8, userEmail);
 		
 		// Default drawing and signature to null
 		pstmt.setString(INS_DRAW_DRAWING, null);
@@ -184,16 +209,16 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
-	public static final int UPD_DRAW_DRAWING = 8;
-	public static final int UPD_DRAW_SIGNATURE = 9;
+	public static final int UPD_DRAW_DRAWING = 9;
+	public static final int UPD_DRAW_SIGNATURE = 10;
 	public static final PreparedStatement updateDrawing(Connection conn, 
-		String drawingID, boolean complete, String distinguishedID, int stage,
-		String userID, String userName,	String userEmail, int lockSecs)
+		String drawingID, boolean complete, String distinguishedID, int expandHeight,
+		int stage, String userID, String userName, String userEmail, int lockSecs)
 		throws SQLException {
 		
 		// Convert the stage number into a string to use to identify the field names
 		// in the statement
-		String stageID = String.valueOf(stage);
+		String stageStr = String.valueOf(stage);
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"UPDATE " +
@@ -202,12 +227,13 @@ public class SQLWrapper {
 			"  completed = ?, " +
 			"  locked = ?, " +
 			"  distinguished_id = ?, " +
+			"  height = height + ?, " +
 			"  stage = ?, " +
-			"  stage_" + stageID + "_author_id = ?, " +
-			"  stage_" + stageID + "_author_name = ?, " +
-			"  stage_" + stageID + "_author_email = ?, " +
-			"  stage_" + stageID + " = ?, " +
-			"  stage_" + stageID + "_signature = ? " +
+			"  stage_" + stageStr + "_author_id = ?, " +
+			"  stage_" + stageStr + "_author_name = ?, " +
+			"  stage_" + stageStr + "_author_email = ?, " +
+			"  stage_" + stageStr + " = ?, " +
+			"  stage_" + stageStr + "_signature = ? " +
 			"WHERE " +
 			"  id = ?"
 		);
@@ -221,17 +247,18 @@ public class SQLWrapper {
 		
 		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis() + (lockSecs * 1000)));
 		pstmt.setString(3, distinguishedID);
-		pstmt.setInt(4, stage);
-		pstmt.setString(5, userID);
-		pstmt.setString(6, userName);
-		pstmt.setString(7, userEmail);
+		pstmt.setInt(4, expandHeight);
+		pstmt.setInt(5, stage);
+		pstmt.setString(6, userID);
+		pstmt.setString(7, userName);
+		pstmt.setString(8, userEmail);
 		
 		// Initialise drawing and signature to null
 		pstmt.setString(UPD_DRAW_DRAWING, null);
 		pstmt.setString(UPD_DRAW_SIGNATURE, null);
 		
 		// Set drawing id into place
-		pstmt.setString(10, drawingID);
+		pstmt.setString(11, drawingID);
 		
 		return pstmt;
 	}
@@ -241,6 +268,8 @@ public class SQLWrapper {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
+			"  width, " +
+			"  height, " +
 			"  stage, " +
 			"  stage_1_author_name, " +
 			"  stage_1, " +
@@ -270,6 +299,8 @@ public class SQLWrapper {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
+			"  width, " +
+			"  height, " +
 			"  stage, " +
 			"  stage_1_author_name, " +
 			"  stage_1_author_email, " +
