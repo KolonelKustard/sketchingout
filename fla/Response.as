@@ -2,7 +2,7 @@
 	
 	public var doneWithErrors: Boolean = false;
 	public var errs: Array = new Array();
-	public var responses: Array = new Array();
+	public var responses: Array = null;
 	
 	/**
 	 * Creates an array of errors based on an errors node
@@ -25,6 +25,9 @@
 	 * Creates an array of ResponseOperators based on the response
 	 */
 	private function parseXML(xmlDoc: XML): Void {
+		// Reset the responses
+		responses = new Array();
+		
 		// Get the root node
 		var rootNode: XMLNode = xmlDoc.firstChild;
 		
