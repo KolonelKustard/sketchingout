@@ -28,6 +28,13 @@ public class ConsequencesSettings {
 	public static final int PRIVATE_LOCK_SECS = 86400;
 	
 	/**
+	 * This number is the version that is appended to a drawing.  The point of this is
+	 * that if the layout is changed at some point in the future then previous drawings
+	 * need not be screwed up.
+	 */
+	public static final int PRESENT_DRAWING_VERSION = 1;
+	
+	/**
 	 * This number indicates the maximum number of stages a drawing goes through before
 	 * it's determined to be complete.
 	 * 
