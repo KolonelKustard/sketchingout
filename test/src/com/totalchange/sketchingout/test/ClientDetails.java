@@ -3,17 +3,32 @@
  */
 package com.totalchange.sketchingout.test;
 
+import java.io.IOException;
+
+import org.w3c.dom.Document;
+
+import com.totalchange.sketchingout.XMLWriter;
+
 /**
  * @author RalphJones
  */
-public class ClientDetails {
+public class ClientDetails extends Request {
 	private String id;
 	private String name;
 	private String email;
 	private String signature;
 	
-	public ClientDetails() {
+	public ClientDetails(String id) {
+		XMLWriter out = getXMLWriter();
+		try {
+			out.startElement("user_details");
+			out.writeElement("id", id);
+			out.endElement("user_details");
+		}
+		catch (IOException ie) {}
 		
+		Document doc = request("user_details");
+		System.out.println(doc);
 	}
 	
 	public String getId() {

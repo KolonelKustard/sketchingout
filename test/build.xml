@@ -5,6 +5,8 @@
 
 	<property name="src" value="src"/>
 	<property name="dest" value="classes"/>
+	<property name="webapp" value="../webapp"/>
+	<property name="webapp_classes" value="${webapp}/WEB-INF/classes"/>
 	
 	<target name="makedirs">
 		<mkdir dir="${dest}"/>
@@ -14,8 +16,12 @@
 		<delete dir="${dest}"/>
 	</target>
 	
-	<target name="compile" depends="makedirs" description="Compiles the test client">
-		<javac srcdir="${src}" destdir="${dest}"/>
+	<target name="compile_webapp">
+		<ant dir="${webapp}" target="compile" inheritAll="false"/>
+	</target>
+	
+	<target name="compile" depends="compile_webapp, makedirs" description="Compiles the test client">
+		<javac srcdir="${src}" destdir="${dest}" classpath="{$webapp_classes}"/>
 	</target>
 	
 	<target name="rebuild" depends="clean, compile"/>
@@ -23,7 +29,7 @@
 	<target name="execute" depends="compile" description="Runs the test client">
 		<java
 			classname="com.totalchange.sketchingout.test.SketchingoutTest" 
-			classpath="${dest}"
+			classpath="${dest};${webapp_classes}"
 		/>
 	</target>
 </project>

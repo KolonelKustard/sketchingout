@@ -12,10 +12,8 @@ public class SketchingoutTest {
 	private ArrayList clients;
 	
 	private void go() {
-		TestStats stats = new TestStats();
-		
 		for (int num = 0; num < TestSettings.NUM_CLIENTS; num++) {
-			DummyClient client = new DummyClient(stats);
+			DummyClient client = new DummyClient();
 			clients.add(client);
 			
 			client.start();

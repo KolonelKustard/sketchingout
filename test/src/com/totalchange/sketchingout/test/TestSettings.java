@@ -7,7 +7,7 @@ package com.totalchange.sketchingout.test;
  * @author RalphJones
  */
 public class TestSettings {
-	public static final String CONSEQUENCES_URL = "http://localhost:8080/consequences/consequences";
+	public static final String CONSEQUENCES_URL = "http://localhost:8080/sketchingout/sketchingout";
 	
 	public static final int NUM_CLIENTS = 10;
 	public static final String CLIENT_BASE_NAME = "TestClient";

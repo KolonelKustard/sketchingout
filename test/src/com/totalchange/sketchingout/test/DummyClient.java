@@ -12,7 +12,6 @@ public class DummyClient extends Thread {
 	private static Logger logger = Logger.getLogger("com.totalchange.consequences.test.DummyClient");
 	private static int staticClientNum = 0;
 
-	private TestStats stats;
 	private int clientNum;
 	
 	private ClientDetails clientDetails;
@@ -37,7 +36,7 @@ public class DummyClient extends Thread {
 	 * a fictitious ID.
 	 */
 	private void changeIdentity() {
-		
+		clientDetails = new ClientDetails("test");
 	}
 
 	/**
@@ -64,9 +63,7 @@ public class DummyClient extends Thread {
 		}
 	}
 
-	public DummyClient(TestStats stats) {
-		this.stats = stats;
-
+	public DummyClient() {
 		clientNum = staticClientNum++;
 		logger.info("Created DummyClient instance: " + clientNum);
 	}
