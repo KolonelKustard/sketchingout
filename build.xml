@@ -7,8 +7,8 @@
 	<property name="sql" value="sql"/>
 	<property name="smtp" value="smtp"/>
 	
-	<target name="compile">
-		<ant dir="${webapp}" target="compile"/>
+	<target name="rebuild">
+		<ant dir="${webapp}" target="rebuild"/>
 	</target>
 	
 	<target name="initdb">
