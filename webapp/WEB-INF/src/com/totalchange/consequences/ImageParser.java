@@ -31,15 +31,21 @@ import com.totalchange.consequences.imageparsers.ConsequencesImageParserExceptio
  */
 public class ImageParser extends DefaultHandler{
 	
-	private ConsequencesImageParser parser;
+	private static final int TYPE_DRAWING = 1;
+	private static final int TYPE_SIGNATURE = 2;
 	
+	private ConsequencesImageParser parser;
+	private SAXParser saxParser;
+	
+	private int currType = -1;
 	private boolean lineStart;
 	private int offsetX, offsetY, nextOffsetX, nextOffsetY = 0;
+	private boolean sigOdd = true;
 
 	/**
 	 * Constructor makes the base rendered image
 	 */
-	public ImageParser(int width, int height, OutputStream out,
+	public ImageParser(int version, int width, int height, OutputStream out,
 		ConsequencesImageParser parser) throws ConsequencesImageParserException {
 		
 		// Set this parser in
@@ -47,6 +53,17 @@ public class ImageParser extends DefaultHandler{
 		
 		// Forward on the start of the image to the parser
 		parser.startImage(width, height, out);
+		
+		// Setup SAX XML Parser
+		try { 
+			saxParser = SAXParserFactory.newInstance().newSAXParser();
+		}
+		catch (SAXException se) {
+			throw new ConsequencesImageParserException(se);
+		}
+		catch (ParserConfigurationException pe) {
+			throw new ConsequencesImageParserException(pe);
+		}
 	}
 	
 	/**
@@ -92,11 +109,33 @@ public class ImageParser extends DefaultHandler{
 			lineStart = true;
 		}
 		else if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
-			// Figure out the current offset based on this canvas
-			nextOffsetX = 0;
-			nextOffsetY = offsetY + 
-				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)) -
-				Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y));
+			// Will need to figure out the positions based on whether this is a drawing
+			// or a signature.
+			if (currType == TYPE_DRAWING) {
+				// Figure out the current offset based on this canvas
+				nextOffsetX = 0;
+				nextOffsetY = offsetY + 
+					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)) -
+					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_OFFSET_Y));
+			}
+			else if (currType == TYPE_SIGNATURE) {
+				// Signatures are tiled side by side.  So if on an odd numbered
+				// signature it is on the left.
+				if (sigOdd) {
+					// Is on the left so next will be on the same height but on the right
+					nextOffsetX = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH));
+					nextOffsetY = offsetY;					
+				}
+				else {
+					// Is on the right, so next offset will be below on the left
+					nextOffsetX = 0;
+					nextOffsetY = offsetY + 
+						Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT));
+				}
+				
+				// Invert the signature so the next one is in the next position. 
+				sigOdd = !sigOdd;
+			}
 			
 			try {
 				parser.startCanvas(
@@ -133,24 +172,19 @@ public class ImageParser extends DefaultHandler{
 		}
 	}
 	
-	public void addStage(InputStream xmlData) throws ParserConfigurationException,
-		SAXException, IOException {
-			
-		// Setup SAX XML Parser
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		SAXParser parser = factory.newSAXParser();
-		
-		parser.parse(xmlData, this);
+	public void addStage(InputStream xmlData) throws SAXException, IOException {
+		currType = TYPE_DRAWING;
+		saxParser.parse(xmlData, this);
 	}
 	
-	public void addStage(Reader xmlData) throws ParserConfigurationException,
-		SAXException, IOException {
-			
-		// Setup SAX XML Parser
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		SAXParser parser = factory.newSAXParser();
-		
-		parser.parse(new InputSource(xmlData), this);
+	public void addStage(Reader xmlData) throws SAXException, IOException {
+		currType = TYPE_DRAWING;
+		saxParser.parse(new InputSource(xmlData), this);
+	}
+	
+	public void addSignature(Reader xmlData) throws SAXException, IOException {
+		currType = TYPE_SIGNATURE;
+		saxParser.parse(new InputSource(xmlData), this);
 	}
 	
 	public void close() throws ConsequencesImageParserException {
