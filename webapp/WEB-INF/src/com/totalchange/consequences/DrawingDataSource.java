@@ -34,7 +34,7 @@ public class DrawingDataSource implements DataSource {
 		out = new ByteArrayOutputStream();
 		
 		// Make the parser
-		parser = new ImageParser(version, width, height, scale, out, 
+		parser = new ImageParser(version, width, height, scale, 0, out, 
 			new BufferedImageParser("png"));
 	}
 
