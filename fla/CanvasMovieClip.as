@@ -9,7 +9,7 @@
 	}
 	
 	private function inBounds(theX, theY: Number): Boolean {
-		return ((theX >= minX) && (theX <= maxX) && (theY >= minY) && (theY <= maxY));
+		return ((theX >= minX) && (theX <= maxX) && (theY >= minY) && (theY <= maxY) && (!theDrawing.readOnly));
 	}
 	
 	public function onMouseDown(): Void {
@@ -21,16 +21,17 @@
 		if (inBounds(currX, currY)) {
 			// Make a new line in the drawing
 			currLine = theDrawing.addLine();
-			currLine.addPoint(_xmouse, _ymouse);
+			currLine.addPoint(currX, currY);
 		
 			// Start line actually drawn on the canvas
 			lineStyle(1, 0x000000, 100);
-			moveTo(_xmouse, _ymouse);
+			moveTo(currX, currY);
 		}
 	}
 	
 	public function onMouseUp(): Void {
-		// Stop drawing
+		// Add point and stop drawing
+		onMouseMove();
 		currLine = null;
 	}
 	
