@@ -8,4 +8,9 @@
     <project_file path="./Point.as" filetype="as" />
     <project_file path="./SubmitDrawingRequest.as" filetype="as" />
     <project_file path="./test.fla" filetype="fla" profile="" />
+    <project_file path="./User.as" filetype="as" />
+    <project_file path="./PublicDrawingRequest.as" filetype="as" />
+    <project_file path="./PrivateDrawingRequest.as" filetype="as" />
+    <project_file path="./GalleryDrawingRequest.as" filetype="as" />
+    <project_file path="./SubmitUserRequest.as" filetype="as" />
 </flash_project>
