@@ -65,7 +65,7 @@
 	
 	<target name="gallerise" depends="compile">
 		<java classname="com.totalchange.sketchingout.CompleteDrawingTransfer" fork="yes">
-			<arg line="${args}"/>
+			<arg value="-Djava.awt.headless=true"/>
 			<classpath>
 				<pathelement path="${dest}"/>
 				<fileset dir="${env.CATALINA_HOME}/common/lib/">
