@@ -1,8 +1,14 @@
 ﻿class HintsClip extends MovieClip {
+	private static var TIP_TIME: Number = 1000;
+	private static var TIP_REVERT_TIME: Number = 500;
+	
 	private var inField: Boolean = false;
 	private var currFocus: Object = null;
 	private var currentHint: Hint = null;
 	private var theDefaultHint: Hint;
+	
+	private var hoverTime: Number  = -1;
+	private var hoverFocus: Object = null;
 	
 	private var newClipNum: Number = 0;
 	private var numVisible: Number = 0;
@@ -70,6 +76,10 @@
 	}
 	
 	private function onMouseMove(): Void {
+		// Reset the hover details
+		hoverTime = -1;
+		hoverFocus = null;
+		
 		// Only do anything if not presently in a focusable field.
 		if (!inField) {
 			// Find what the mouse is over
@@ -93,9 +103,17 @@
 					(currMouseX >= x) && (currMouseX <= (x + width)) &&
 					(currMouseY >= y) && (currMouseY <= (y + height))
 				) {
-					// Set focused and stop looping
-					found = true;
-					if (currFocus != focusedObj) setFocusedObj(focusedObj);
+					// Determine if found or not
+					if (currFocus == focusedObj) {
+						found = true;
+					}
+					
+					// If found but not in use yet, set the hover time to make it appear in a bit
+					if (currFocus != focusedObj) {
+						hoverTime = getTimer() + TIP_TIME;
+						hoverFocus = focusedObj;
+					}
+					
 					break;
 				}
 			}
@@ -121,6 +139,14 @@
 			
 			// Do the same with the default clip
 			if ((theDefaultHint != currentHint) && (theDefaultHint.hintVisible)) hideHint(-1);
+		}
+		
+		// See if hover time is set
+		if (hoverTime > -1) {
+			// Only do anything if hover time is over the max hover time
+			if (getTimer() >= hoverTime) {
+				setFocusedObj(hoverFocus);
+			}
 		}
 	}
 	
