@@ -60,6 +60,11 @@
 		pstmt.execute();
 		pstmt.close();
 	}
+	
+	if (request.getParameter("complete") != null) {
+		// Follow the completion process for the drawing
+		CompleteDrawingProcessor.process(request.getParameter("complete"));
+	}
 %>
 <html>
 <head>
@@ -239,6 +244,7 @@
 				  <td nowrap><%= res.getString("stage_3_author_email") %></td>
 				  <td nowrap><%= res.getString("stage_4_author_name") %></td>
 				  <td nowrap><%= res.getString("stage_4_author_email") %></td>
+				  <td nowrap><a href="?complete=<%= res.getString("id") %>">Complete</a></td>
 				  <td nowrap><a href="?del_d=<%= res.getString("id") %>">Delete</a></td>
 				</tr>
 				<%
