@@ -3,23 +3,41 @@
  * itself across the stage and destroy itself once it reaches the far edge
  * of the screen.
  */
-class GalleryInterface extends DrawInterface {
+class GalleryInterface extends MovieClip {
 	// The number of milliseconds a drawing takes to cross the screen
 	private static var TIME_TO_CROSS_TO_MIDDLE: Number = 10 * 1000;
 	private static var TIME_TO_WAIT_IN_MIDDLE: Number = 5 * 1000;
 	private static var TIME_TO_CROSS_FROM_MIDDLE: Number = 10 * 1000;
 	
+	private var showpic: MovieClip;
+	private var drawing: GalleryDrawing;
+	private var innerMC: MovieClip = null;
 	private var startTime, endTime, startX, endX, totalStartX, totalEndX: Number = -1;
 	private var inMiddle, beenInMiddle: Boolean = false;
 	
 	private var firedMidPoint, firedReachedEnd: Boolean = false;
+	
+	// Public positions
+	public var rightX, leftX: Number;
+	
+	// Public events
 	public var onMidPoint: Function = null;
 	public var onReachedEnd: Function = null;
 	
-	public function onEnterFrame(): Void {
-		// Make sure the parent class' (DrawInterface) onEnterFrame is called
-		super.onEnterFrame();
+	/**
+	 * This event is fired by the show picture button.  It's a horrible hack to work
+	 * around the funky focus issues of Flash.  In the constructor a reference to this
+	 * is added as the 'parent' property of the showpic button.
+	 */
+	private function onShowPicPressed(): Void {
+		// Horrible hack to get PDF url
+		var pdfUrl = MovieClip(this).parent.drawing.urlPDF;
 		
+		// Just open pdf in a new window
+		getURL(pdfUrl, "_blank");
+	}
+	
+	public function onEnterFrame(): Void {
 		// See if in the middle
 		if (inMiddle) {
 			// Don't move, but check to see if should move
@@ -74,15 +92,52 @@ class GalleryInterface extends DrawInterface {
 	}
 	
 	public function loadDrawing(drawing: GalleryDrawing): Void {
-		super.loadMovie(drawing.urlAnimatedSWF);
+		this.drawing = drawing;
 		
+		// If already loaded, make sure gets removed
+		if (innerMC != null) innerMC.unloadMovie();
+		
+		// Create a new blank movie clip to show the drawing in
+		innerMC = createEmptyMovieClip("innerMC", 1);
+		
+		// Calculate the best size and position of the embedded drawing
+		var xScale: Number = Math.floor((_width / drawing.width) * 100);
+		var yScale: Number = Math.floor((_height / drawing.height) * 100);
+		
+		// Use the lowest scale
+		var theScale: Number;
+		if (xScale < yScale) theScale = xScale;
+		else theScale = yScale;
+		
+		innerMC._xscale = theScale;
+		innerMC._yscale = theScale;
+		
+		// Now make sure it appears in the middle
+		var newWidth: Number = drawing.width * (theScale / 100);
+		var newHeight: Number = drawing.height * (theScale / 100);
+		
+		innerMC._x = Math.round((_width / 2) - (newWidth / 2));
+		innerMC._y = Math.round((_height / 2) - (newHeight / 2));
+		
+		// Load the drawing
+		innerMC.loadMovie(drawing.urlAnimatedSWF);
+		
+		// Set the start and end times for initial cross to middle
 		startTime = getTimer();
 		endTime = startTime + TIME_TO_CROSS_TO_MIDDLE;
-		totalStartX = 800;
-		totalEndX = -100;
+		
+		// Set the start and end to be off the stage to the right and off the
+		// stage to the left with a bit of extra room for manouevre
+		totalStartX = Math.ceil(rightX + (_width / 2) + 10);
+		totalEndX = Math.floor(leftX - (_width / 2) - 10);
 		
 		// Move to the middle
 		startX = totalStartX;
 		endX = (totalStartX / 2) + (totalEndX / 2);
+	}
+	
+	public function GalleryInterface() {
+		showpic.onPress = onShowPicPressed;
+		showpic.parent = this;
 	}
 }
