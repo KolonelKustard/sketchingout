@@ -4,6 +4,9 @@
     <!ELEMENT signature (#PCDATA)>
     
   <!ELEMENT next_drawing EMPTY>
+  
+  <!ELEMENT submit_drawing (drawing)>
+    <!ELEMENT drawing (#PCDATA)>
 
 <!ATTLIST user_details id CDATA #REQUIRED>
 
@@ -13,3 +16,8 @@
 
 <!ATTLIST next_drawing user_id CDATA #REQUIRED>
 <!ATTLIST next_drawing drawing_id CDATA #IMPLIED>
+
+<!ATTLIST submit_drawing user_id CDATA #REQUIRED>
+<!ATTLIST submit_drawing drawing_id CDATA #REQUIRED>
+<!ATTLIST submit_drawing stage CDATA #REQUIRED>
+<!ATTLIST submit_drawing next_user_email CDATA #IMPLIED>
