@@ -1,11 +1,24 @@
-﻿class DrawingPage {
+class DrawingPage {
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
+	// Objects public properties
 	public var nextDrawing: CanvasMovieClip;
 	public var prevDrawing: CanvasMovieClip;
 	public var userDetails: UserDetails;
 	public var dragClip: DragMovieClip;
 	public var friendsEmailEdit: TextField;
+	
+	// Event handlers
+	public var onNewDrawing: Function = null;
+	
+	// Error event handlers
+	public var onErrorNoDrawing: Function = null;
+	public var onErrorTooMuchCovered: Function = null;
+	public var onErrorNotEnoughCovered: Function = null;
+	public var onErrorInvalidFriendsEmail: Function = null;
+	
+	// Generic error event
+	public var onError: Function = null;
 	
 	/**
 	 * The constructor just creates a new instance of the user details
@@ -30,14 +43,14 @@
 	 * Clears the main canvas
 	 */
 	public function clearDrawing(): Void {
-		nextDrawing.drawing = null;
+		nextDrawing.drawing.clearDrawing();
 	}
 	
 	/**
 	 * Clears the signature canvas
 	 */
 	public function clearSignature(): Void {
-		userDetails.sigCanvas.drawing = null;
+		userDetails.sigCanvas.clearDrawing();
 	}
 	
 	public function getInitRequest(): XML {
@@ -63,7 +76,7 @@
 		return request.getXML();
 	}
 	
-	private function validateSubmitRequest(): Boolean {
+	private function validateDrawing(): Boolean {
 		return true;
 	}
 	
@@ -93,7 +106,8 @@
 	 */
 	public function getSubmitRequest(): XML {
 		// Validate
-		if (!validateSubmitRequest()) return null;
+		if (!validateDrawing()) return null;
+		if (!userDetails.validateUserDetails()) return null;
 		
 		// Construct request
 		var request: Request = new Request();
@@ -137,6 +151,9 @@
 		
 		// Set in the previous drawing
 		prevDrawing.drawing = prevDraw;
+		
+		// Use the event handler to announce the next drawing
+		if (onNewDrawing != null) onNewDrawing(next.stage + 1);
 	}
 	
 	/**
@@ -163,11 +180,9 @@
 		}
 		// See if had any errors
 		if (response.doneWithErrors) {
-			// Print out all the errors to the trace output window thingy
-			for (var num = 0; num<response.errs.length; num++) {
-				trace("");
-				trace(response.errs[num]);
-				trace("");
+			// Use the event handler to handle errors
+			for (var num = 0; num < response.errs.length; num++) {
+				if (onError != null) onError(response.errs[num]);
 			}
 		}
 	}
