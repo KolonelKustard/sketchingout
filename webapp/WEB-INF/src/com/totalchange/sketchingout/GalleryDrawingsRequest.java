@@ -55,6 +55,15 @@ public class GalleryDrawingsRequest implements RequestHandler {
 					out.endElement(XMLConsts.EL_GALLERY_DRAWING_STAGE_AUTHOR);
 				}
 			}
+			
+			// Output the absolute url(s) to the drawing(s)
+			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_ANIM_SWF_URL,
+					SketchingoutSettings.URL_DRAWING_STORE +
+					res.getString("anim_swf_filename"));
+			
+			out.writeElement(XMLConsts.EL_GALLERY_DRAWING_PDF_URL,
+					SketchingoutSettings.URL_DRAWING_STORE +
+					res.getString("pdf_filename"));
 		}
 		finally {
 			// Make sure close the drawing element
