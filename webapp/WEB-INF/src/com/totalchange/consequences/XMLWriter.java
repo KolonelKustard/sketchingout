@@ -57,7 +57,24 @@ public class XMLWriter extends Writer {
 	public void startElement(String localName, Attributes attributes)
 		throws IOException {
 		
-		// Not yet implemented...
+		// Start the element
+		out.write('<' + localName);
+		
+		// Go through all the attributes adding them
+		int length = attributes.getLength();
+		for (int num = 0; num < length; num++) {
+			// Pass the name straight through
+			out.write(' ' + attributes.getQName(num) + "=\"");
+			
+			// Encode the value
+			this.write(attributes.getValue(num));
+			
+			// Pass the closing quote straight through
+			out.write('\"');
+		}
+		
+		// Close the element tag
+		out.write('>');
 	}
 	
 	/**
