@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="consequences" default="compile" basedir=".">
+<project name="sketchingout" default="compile" basedir=".">
 	<description>Consequences Web Application</description>
 
 	<property name="src" value="src"/>
@@ -12,7 +12,6 @@
 		
 	<target name="clean">
 		<delete dir="${dest}"/>
-		<delete dir="${catalina_work}"/>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the test client">
@@ -20,4 +19,11 @@
 	</target>
 	
 	<target name="rebuild" depends="clean, compile"/>
+	
+	<target name="execute" depends="compile" description="Runs the test client">
+		<java
+			classname="com.totalchange.sketchingout.test.SketchingoutTest" 
+			classpath="${dest}"
+		/>
+	</target>
 </project>
