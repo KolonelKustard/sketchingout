@@ -19,8 +19,6 @@ hintsLoader.addAssociation(yourName_txt, "uiparts/pleaseentername_msg.swf");
 hintsLoader.addAssociation(yourEmail_txt, "uiparts/enteryouremail_msg.swf");
 hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
 hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
-//not working - no nested movie clips?
-hintsLoader.addAssociation(dragClip_mc.dragHandle_mc, "uiparts/dragthis_msg.swf");
 
 // Cache error messages as hints
 hintsLoader.addAssociation(null, "uiparts/entername_msg.swf");
@@ -67,34 +65,33 @@ function showNonDrawUI() {
 // **************************************************************
 // * Load UI parts into the loader clips                        *
 // **************************************************************
-logo_ldr.onMovieClipPlayed = function() {trace("Logo Done");}
+logo_ldr.onMovieClipPlayed = function() 
 logo_ldr.loadMovie("uiparts/logo.swf");
 
-whatsthis_ldr.onMovieClipPlayed = function() {trace("What's This Done");}
+whatsthis_ldr.onMovieClipPlayed = function()
 whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
 
 introtxt_ldr.onMovieClipPlayed = function() {
-	trace("Intro Done");
 	showNonDrawUI();
 }
 introtxt_ldr.loadMovie("uiparts/introtext.swf");
 
-newsbox_ldr.onMovieClipPlayed = function() {trace("News Box Done");}
+newsbox_ldr.onMovieClipPlayed = function() 
 newsbox_ldr.loadMovie("uiparts/news_box.swf");
 
-drawbox_ldr.onMovieClipPlayed = function() {trace("Draw Box Done");}
+drawbox_ldr.onMovieClipPlayed = function() 
 drawbox_ldr.loadMovie("uiparts/draw_box.swf");
 
-sigbox_ldr.onMovieClipPlayed = function() {trace("Sig Box Done");}
+sigbox_ldr.onMovieClipPlayed = function() 
 sigbox_ldr.loadMovie("uiparts/sig_box.swf");
 
-viewgallerybtn_ldr.onMovieClipPlayed = function() {trace("View Gallery Done");}
+viewgallerybtn_ldr.onMovieClipPlayed = function() 
 viewgallerybtn_ldr.loadMovie("uiparts/viewgallery_btn.swf");
 
-hintsbox_ldr.onMovieClipPlayed = function() {trace("Hints Box Done");}
+hintsbox_ldr.onMovieClipPlayed = function()
 hintsbox_ldr.loadMovie("uiparts/hints_box.swf");
 
-txtfldsbtn_ldr.onMovieClipPlayed = function() {trace("Txt Flds Btn?!? Done");}
+txtfldsbtn_ldr.onMovieClipPlayed = function() 
 txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 
 
@@ -166,7 +163,8 @@ holderClip.onNewDrawing = function(stage: Number): Void {
  * SketchingoutSettings.COUNTDOWN_TIMER_REMINDER
  */
 countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
-	trace("You have only " + String(timeRemaining / 1000) + " seconds remaining to draw)");
+	hintsLoader.showCachedHint("uiparts/quick_msg.swf");
+	//trace("You have only " + String(timeRemaining / 1000) + " seconds remaining to draw)");
 }
 
 /**
@@ -175,6 +173,7 @@ countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
  * cock up the locking mechanisms on the server.
  */
 countdownClip.onDone = function(): Void {
+	//ADD HINTS CLIP HERE
 	trace("Oops took too long in drawing.  Fetching another drawing.");
 	requestDrawing();
 }
@@ -183,7 +182,7 @@ countdownClip.onDone = function(): Void {
  * Called if the person neglects to bother to do a drawing.
  */
 holderClip.onErrorNoDrawing = function(): Void {
-	trace("Spaz alert: Do a drawing.");
+	hintsLoader.showCachedHint("uiparts/wheresdrawing_msg.swf");
 }
 
 /**
@@ -207,6 +206,7 @@ holderClip.onErrorNotEnoughCovered = function(currOffsetY: Number, maxOffsetY: N
  * sign and a full stop.
  */
 holderClip.onErrorInvalidFriendsEmail = function(): Void {
+	//ADD HINTS CLIP HERE
 	trace("Spaz alert: Your friends email address is spacced up.");
 }
 
