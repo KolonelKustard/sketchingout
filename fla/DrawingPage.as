@@ -1,4 +1,4 @@
-class DrawingPage {
+﻿class DrawingPage {
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
 	// Objects public properties
@@ -118,8 +118,8 @@ class DrawingPage {
 		
 		// The drawing has to be shrunk and the offset calculated before submission
 		subDraw.drawing = nextDrawing.drawing;
-		subDraw.drawing.shrink();
 		subDraw.drawing.offsetY = dragClip.getOffsetY();
+		subDraw.drawing.shrink();
 		
 		return subDraw;
 	}
