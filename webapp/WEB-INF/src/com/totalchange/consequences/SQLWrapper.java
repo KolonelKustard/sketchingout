@@ -6,6 +6,9 @@
  */
 package com.totalchange.consequences;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.sql.*;
 
 /**
@@ -35,11 +38,115 @@ public class SQLWrapper {
 	public static final ResultSet getUser(Connection conn, String userID) throws
 	  SQLException {
 		PreparedStatement pstmt = conn.prepareStatement(
-		  "SELECT * FROM users WHERE id = ?"
+			"SELECT * FROM users WHERE id = ?"
 		);
 		
 		pstmt.setString(1, userID);
 		
 		return pstmt.executeQuery();
+	}
+	
+	public static final void setUser(Connection conn) {
+	}
+	
+	public static final ResultSet getNextDrawingPublic(Connection conn, String userID)
+		throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  id, " +
+			"  head, " +
+			"  body, " + 
+			"  legs " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  completed = 'N' AND " +
+			"  locked < ? AND " +
+			"  head_author_id <> ? AND " +
+			"  body_author_id <> ? AND " +
+			"  legs_author_id <> ? " +
+			"ORDER BY " +
+			"  body, " +
+			"  legs " +
+			"LIMIT 1"
+		);
+		
+		pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+		pstmt.setString(2, userID);
+		pstmt.setString(3, userID);
+		pstmt.setString(4, userID);
+		
+		return pstmt.executeQuery();
+	}
+	
+	public static final ResultSet getNextDrawingPrivate(Connection conn, 
+		String distinguishedID) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  id, " +
+			"  locked, " +
+			"  head, " +
+			"  body, " + 
+			"  legs " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  completed = 'N' AND " +
+			"  distinguished_id = ?"
+		);
+		
+		pstmt.setString(1, distinguishedID);
+		
+		return pstmt.executeQuery();
+	}
+	
+	public static final void lockDrawing(Connection conn, String drawingID,
+		int lockSecs) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"UPDATE " +
+			"  drawings " +
+			"SET " +
+			"  locked = ? " +
+			"WHERE " +
+			"  drawing_id = ?"
+		);
+		
+		// Convert seconds into milliseconds and add to the current time
+		long lock = System.currentTimeMillis() + (lockSecs * 1000);
+		
+		// Set parameters
+		pstmt.setTimestamp(1, new Timestamp(lock));
+		pstmt.setString(2, drawingID);
+		
+		// Execute
+		pstmt.execute();
+	}
+	
+	/**
+	 * Utility procedure to output a blob to the xml writer as the data in an element 
+	 * 
+	 * @param out
+	 * @param in
+	 * @param element
+	 */
+	public static final void outputClob(Writer out, Clob clob) 
+		throws SQLException, IOException {
+		
+		if (clob != null) {
+			// Get input stream as a reader
+			Reader in = clob.getCharacterStream();
+		
+			if (in != null) {			
+				// Pass blob to writer
+				int inChar = in.read();
+				while (inChar > -1) {
+					out.write(inChar);
+					inChar = in.read();
+				}
+			}
+		}
 	}
 }
