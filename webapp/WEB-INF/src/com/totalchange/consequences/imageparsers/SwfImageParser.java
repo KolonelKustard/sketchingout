@@ -27,6 +27,8 @@ public class SwfImageParser implements ConsequencesImageParser {
 	private SWFShape canvas;
 	private Matrix canvasPos;
 	private int canvasID;
+	
+	private int lastPosX, lastPosY = 0;
 
 	/**
 	 * @see com.totalchange.consequences.imageparsers.ConsequencesImageParser#startImage(int, int, java.io.OutputStream)
@@ -79,7 +81,7 @@ public class SwfImageParser implements ConsequencesImageParser {
 			canvas = swf.tagDefineShape(++canvasID, canvasRect);
 			
 			// Define line style
-			canvas.defineLineStyle(1, new Color(0, 0, 0));
+			canvas.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
 			canvas.setLineStyle(1);
 			
 			// Define matrix to say where this canvas will go
@@ -111,8 +113,12 @@ public class SwfImageParser implements ConsequencesImageParser {
 		throws ConsequencesImageParserException {
 		
 		try {
-			canvas.move((int)(x * SWFConstants.TWIPS), (int)(y * SWFConstants.TWIPS));
-			canvas.line((int)(x * SWFConstants.TWIPS), (int)(y * SWFConstants.TWIPS));
+			// Set current position
+			lastPosX = (int)(x * SWFConstants.TWIPS);
+			lastPosY = (int)(y * SWFConstants.TWIPS);
+			
+			// Move to absolute position in this canvas
+			canvas.move(lastPosX, lastPosY);
 		}
 		catch (IOException ie) {
 			throw new ConsequencesImageParserException(ie);
@@ -126,7 +132,16 @@ public class SwfImageParser implements ConsequencesImageParser {
 		throws ConsequencesImageParserException {
 			
 		try {
-			canvas.line((int)(x * SWFConstants.TWIPS), (int)(y * SWFConstants.TWIPS));
+			// Get new absolute position in twips
+			int newPosX = (int)(x * SWFConstants.TWIPS);
+			int newPosY = (int)(y * SWFConstants.TWIPS);
+			
+			// Move to new relative position
+			canvas.line(newPosX - lastPosX, newPosY - lastPosY);
+			
+			// Set last known absolute position to where we are now
+			lastPosX = newPosX;
+			lastPosY = newPosY;
 		}
 		catch (IOException ie) {
 			throw new ConsequencesImageParserException(ie);
