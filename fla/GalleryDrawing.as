@@ -16,6 +16,10 @@
 		return getDrawingURL() + "png";
 	}
 	
+	public function get urlJPG(): String {
+		return getDrawingURL() + "jpg";
+	}
+	
 	public function get urlSWF(): String {
 		return getDrawingURL() + "swf";
 	}
