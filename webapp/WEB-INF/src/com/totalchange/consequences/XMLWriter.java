@@ -68,16 +68,19 @@ public class XMLWriter extends Writer {
 	}
 	
 	/**
-	 * <p>Utility procedure that outputs an entire element in one</p>
+	 * <p>Utility procedure that outputs an entire element in one.  Leaves the
+	 * element out entirely if the String passed in is null.</p>
 	 * 
 	 * @param localName The name of the element
 	 * @param data The String data to put in the element
 	 * @throws IOException From the writer
 	 */
 	public void writeElement(String localName, String data) throws IOException {
-		startElement(localName);
-		write(data);
-		endElement(localName);
+		if (data != null) {
+			startElement(localName);
+			write(data);
+			endElement(localName);
+		}
 	}
 	
 	/**
