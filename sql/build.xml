@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="consequences_db" default="recreate" basedir=".">
+	<description>Consequences DB Scripts</description>
+	
+	<property name="db_folder" value="mysql"/>
+	<property name="db_driver" value="com.mysql.jdbc.Driver"/>
+	<property name="db_url" value="jdbc:mysql://localhost/consequences"/>
+	<property name="db_username" value=""/>
+	<property name="db_password" value=""/>
+	
+	<target name="create" description="Create the database tables">
+		<sql
+			driver="${db_driver}"
+			url="${db_url}"
+			userid="${db_username}"
+			password="${db_password}"
+			src="${db_folder}/create.sql"
+		/>
+	</target>
+	
+	<target name="drop" description="Drop the database tables">
+		<sql
+			driver="${db_driver}"
+			url="${db_url}"
+			userid="${db_username}"
+			password="${db_password}"
+			src="${db_folder}/drop.sql"
+			onerror="continue"
+		/>
+	</target>
+	
+	<target 
+		name="recreate"
+		depends="drop, create"
+		description="Drop and re-create the database tables"
+	/>
+</project>
