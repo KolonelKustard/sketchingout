@@ -8,10 +8,20 @@
     <servlet-name>Consequences</servlet-name>
     <servlet-class>com.totalchange.consequences.ConsequencesServlet</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>Drawer</servlet-name>
+    <servlet-class>com.totalchange.consequences.DrawingServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>Consequences</servlet-name>
     <url-pattern>/consequences</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>Drawer</servlet-name>
+    <url-pattern>/drawing</url-pattern>
   </servlet-mapping>
 
 </web-app>
