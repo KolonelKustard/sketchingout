@@ -36,6 +36,9 @@ public class SwfImageParser implements ConsequencesImageParser {
 	public void startImage(int width, int height, OutputStream out)
 		throws ConsequencesImageParserException {
 		
+		// Init
+		canvasID = 0;
+		
 		// Make SWF Movie
 		SWFWriter writer = new SWFWriter(out);
 		swf = new TagWriter(writer);
