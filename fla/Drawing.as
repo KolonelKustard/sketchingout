@@ -75,4 +75,41 @@
 		// Return the xml as raw XML
 		return xml.toString();
 	}
+	
+	public function fromString(drawing: String): Void {
+		// Clear this drawing
+		clear();
+		
+		// Make an xml object to work with this drawing string
+		var drawingXML: XML = new XML();
+		drawingXML.ignoreWhite = true;
+		drawingXML.parseXML(drawing);
+		
+		// Get the main canvas node
+		var canvasNode: XMLNode = drawingXML.firstChild;
+		if (canvasNode.nodeName != "canvas") throw new Error("Not a valid drawing");
+		
+		// Canvas properties
+		width = canvasNode.attributes.width;
+		height = canvasNode.attributes.height;
+		offsetX = canvasNode.attributes.offsetx;
+		offsetY = canvasNode.attributes.offsety;
+		
+		// Now look for lines
+		for (var numLine: Number = 0; numLine < canvasNode.childNodes.length; numLine++) {
+			var lineNode: XMLNode = canvasNode.childNodes[numLine];
+			if (lineNode.nodeName == "line") {
+				// Make a new line
+				var line: Line = this.addLine();
+				
+				// Now run through all the points on the line, adding them in
+				for (var numPoint: Number = 0; numPoint < lineNode.childNodes.length; numPoint++) {
+					var pointNode: XMLNode = lineNode.childNodes[numPoint];
+					if (pointNode.nodeName == "point") {
+						line.addPoint(pointNode.attributes.x, pointNode.attributes.y);
+					}
+				}
+			}
+		}
+	}
 }
