@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * @author RalphJones
@@ -38,17 +37,19 @@ public class NextDrawingRequest implements RequestHandler {
 		// Output the drawing id
 		out.writeElement(XMLConsts.EL_NEXT_DRAWING_ID, next.getString("id"));
 		
+		// Find out the stage currently at
+		int stage = next.getInt("stage");
+		out.writeElement(XMLConsts.EL_NEXT_DRAWING_STAGE, String.valueOf(stage));
+		
 		// Output the locked time
 		out.writeElement(XMLConsts.EL_NEXT_DRAWING_LOCKED_SECS, Integer.toString(lockSecs));
 		
-		// Find out which body part needs to be drawn next, and therefore
-		// which body part to return in the response.
+		// Use the stage value to find out which drawing to return
 		Clob draw = null;
-		String drawStr = null;
-		switch (next.getInt("stage")) {
-			case 1: draw = next.getClob("head"); drawStr = XMLConsts.AV_HEAD; 
-			case 2: draw = next.getClob("body"); drawStr = XMLConsts.AV_BODY;
-			case 3: draw = next.getClob("legs"); drawStr = XMLConsts.AV_LEGS;
+		switch (stage) {
+			case 1: draw = next.getClob("head");
+			case 2: draw = next.getClob("body");
+			case 3: draw = next.getClob("legs");
 		}
 		
 		// Check have a previous drawing to give
@@ -57,12 +58,8 @@ public class NextDrawingRequest implements RequestHandler {
 				"but none found.");
 		}
 		
-		// Make attribute which says which 
-		AttributesImpl attr = new AttributesImpl();
-		attr.addAttribute("", "", XMLConsts.AT_NEXT_DRAWING_BODY_PART, "", drawStr);
-		
 		// Output drawing
-		out.startElement(XMLConsts.EL_NEXT_DRAWING_DRAWING, attr);
+		out.startElement(XMLConsts.EL_NEXT_DRAWING_DRAWING);
 		SQLWrapper.outputClob(out, draw);
 		out.endElement(XMLConsts.EL_NEXT_DRAWING_DRAWING);
 		
@@ -77,10 +74,11 @@ public class NextDrawingRequest implements RequestHandler {
 	 * @throws IOException
 	 */
 	private void outputNewDrawing(XMLWriter out) throws IOException {
-		// Output a new id and a timeout value, but no drawing
+		// Output a new id, stage 0 and a timeout value, but no drawing
 		out.startElement(XMLConsts.EL_NEXT_DRAWING);
 		out.writeElement(XMLConsts.EL_NEXT_DRAWING_ID, new RandomGUID().toString());
-		out.writeElement(XMLConsts.EL_NEXT_DRAWING_LOCKED_SECS, Integer.toString(XMLConsts.DEFAULT_LOCK_SECS));
+		out.writeElement(XMLConsts.EL_NEXT_DRAWING_STAGE, "0");
+		out.writeElement(XMLConsts.EL_NEXT_DRAWING_LOCKED_SECS, Integer.toString(ConsequencesSettings.DEFAULT_LOCK_SECS));
 		out.endElement(XMLConsts.EL_NEXT_DRAWING);
 	}
 
@@ -113,10 +111,10 @@ public class NextDrawingRequest implements RequestHandler {
 				// See if got a drawing
 				if (next.first()) {
 					// Got a drawing.  Now need to lock it.
-					SQLWrapper.lockDrawing(conn, next.getString("id"), XMLConsts.DEFAULT_LOCK_SECS);
+					SQLWrapper.lockDrawing(conn, next.getString("id"), ConsequencesSettings.DEFAULT_LOCK_SECS);
 					
 					// Now drawing is locked, output it.
-					outputDrawing(next, out, XMLConsts.DEFAULT_LOCK_SECS);
+					outputDrawing(next, out, ConsequencesSettings.DEFAULT_LOCK_SECS);
 				}
 				else {
 					// Not got a drawing.  Start a new one!
@@ -139,7 +137,9 @@ public class NextDrawingRequest implements RequestHandler {
 					if (next.first()) {
 						// Got a result.  Figure out how much time is left before
 						// the private picture is unlocked.
-						int lock = 3600;
+						long locked = next.getTimestamp(1).getTime();
+						int lock = (int) (locked - System.currentTimeMillis()) / 1000;
+						
 						outputDrawing(next, out, lock);
 					}
 					else {
