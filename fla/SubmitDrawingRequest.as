@@ -31,6 +31,12 @@
 		// Create the root element of this request
 		var requestNode: XMLNode = xmlDoc.createElement("submit_drawing");
 		
+		// Have to do a little check here.  If on the last stage, then the drawing
+		// cannot have an offset (no drawing will follow so it's not appropriate).
+		if (stage >= MAX_STAGE) {
+			drawing.offsetY = 0;
+		}
+		
 		// Set the attributes
 		requestNode.attributes.user_id = userID;
 		requestNode.attributes.drawing_id = drawingID;
