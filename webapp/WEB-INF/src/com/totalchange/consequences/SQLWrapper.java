@@ -301,6 +301,7 @@ public class SQLWrapper {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
+			"  version, " +
 			"  width, " +
 			"  height, " +
 			"  stage, " +
