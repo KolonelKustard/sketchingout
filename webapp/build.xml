@@ -7,6 +7,7 @@
 	<property name="dest" value="WEB-INF/classes"/>
 	<property name="catalina_work" value="work"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
+	<property name="war" value="sketching_out.war"/>
 	<property environment="env"/>
 	
 	<target name="makedirs">
@@ -48,5 +49,18 @@
 				</fileset>
 			</classpath>
 		</java>
+	</target>
+	
+	<target name="package" depends="compile,xml2swf">
+		<war destfile="${war}" webxml="WEB-INF/web.xml">
+			<classes dir="${dest}"/>
+			<zipfileset dir="">
+				<include name="consequences.jsp"/>
+				<include name="consequences.swf"/>
+			</zipfileset>
+			<zipfileset dir="uiparts" prefix="uiparts">
+				<include name="*.swf"/>
+			</zipfileset>
+		</war>
 	</target>
 </project>
