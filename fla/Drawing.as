@@ -25,12 +25,12 @@
 	/**
 	 * Clears the array of lines effectively wiping the drawing
 	 */
-	public function clear() {
+	public function clear(): Void {
 		lines = new Array();
 	}
 	
 	/**
-	 * Returns this drawing as a 
+	 * Returns this drawing as a string.  Basically serialises it.
 	 */
 	public function toString(): String {
 		// First up create the xml instance to use

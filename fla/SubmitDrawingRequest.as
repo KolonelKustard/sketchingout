@@ -9,7 +9,7 @@
 	public var drawing: Drawing;
 	public var nextUserEmail: String;
 	
-	private function validate() {
+	private function validate(): Void {
 		if (userID == null) {
 			throw new Error("No user id specified");
 		}
