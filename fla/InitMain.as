@@ -5,7 +5,7 @@ holderClip = new DrawingPage();
 
 holderClip.prevDrawing = lastDrawCanvas;
 holderClip.nextDrawing = mainCanvas;
-//holderClip.userDetails.userID = _root.uid;
+holderClip.userDetails.userID = _root.uid;
 holderClip.userDetails.nameEdit = yourName_txt;
 holderClip.userDetails.emailEdit = yourEmail_txt;
 holderClip.userDetails.sigCanvas = sigCanvas;
@@ -22,15 +22,17 @@ holderClip.friendsEmailEdit = friendsEmail_txt;
 /**
  * Called before any data is sent to the server.
  */
-function onStartLoading() {
+function onStartLoading(): Void {
 	trace("Loading...");
 }
 
 /**
- * Called when the server returns a response.
+ * Called when the server returns a response.  The loadedOK parameter is
+ * true if the request/response took place.  The only reason this would be
+ * false is if the server was not reachable.
  */
-function onEndLoading() {
-	trace("Done");
+function onEndLoading(loadedOK: Boolean): Void {
+	trace("Done " + loadedOK);
 }
 
 /**
@@ -52,16 +54,16 @@ holderClip.onErrorNoDrawing = function(): Void {
  * Called if the person covers too much of the drawing with the
  * dragger.
  */
-holderClip.onErrorTooMuchCovered = function(): Void {
-	trace("Spaz alert: Don't cover up so much.");
+holderClip.onErrorTooMuchCovered = function(currOffsetY: Number, minOffsetY: Number): Void {
+	trace("Spaz alert: Don't cover up so much: " + currOffsetY + "/" + minOffsetY);
 }
 
 /**
  * Called if the person doesn't cover up enough of the drawing with
  * the dragger.
  */
-holderClip.onErrorNotEnoughCovered = function(): Void {
-	trace("Spaz alert: Not enough covered up.");
+holderClip.onErrorNotEnoughCovered = function(currOffsetY: Number, maxOffsetY: Number): Void {
+	trace("Spaz alert: Not enough covered up: " + currOffsetY + "/" + maxOffsetY);
 }
 
 /**
@@ -129,7 +131,7 @@ clearSig_btn.onPress = function() {
  * Handles a response from the server
  */
 function onXMLLoaded(loadedOK: Boolean): Void {
-	onEndLoading();
+	onEndLoading(loadedOK);
 	
 	if (loadedOK) {
 		holderClip.parseResponse(this);
