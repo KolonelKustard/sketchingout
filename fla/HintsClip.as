@@ -1,61 +1,48 @@
 ﻿class HintsClip extends MovieClip {
-	private static var FADE_OUT_TIME = 1000;
-	private static var FADE_BACK_IN_TIME = 200;
-	
 	private var inField: Boolean = false;
 	private var currFocus: Object = null;
-	private var newClipNum: Number = 0;
-	private var currentClip: MovieClip = null;
-	private var theDefaultClip: MovieClip;
+	private var currentHint: Hint = null;
+	private var theDefaultHint: Hint;
 	
-	private var focusObjs: Array = new Array();
-	private var assocClips: Array = new Array();
-	private var assocTimes: Array = new Array();
+	private var newClipNum: Number = 0;
 	private var numVisible: Number = 0;
+	private var hints: Array = new Array();
 	
 	private function showHint(hintNum: Number): Void {
-		trace("Showing: " + hintNum);
-		
-		var foundClip: MovieClip;
+		var foundHint: Hint;
 		if (hintNum >= 0) {
-			foundClip = assocClips[hintNum];
+			foundHint = hints[hintNum];
 		} else {
-			foundClip = theDefaultClip;
+			foundHint = theDefaultHint;
 		}
 		
-		// Check got a valid clip
-		if (foundClip != null) {
+		// Check got a valid hint
+		if (foundHint != null) {
 			// See if the clip is already visible or not
-			if (foundClip._alpha > 0) {
-				// Already visible, so don't draw it, just show it
-				foundClip._alpha = 100;
-			} else {
-				// Not visible, so start playing it in
-				foundClip.gotoAndPlay(1);
-				foundClip._alpha = 100;
-				
+			if (!foundHint.hintVisible) {
 				// Increment the number that are visible
 				numVisible++;
 			}
+			
+			// Show this hint
+			foundHint.showHint();
 		}
 		
 		// Set in the current clip
-		currentClip = foundClip;
+		currentHint = foundHint;
 	}
 	
 	private function hideHint(hintNum: Number): Void {
-		trace("Hiding: " + hintNum);
-		
-		var foundClip: MovieClip;
+		var foundHint: Hint;
 		if (hintNum >= 0) {
-			foundClip = assocClips[hintNum];
+			foundHint = hints[hintNum];
 		} else {
-			foundClip = theDefaultClip;
+			foundHint = theDefaultHint;
 		}
 		
-		if (foundClip != null) {
-			foundClip._alpha = 0;
-			numVisible--;
+		if (foundHint != null) {
+			foundHint.hideHint();
+			if (!foundHint.hintVisible) numVisible--;
 		}
 	}
 	
@@ -64,11 +51,11 @@
 		
 		if (focused == null) {
 			// Load default
-			if (theDefaultClip != null) showHint(-1);
+			showHint(-1);
 		}
 		else {
-			for (var num: Number = 0; num < focusObjs.length; num++) {
-				if (focusObjs[num] == focused) {
+			for (var num: Number = 0; num < hints.length; num++) {
+				if (hints[num].control == focused) {
 					// Show found clip
 					showHint(num);
 					break;
@@ -90,14 +77,15 @@
 			var currMouseY: Number = _root._ymouse;
 			var found: Boolean = false;
 			
-			for (var num: Number = 0; num < focusObjs.length; num++) {
+			for (var num: Number = 0; num < hints.length; num++) {
 				var x, y, width, height: Number = 0;
+				var focusedObj: Object = hints[num].control;
 				
-				if ((focusObjs[num] instanceof MovieClip) || (focusObjs[num] instanceof TextField)) {
-					x = focusObjs[num]._x;
-					y = focusObjs[num]._y;
-					width = focusObjs[num]._width;
-					height = focusObjs[num]._height;
+				if ((focusedObj instanceof MovieClip) || (focusedObj instanceof TextField)) {
+					x = focusedObj._x;
+					y = focusedObj._y;
+					width = focusedObj._width;
+					height = focusedObj._height;
 				}
 				
 				// Check to see if in bounds and not already of focus
@@ -107,7 +95,7 @@
 				) {
 					// Set focused and stop looping
 					found = true;
-					if (currFocus != focusObjs[num]) setFocusedObj(focusObjs[num]);
+					if (currFocus != focusedObj) setFocusedObj(focusedObj);
 					break;
 				}
 			}
@@ -122,45 +110,42 @@
 	private function onEnterFrame(): Void {
 		// Only do anything if something is visible
 		if (numVisible > 1) {
+			var hintClip: Hint;
+			
 			// Go through all the clips and hide as appropriate
-			for (var num: Number = 0; num < assocClips.length; num++) {
+			for (var num: Number = 0; num < hints.length; num++) {
 				// If it's not in focus and it's visible, fade it out
-				if ((assocClips[num] != currentClip) && (assocClips[num]._alpha > 0)) hideHint(num);
+				hintClip = hints[num];
+				if ((hintClip != currentHint) && (hintClip.hintVisible)) hideHint(num);
 			}
 			
 			// Do the same with the default clip
-			if ((theDefaultClip != currentClip) && (theDefaultClip._alpha > 0)) hideHint(-1);
+			if ((theDefaultHint != currentHint) && (theDefaultHint.hintVisible)) hideHint(-1);
 		}
 	}
 	
 	public function set defaultHint(defaultClip: String): Void {
-		theDefaultClip.loadMovie(defaultClip);
+		theDefaultHint.setHintUrl(defaultClip);
 		if (currFocus == null) setFocusedObj(null);
 	}
 	
 	public function addAssociation(srcObj: Object, assocClip: String): Void {
-		focusObjs.push(srcObj);
-		
-		// Make a new clip for the association and load the url into it
-		newClipNum++;
-		var newClip: MovieClip = createEmptyMovieClip("hintsclip_" + newClipNum, newClipNum);
-		
-		// Make sure not visible so it loads but doesn't show
-		newClip._alpha = 0;
-		
-		// Load it
-		newClip.loadMovie(assocClip);
+		// Make new hint
+		var newHint: Hint = new Hint(this, srcObj, assocClip);
 		
 		// Put into the array
-		assocClips.push(newClip);
+		hints.push(newHint);
+	}
+	
+	public function getNextDepth(): Number {
+		return newClipNum++;
 	}
 	
 	public function HintsClip() {
 		Selection.addListener(this);
 		Mouse.addListener(this);
 		
-		newClipNum++;
-		theDefaultClip = createEmptyMovieClip("hintsclip_" + newClipNum, newClipNum);
-		theDefaultClip._alpha = 0;
+		// Make new blank default hint
+		theDefaultHint = new Hint(this, null, null);
 	}
 }
