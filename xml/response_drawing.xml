@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE response SYSTEM "response.dtd">
+
+<response>
+  <gallery_drawing>
+    <drawing_id>234</drawing_id>
+    <num_stages>4</num_stages>
+    
+    <drawing>
+      <![CDATA[
+        <canvas width="200" height="100" offsetx="0" offsety="0">
+          <line>
+            <point x="100" y="200"/>
+            <point x="245" y="423"/>
+            <point x="234" y="543"/>
+            <point x="431" y="343"/>
+          </line>
+        </canvas>
+      ]]>
+    </drawing>
+    
+    <drawing>
+      <![CDATA[
+        <canvas width="200" height="100" offsetx="0" offsety="0">
+          <line>
+            <point x="100" y="200"/>
+            <point x="245" y="423"/>
+            <point x="234" y="543"/>
+            <point x="431" y="343"/>
+          </line>
+        </canvas>
+      ]]>
+    </drawing>
+    
+    <drawing>
+      <![CDATA[
+        <canvas width="200" height="100" offsetx="0" offsety="0">
+          <line>
+            <point x="100" y="200"/>
+            <point x="245" y="423"/>
+            <point x="234" y="543"/>
+            <point x="431" y="343"/>
+          </line>
+        </canvas>
+      ]]>
+    </drawing>
+    
+    <drawing>
+      <![CDATA[
+        <canvas width="200" height="100" offsetx="0" offsety="0">
+          <line>
+            <point x="100" y="200"/>
+            <point x="245" y="423"/>
+            <point x="234" y="543"/>
+            <point x="431" y="343"/>
+          </line>
+        </canvas>
+      ]]>
+    </drawing>
+  </gallery_drawing>
+</response>
