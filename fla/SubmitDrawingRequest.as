@@ -34,6 +34,9 @@
 		// Set the attributes
 		requestNode.attributes.user_id = userID;
 		requestNode.attributes.drawing_id = drawingID;
+		requestNode.attributes.width = drawing.width;
+		requestNode.attributes.height = drawing.height;
+		requestNode.attributes.offsety = drawing.offsetY;
 		requestNode.attributes.stage = stage;
 		if (nextUserEmail != null) {
 			requestNode.attributes.next_user_email = nextUserEmail;

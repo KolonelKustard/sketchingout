@@ -18,6 +18,10 @@
 		
 		// If have a signature, add it
 		if (user.signature != null) {
+			// Set its width and height into the submission
+			requestNode.attributes.signature_width = user.signature.width;
+			requestNode.attributes.signature_height = user.signature.height;
+			
 			var signatureNode: XMLNode = xmlDoc.createElement("signature");
 			signatureNode.appendChild(xmlDoc.createTextNode(user.signature.toString()));
 			requestNode.appendChild(signatureNode);
