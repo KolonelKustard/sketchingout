@@ -10,7 +10,6 @@
 <!ATTLIST user_submit id CDATA #REQUIRED>
 <!ATTLIST user_submit name CDATA #IMPLIED>
 <!ATTLIST user_submit email CDATA #IMPLIED>
-<!ATTLIST user_submit password CDATA #IMPLIED>
 
 <!ATTLIST next_drawing user_id CDATA #REQUIRED>
 <!ATTLIST next_drawing drawing_id CDATA #IMPLIED>
