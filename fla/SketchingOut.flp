@@ -1,4 +1,4 @@
-﻿<flash_project name="SketchingOut" version="1">
+<flash_project name="SketchingOut" version="1">
     <project_file path="./Drawing.as" filetype="as" />
     <project_file path="./Line.as" filetype="as" />
     <project_file path="./Request.as" filetype="as" />
@@ -31,7 +31,7 @@
     <project_file path="./HintsClip.as" filetype="as" />
     <project_file path="./Gallery.as" filetype="as" />
     <project_file path="./Hint.as" filetype="as" />
-    <project_file path="./gallery.fla" filetype="fla" profile="" />
+    <project_file path="./Gallery.fla" filetype="fla" profile="" />
     <project_file path="./GalleryInterface.as" filetype="as" />
     <project_file path="./InitGallery.as" filetype="as" />
 </flash_project>
