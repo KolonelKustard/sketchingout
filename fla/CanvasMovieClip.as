@@ -51,8 +51,8 @@
 	public function get drawing(): Drawing {
 		// Make sure the width and height of the canvas match the width and height
 		// of the movie clip
-		theDrawing.width = maxX;
-		theDrawing.height = maxY;
+		theDrawing.width = _width;
+		theDrawing.height = _height;
 		
 		return theDrawing;
 	}
