@@ -236,25 +236,31 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
-	public static final PreparedStatement getDrawing(Connection conn, int friendlyID)
+	public static final PreparedStatement getDrawing(Connection conn, String friendlyID)
 		throws SQLException {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
 			"  stage, " +
+			"  stage_1_author_name, " +
 			"  stage_1, " +
-			"  stage_2, " +
-			"  stage_3, " +
-			"  stage_4, " +
 			"  stage_1_signature, " +
+			"  stage_2_author_name, " +
+			"  stage_2, " +
 			"  stage_2_signature, " +
+			"  stage_3_author_name, " +
+			"  stage_3, " +
 			"  stage_3_signature, " +
+			"  stage_4_author_name, " +
+			"  stage_4, " +
 			"  stage_4_signature " +
+			"FROM " +
+			"  drawings " +
 			"WHERE " +
 			"  friendly_id = ?"
 		);
 		
-		pstmt.setInt(1, friendlyID);
+		pstmt.setInt(1, Integer.valueOf(friendlyID).intValue());
 		
 		return pstmt;
 	}
