@@ -4,28 +4,6 @@
 	public var height: Number;
 	public var numStages: Number;
 	public var authors: Array = new Array();
-	
-	private function getDrawingURL(): String {
-		return SketchingoutSettings.GALLERY_URL + "?id=" + id + "&scale=100&type=";
-	}
-	
-	public function get urlPDF(): String {
-		return getDrawingURL() + "pdf";
-	}
-	
-	public function get urlPNG(): String {
-		return getDrawingURL() + "png";
-	}
-	
-	public function get urlJPG(): String {
-		return getDrawingURL() + "jpg";
-	}
-	
-	public function get urlSWF(): String {
-		return getDrawingURL() + "swf";
-	}
-	
-	public function get urlAnimatedSWF(): String {
-		return getDrawingURL() + "animswf";
-	}
+	public var urlPDF: String;
+	public var urlAnimatedSWF: String;
 }
