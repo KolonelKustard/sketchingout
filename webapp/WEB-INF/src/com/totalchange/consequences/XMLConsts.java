@@ -27,10 +27,14 @@ public class XMLConsts {
 	public static final String EL_ERROR_TRACE = "trace";
 	
 	public static final String EL_USER_DETAILS = "user_details";
+	public static final String EL_USER_SUBMIT = "user_submit";
 	public static final String AT_USER_ID = "id";
 	public static final String EL_USER_ID = "id";
+	public static final String AT_USER_NAME = "name";
 	public static final String EL_USER_NAME = "name";
+	public static final String AT_USER_EMAIL = "email";
 	public static final String EL_USER_EMAIL = "email";
+	public static final String AT_USER_PASSWORD = "password";
 	public static final String EL_USER_SIGNATURE = "signature";
 	
 	public static final String EL_NEXT_DRAWING = "next_drawing";
