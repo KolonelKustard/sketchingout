@@ -200,6 +200,9 @@
 		
 		// Set in the previous drawing
 		prevDrawing.drawing = prevDraw;
+		
+		// Reset the friends email address
+		friendsEmailEdit.text = "";
 	}
 	
 	/**
@@ -224,6 +227,7 @@
 				setNextDrawing(nextDrawing);
 			}
 		}
+		
 		// See if had any errors
 		if (response.doneWithErrors) {
 			// Use the event handler to handle errors
