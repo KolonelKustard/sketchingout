@@ -301,6 +301,7 @@ public class SQLWrapper {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
+			"  friendly_id, " +
 			"  version, " +
 			"  width, " +
 			"  height, " +
@@ -362,11 +363,11 @@ public class SQLWrapper {
 			"  stage_1_author_name, " +
 			"  stage_2_author_name, " +
 			"  stage_3_author_name, " +
-			"  stage_4_author_name " +
+			"  stage_4_author_name, " +
+			"  anim_swf_filename, " +
+			"  pdf_filename " +
 			"FROM " +
-			"  drawings " +
-			"WHERE " +
-			"  completed = 'Y' " +
+			"  gallery " +
 			"ORDER BY " +
 			"  friendly_id DESC " +
 			"LIMIT " + offset + ", " + rowCount
@@ -376,17 +377,64 @@ public class SQLWrapper {
 		
 	}
 	
-	public static final PreparedStatement getRandomEmail(Connection conn) 
-		throws SQLException {
+	/**
+	 * <p>Copies a drawing from the active drawings table to the gallery table</p>
+	 * 
+	 * @param conn
+	 * @param drawingID
+	 * @param pdfFilename
+	 * @param swfFilename
+	 * @throws SQLException
+	 */
+	public static final void saveToGallery(Connection conn, String drawingID,
+		String pdfFilename, String swfFilename) throws SQLException {
 		
+		// Get fields to be copied
 		PreparedStatement pstmt = conn.prepareStatement(
+			"INSERT INTO gallery( " +
+			"  id, " +
+			"  friendly_id, " +
+			"  width, " +
+			"  height, " +
+			"  stage, " +
+			"  stage_1_author_id, " +
+			"  stage_1_author_name, " +
+			"  stage_2_author_id, " +
+			"  stage_2_author_name, " +
+			"  stage_3_author_id, " +
+			"  stage_3_author_name, " +
+			"  stage_4_author_id, " +
+			"  stage_4_author_name, " +
+			"  anim_swf_filename, " +
+			"  pdf_filename) " +
+			
 			"SELECT " +
-			"  * " +
+			"  id, " +
+			"  friendly_id, " +
+			"  width, " +
+			"  height, " +
+			"  stage, " +
+			"  stage_1_author_id, " +
+			"  stage_1_author_name, " +
+			"  stage_2_author_id, " +
+			"  stage_2_author_name, " +
+			"  stage_3_author_id, " +
+			"  stage_3_author_name, " +
+			"  stage_4_author_id, " +
+			"  stage_4_author_name, " +
+			"  ?, " +
+			"  ? " +
 			"FROM " +
-			"  emails"
+			"  drawings " +
+			"WHERE " +
+			"  id = ?"
 		);
+		pstmt.setString(1, swfFilename);
+		pstmt.setString(2, pdfFilename);
+		pstmt.setString(3, drawingID);
 		
-		return pstmt;
+		pstmt.execute();
+		pstmt.close();
 	}
 	
 	public static final void deleteDrawing(Connection conn, String drawingID) 
