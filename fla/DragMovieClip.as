@@ -7,16 +7,19 @@
 		var actualX: Number = _xmouse + _x;
 		var actualY: Number = _ymouse + _y;
 		
-//		if (
+		if ((actualX >= nextDrawing._x) &&
+			(actualX <= (nextDrawing._x + nextDrawing._width)) &&
+			(actualY >= nextDrawing._y) &&
+			(actualY <= (nextDrawing._x + nextDrawing._height))) return true;
+		else return false;
 	}
 	
 	public function onPress(): Void {
 		// Determine if mouse is over the main canvas.  If it is, do nothing.
 		if (mouseOverCanvas()) return;
 		
-		var theTop: Number = nextDrawing._y - _height;
-//		var theBottom: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - 10) - _height;
-		var theBottom: Number = (nextDrawing._y + nextDrawing._height) - _height;
+		var theTop: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - ConsequencesSettings.MAX_OFFSET_Y) - _height;
+		var theBottom: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - ConsequencesSettings.MIN_OFFSET_Y) - _height;
 		
 		//constrain (locked, left, top, right, bottom)
 		this.startDrag(false, _x, theTop, _x, theBottom);
@@ -52,9 +55,5 @@
 	 */
 	public function resetPos(): Void {
 		_y = nextDrawing._y - _height;
-	}
-	
-	public function onEnterFrame(): Void {
-		
 	}
 }
