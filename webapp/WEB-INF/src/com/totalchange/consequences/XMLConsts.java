@@ -48,4 +48,14 @@ public class XMLConsts {
 	public static final String AT_SUBMIT_DRAWING_STAGE = "stage";
 	public static final String AT_SUBMIT_DRAWING_NEXT_USER_EMAIL = "next_user_email";
 	public static final String EL_SUBMIT_DRAWING_DRAWING = "drawing";
+	
+	public static final String EL_GALLERY_DRAWING = "gallery_drawing";
+	public static final String AT_GALLERY_DRAWING_ID = "drawing_id";
+	public static final String EL_GALLERY_DRAWING_ID = "drawing_id";
+	public static final String EL_GALLERY_DRAWING_NUM_STAGES = "num_stages";
+	public static final String EL_GALLERY_DRAWING_STAGE = "drawing_stage";
+	public static final String EL_GALLERY_DRAWING_STAGE_NUM = "stage";
+	public static final String EL_GALLERY_DRAWING_NAME = "name";
+	public static final String EL_GALLERY_DRAWING_DRAWING = "drawing";
+	public static final String EL_GALLERY_DRAWING_SIGNATURE = "signature";
 }
