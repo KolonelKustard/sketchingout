@@ -6,8 +6,10 @@
  */
 package com.totalchange.consequences;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -232,20 +234,62 @@ public class ImageParser extends DefaultHandler{
 	}
 	
 	public static void main(String[] args) throws Exception {
+		final int P_WIDTH = 0;
+		final int P_HEIGHT = 1;
+		final int P_SCALE = 2;
+		final int P_LOSS = 3;
+		final int P_INFILE = 4;
+		final int P_OUTFILE = 5;
+		
 		if (args.length != 6) {
-			System.out.println("Usage: [width] [height] [scale] [skip_points] [infile.xml] [outfile.swf]");
+			System.out.println("Usage: [width] [height] [scale] [loss] [infile.xml] [outfile.swf]");
 			return;
 		}
 		
-		OutputStream out = new FileOutputStream(args[5]); 
-		ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
-				Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), 
-				Integer.parseInt(args[3]), out,
-				new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
-		);
-		
-		parse.addStage(new FileReader(args[4]));
-		parse.close();
-		out.close();
+		// Also allows directories to be used.  If the infile parameter is a directory, run
+		// through all .xml files in the directory.  Otherwise use a single file.
+		File inFile = new File(args[P_INFILE]);
+		if (inFile.isDirectory()) {
+			// Make sure the outfile is a directory too
+			File outFile = new File(args[P_OUTFILE]);
+			if ((outFile.exists()) && (!outFile.isDirectory())) throw new IOException("outfile must specify a " +
+				"directory");
+			
+			// If doesn't exist, make the directory
+			if (!outFile.exists()) outFile.mkdir();
+			
+			// Get and run through all files in the directory
+			File[] files = inFile.listFiles();
+			for (int num = 0; num < files.length; num++) {
+				// Only work on .xml files
+				if (files[num].getName().endsWith(".xml")) {
+					// Convert this file to one in the outFile directory
+					String fileName = files[num].getName().substring(0, files[num].getName().length() - 4) + ".swf";
+					
+					OutputStream out = new FileOutputStream(new File(outFile, fileName)); 
+					ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
+							Integer.parseInt(args[P_WIDTH]), Integer.parseInt(args[P_HEIGHT]),
+							Integer.parseInt(args[P_SCALE]), Integer.parseInt(args[P_LOSS]), out,
+							new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
+					);
+					
+					parse.addStage(new FileReader(files[num]));
+					parse.close();
+					out.close();
+				}
+			}
+		}
+		else {
+			OutputStream out = new FileOutputStream(args[5]); 
+			ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
+					Integer.parseInt(args[P_WIDTH]), Integer.parseInt(args[P_HEIGHT]),
+					Integer.parseInt(args[P_SCALE]), Integer.parseInt(args[P_LOSS]), out,
+					new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
+			);
+			
+			parse.addStage(new FileReader(inFile));
+			parse.close();
+			out.close();
+		}
 	}
 }
