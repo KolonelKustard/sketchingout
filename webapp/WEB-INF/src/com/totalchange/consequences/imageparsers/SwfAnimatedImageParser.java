@@ -24,12 +24,16 @@ import com.anotherbigidea.flash.writers.TagWriter;
  */
 public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	
-	private static final int SWF_FPS = 120;
+	private static final int SWF_FPS = 30;
+	private static final int POINTS_PER_FRAME = 10;
 	
 	private SWFTagTypes swf;
-	private int drawID;
+	private SWFShape currLine;
+	private Rect currRect;
+	private Matrix currMatrix;
+	private int lineID;
+	private int pointNum;
 	
-	private int offsetX, offsetY = 0;
 	private int lastPosX, lastPosY = 0;
 
 	/**
@@ -39,7 +43,8 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 		throws ConsequencesImageParserException {
 		
 		// Init
-		drawID = 0;
+		lineID = 0;
+		pointNum = 0;
 		
 		// Make SWF Movie
 		SWFWriter writer = new SWFWriter(out);
@@ -87,15 +92,40 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	public void startCanvas(int x, int y, int width, int height)
 		throws ConsequencesImageParserException {
 		
-		// Set the offsets
-		offsetX = (int)(x * SWFConstants.TWIPS);
-		offsetY = (int)(y * SWFConstants.TWIPS);
+		// Define the bounds of this canvas
+		currRect = new Rect(0, 0, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS);
+		currMatrix= new Matrix(x * SWFConstants.TWIPS, y * SWFConstants.TWIPS);
+		/*
+		try {
+			
+			
+			//canvas = swf.tagDefineShape(++canvasID, canvasRect);
+			
+			// Define line style
+			//canvas.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
+			//canvas.setLineStyle(1);
+			
+			// Define matrix to say where this canvas will go
+			
+		}
+		catch (IOException ie) {
+			throw new ConsequencesImageParserException(ie);
+		}
+		*/
 	}
 
 	/**
 	 * @see com.totalchange.consequences.imageparsers.ConsequencesImageParser#endCanvas()
 	 */
 	public void endCanvas() throws ConsequencesImageParserException {
+		/*try {
+			// Draw the canvas to the movie
+			canvas.done();
+			swf.tagPlaceObject2(false, -1, 1, canvasID, canvasPos, null, -1, null, 0);
+		}
+		catch (IOException ie) {
+			throw new ConsequencesImageParserException(ie);
+		}*/
 	}
 
 	/**
@@ -104,55 +134,71 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	public void moveTo(double x, double y)
 		throws ConsequencesImageParserException {
 		
-		// Set current position
-		lastPosX = (int)(x * SWFConstants.TWIPS);
-		lastPosY = (int)(y * SWFConstants.TWIPS);
+		try {
+			// Draw previous line
+			if (currLine != null) {
+				currLine.done();
+				swf.tagPlaceObject2(false, -1, 1, lineID, currMatrix, null, -1, null, 0);
+			}
+			
+			// Make a new line
+			currLine = swf.tagDefineShape(++lineID, currRect);
+			
+			currLine.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
+			currLine.setLineStyle(1);
+			
+			// Set current position
+			lastPosX = (int)(x * SWFConstants.TWIPS);
+			lastPosY = (int)(y * SWFConstants.TWIPS);
+			
+			// Move to absolute position in this canvas
+			currLine.move(lastPosX, lastPosY);
+		}
+		catch (IOException ie) {
+			throw new ConsequencesImageParserException(ie);
+		}
 	}
 
 	/**
-	 * <p>This procedure does all the work of drawing a line as a new shape in a new frame of
-	 * the swf movie</p>
-	 * 
 	 * @see com.totalchange.consequences.imageparsers.ConsequencesImageParser#lineTo(double, double)
 	 */
 	public void lineTo(double x, double y)
 		throws ConsequencesImageParserException {
 			
+		pointNum++;
+		
 		try {
 			// Get new absolute position in twips
 			int newPosX = (int)(x * SWFConstants.TWIPS);
 			int newPosY = (int)(y * SWFConstants.TWIPS);
 			
-			// The size of the rect for this shape is the rect made by the origin position
-			// and the destination position
-			Rect drawRect = new Rect(0, 0, newPosX - lastPosX, newPosY - lastPosY);
-			
-			// Increment drawing id
-			drawID++;
-			
-			// Define a new shape
-			SWFShape draw = swf.tagDefineShape(drawID, drawRect);
-			
-			// Setup the shape (just a single line)
-			draw.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
-			draw.setLineStyle(1);
-			
-			// Draw line to new relative point
-			draw.line(newPosX - lastPosX, newPosY - lastPosY);
-			
-			// Finished line
-			draw.done();
-			
-			// Place shape at end of last line and offset according to current canvas
-			Matrix matrix = new Matrix(lastPosX + offsetX, lastPosY + offsetY);
-			swf.tagPlaceObject2(false, -1, drawID, drawID, matrix, null, -1, null, 0);
-			
-			// Show this frame
-			swf.tagShowFrame();
+			// Move to new relative position
+			currLine.line(newPosX - lastPosX, newPosY - lastPosY);
 			
 			// Set last known absolute position to where we are now
 			lastPosX = newPosX;
 			lastPosY = newPosY;
+			
+			// See if need to move frames
+			if (pointNum >= POINTS_PER_FRAME) {
+				// Draw line
+				currLine.done();
+				swf.tagPlaceObject2(false, -1, 1, lineID, currMatrix, null, -1, null, 0);
+				
+				// Step frame on
+				swf.tagShowFrame();
+				
+				// Make a new line
+				currLine = swf.tagDefineShape(++lineID, currRect);
+				
+				currLine.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
+				currLine.setLineStyle(1);
+				
+				// Move to absolute position in this canvas
+				currLine.move(lastPosX, lastPosY);
+				
+				pointNum = 0;
+			}
 		}
 		catch (IOException ie) {
 			throw new ConsequencesImageParserException(ie);
