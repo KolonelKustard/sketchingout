@@ -4,7 +4,6 @@
 package com.totalchange.consequences;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,12 +20,8 @@ public class PrivateDrawingProcessor {
 		String toEmail, String distinguishedID) throws MessagingException,
 		UnsupportedEncodingException {
 			
-		// Setup SMTP properties
-		Properties props = System.getProperties();
-		props.put("mail.smtp.host", ConsequencesSettings.SMTP_SERVER_ADDR);
-		
 		// Get SMTP session
-		Session session = Session.getDefaultInstance(props);
+		Session session = SMTPSessionFactory.getSMTPSession();
 		
 		// Setup a new mail message
 		MimeMessage msg = new MimeMessage(session);
