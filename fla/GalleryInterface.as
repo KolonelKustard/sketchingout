@@ -9,6 +9,11 @@ class GalleryInterface extends MovieClip {
 	private static var TIME_TO_WAIT_IN_MIDDLE: Number = 5 * 1000;
 	private static var TIME_TO_CROSS_FROM_MIDDLE: Number = 10 * 1000;
 	
+	private static var MARGIN_TOP: Number = 0;
+	private static var MARGIN_BOTTOM: Number = 20;
+	private static var MARGIN_LEFT: Number = 0;
+	private static var MARGIN_RIGHT: Number = 0;
+	
 	private var showpic: MovieClip;
 	private var drawing: GalleryDrawing;
 	private var innerMC: MovieClip = null;
@@ -40,6 +45,20 @@ class GalleryInterface extends MovieClip {
 	public function onEnterFrame(): Void {
 		// See if in the middle
 		if (inMiddle) {
+			// If not finished drawing just do nothing
+			if (innerMC._currentframe < innerMC._totalframes) {
+				return;
+			}
+			
+			// When reach mid point send event
+			if (
+				(!firedMidPoint) && 
+				(getTimer() >= (((endTime - startTime) / 2) + startTime))
+			) {
+				firedMidPoint = true;
+				if (onMidPoint != null) onMidPoint();
+			}
+			
 			// Don't move, but check to see if should move
 			if (getTimer() >= endTime) {
 				inMiddle = false;
@@ -49,12 +68,6 @@ class GalleryInterface extends MovieClip {
 				endTime = startTime + TIME_TO_CROSS_FROM_MIDDLE;
 				startX = _x;
 				endX = totalEndX;
-			}
-			
-			// When reach mid point send event
-			if ((!firedMidPoint) && (getTimer() >= (((endTime - startTime) / 2) + startTime))) {
-				firedMidPoint = true;
-				if (onMidPoint != null) onMidPoint();
 			}
 		}
 		else {
@@ -101,8 +114,8 @@ class GalleryInterface extends MovieClip {
 		innerMC = createEmptyMovieClip("innerMC", 1);
 		
 		// Calculate the best size and position of the embedded drawing
-		var xScale: Number = Math.floor((_width / drawing.width) * 100);
-		var yScale: Number = Math.floor((_height / drawing.height) * 100);
+		var xScale: Number = Math.floor(((_width - MARGIN_LEFT - MARGIN_RIGHT) / drawing.width) * 100);
+		var yScale: Number = Math.floor(((_height - MARGIN_TOP - MARGIN_BOTTOM) / drawing.height) * 100);
 		
 		// Use the lowest scale
 		var theScale: Number;
@@ -116,8 +129,8 @@ class GalleryInterface extends MovieClip {
 		var newWidth: Number = drawing.width * (theScale / 100);
 		var newHeight: Number = drawing.height * (theScale / 100);
 		
-		innerMC._x = Math.round((_width / 2) - (newWidth / 2));
-		innerMC._y = Math.round((_height / 2) - (newHeight / 2));
+		innerMC._x = MARGIN_LEFT + Math.round(((_width - MARGIN_RIGHT) / 2) - (newWidth / 2));
+		innerMC._y = MARGIN_TOP + Math.round(((_height - MARGIN_BOTTOM) / 2) - (newHeight / 2));
 		
 		// Load the drawing
 		innerMC.loadMovie(drawing.urlAnimatedSWF);
@@ -134,10 +147,18 @@ class GalleryInterface extends MovieClip {
 		// Move to the middle
 		startX = totalStartX;
 		endX = (totalStartX / 2) + (totalEndX / 2);
+		
+		// Set location to the start and make visible
+		this._x = totalStartX;
+		this._alpha = 100;
 	}
 	
 	public function GalleryInterface() {
+		// Link up button
 		showpic.onPress = onShowPicPressed;
 		showpic.parent = this;
+		
+		// Make sure invisible
+		this._alpha = 0;
 	}
 }
