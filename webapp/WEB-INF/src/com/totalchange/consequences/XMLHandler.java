@@ -5,6 +5,8 @@ package com.totalchange.consequences;
 
 import java.io.OutputStream;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -18,5 +20,18 @@ public class XMLHandler extends DefaultHandler {
 	
 	public XMLHandler(OutputStream response) {
 		this.response = response;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
+	public void startElement(
+		String uri,
+		String localName,
+		String qName,
+		Attributes attributes)
+		throws SAXException {
+			
+		System.out.println(uri + " " + localName + " " + qName);
 	}
 }

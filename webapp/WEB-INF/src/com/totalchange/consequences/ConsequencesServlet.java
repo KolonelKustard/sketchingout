@@ -35,6 +35,11 @@ public class ConsequencesServlet extends HttpServlet {
 		throws ServletException, IOException {
 		
 		try {
+			// Make sure response is formatted to XML
+			response.setContentType("text/xml");
+			
+			response.getWriter().write("<somexml><test>Some test!</test></somexml>");
+			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
 			parser.parse(request.getInputStream(), new XMLHandler(response.getOutputStream()));
