@@ -28,4 +28,5 @@
     <project_file path="./UserDetails.as" filetype="as" />
     <project_file path="./DragMovieClip.as" filetype="as" />
     <project_file path="./DrawingPage.as" filetype="as" />
+    <project_file path="./ConsequencesSettings.as" filetype="as" />
 </flash_project>
