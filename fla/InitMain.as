@@ -65,10 +65,10 @@ function showNonDrawUI() {
 // **************************************************************
 // * Load UI parts into the loader clips                        *
 // **************************************************************
-logo_ldr.onMovieClipPlayed = function() 
+logo_ldr.onMovieClipPlayed = function(){}
 logo_ldr.loadMovie("uiparts/logo.swf");
 
-whatsthis_ldr.onMovieClipPlayed = function()
+whatsthis_ldr.onMovieClipPlayed = function(){}
 whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
 
 introtxt_ldr.onMovieClipPlayed = function() {
@@ -76,22 +76,22 @@ introtxt_ldr.onMovieClipPlayed = function() {
 }
 introtxt_ldr.loadMovie("uiparts/introtext.swf");
 
-newsbox_ldr.onMovieClipPlayed = function() 
+newsbox_ldr.onMovieClipPlayed = function() {}
 newsbox_ldr.loadMovie("uiparts/news_box.swf");
 
-drawbox_ldr.onMovieClipPlayed = function() 
+drawbox_ldr.onMovieClipPlayed = function() {}
 drawbox_ldr.loadMovie("uiparts/draw_box.swf");
 
-sigbox_ldr.onMovieClipPlayed = function() 
+sigbox_ldr.onMovieClipPlayed = function() {}
 sigbox_ldr.loadMovie("uiparts/sig_box.swf");
 
-viewgallerybtn_ldr.onMovieClipPlayed = function() 
+viewgallerybtn_ldr.onMovieClipPlayed = function() {}
 viewgallerybtn_ldr.loadMovie("uiparts/viewgallery_btn.swf");
 
-hintsbox_ldr.onMovieClipPlayed = function()
+hintsbox_ldr.onMovieClipPlayed = function(){}
 hintsbox_ldr.loadMovie("uiparts/hints_box.swf");
 
-txtfldsbtn_ldr.onMovieClipPlayed = function() 
+txtfldsbtn_ldr.onMovieClipPlayed = function() {}
 txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 
 
@@ -108,7 +108,6 @@ txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
  * Called before any data is sent to the server.
  */
 function onStartLoading(): Void {
-	trace("Loading...");
 	_root.hintsLoader.defaultHint = "uiparts/loading_msg.swf";
 
 }
@@ -206,8 +205,7 @@ holderClip.onErrorNotEnoughCovered = function(currOffsetY: Number, maxOffsetY: N
  * sign and a full stop.
  */
 holderClip.onErrorInvalidFriendsEmail = function(): Void {
-	//ADD HINTS CLIP HERE
-	trace("Spaz alert: Your friends email address is spacced up.");
+	hintsLoader.showCachedHint("uiparts/friendsemail_gonewrong_msg.swf");
 }
 
 /**
