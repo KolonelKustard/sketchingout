@@ -8,6 +8,7 @@ CREATE TABLE users(
 
 CREATE TABLE drawings(
   id			VARCHAR(36) NOT NULL PRIMARY KEY,
+  friendly_id		INTEGER NOT NULL AUTO_INCREMENT,
   completed		CHAR(1) NOT NULL,
   locked		DATETIME NOT NULL,
   distinguished_id	VARCHAR(36) NULL,
@@ -34,5 +35,6 @@ CREATE TABLE drawings(
   stage_4_signature	TEXT NULL,
   
   INDEX incomplete_drawings(completed, locked, stage),
-  INDEX awaiting_drawing(distinguished_id)
+  INDEX awaiting_drawing(distinguished_id),
+  UNIQUE INDEX complete_drawings(friendly_id)
 );
