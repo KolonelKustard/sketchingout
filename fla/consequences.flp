@@ -19,4 +19,5 @@
     <project_file path="./NextDrawingResponse.as" filetype="as" />
     <project_file path="./UserDetailsResponse.as" filetype="as" />
     <project_file path="./GalleryDrawingResponse.as" filetype="as" />
+    <project_file path="./CanvasMovieClip.as" filetype="as" />
 </flash_project>
