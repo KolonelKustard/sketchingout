@@ -7,6 +7,7 @@ package com.totalchange.consequences;
 import java.io.IOException;
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -103,13 +104,11 @@ public class NextDrawingRequest implements RequestHandler {
 		// Look for next drawing id.
 		String nextDrawingID = attributes.getValue(XMLConsts.AT_NEXT_DRAWING_ID);
 		
-		// The result set that will contain the next drawing
-		ResultSet next = null;
-		
 		try {
 			if (nextDrawingID == null) {
 				// Not specified a drawing to do.  Look up from public location.
-				next = SQLWrapper.getNextDrawingPublic(conn, userID);
+				PreparedStatement pstmt = SQLWrapper.getNextDrawingPublic(conn, userID);
+				ResultSet next = pstmt.executeQuery();
 				
 				// See if got a drawing
 				if (next.first()) {
@@ -123,24 +122,36 @@ public class NextDrawingRequest implements RequestHandler {
 					// Not got a drawing.  Start a new one!
 					outputNewDrawing(out);
 				}
+				
+				// Close query
+				next.close();
+				pstmt.close();
 			}
 			else {
 				// Specified a drawing.  Look up using distinguished id.
-				next = SQLWrapper.getNextDrawingPrivate(conn, nextDrawingID);
+				PreparedStatement pstmt = SQLWrapper.getNextDrawingPrivate(conn, nextDrawingID);
+				ResultSet next = pstmt.executeQuery();
 				
-				// When specifying next drawing, need to make sure get a result.
-				// If don't get a result it could mean this person is too late
-				// and the lock time has expired.
-				if (next.first()) {
-					// Got a result.  Figure out how much time is left before
-					// the private picture is unlocked.
-					int lock = 3600;
-					outputDrawing(next, out, lock);
+				try {
+					// When specifying next drawing, need to make sure get a result.
+					// If don't get a result it could mean this person is too late
+					// and the lock time has expired.
+					if (next.first()) {
+						// Got a result.  Figure out how much time is left before
+						// the private picture is unlocked.
+						int lock = 3600;
+						outputDrawing(next, out, lock);
+					}
+					else {
+						throw new HandlerException("Could not find drawing specified.  " +
+							"Could be because the locked timeout has expired and the " +
+							"drawing has become public.");
+					}
 				}
-				else {
-					throw new HandlerException("Could not find drawing specified.  " +
-						"Could be because the locked timeout has expired and the " +
-						"drawing has become public.");
+				finally {
+					// Close query
+					next.close();
+					pstmt.close();
 				}
 			}
 		}

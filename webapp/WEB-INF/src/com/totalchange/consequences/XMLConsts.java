@@ -34,7 +34,6 @@ public class XMLConsts {
 	public static final String EL_USER_NAME = "name";
 	public static final String AT_USER_EMAIL = "email";
 	public static final String EL_USER_EMAIL = "email";
-	public static final String AT_USER_PASSWORD = "password";
 	public static final String EL_USER_SIGNATURE = "signature";
 	
 	public static final String EL_NEXT_DRAWING = "next_drawing";
@@ -48,4 +47,6 @@ public class XMLConsts {
 	public static final String EL_NEXT_DRAWING_ID = "drawing_id";
 	public static final String EL_NEXT_DRAWING_LOCKED_SECS = "locked_secs";
 	public static final String EL_NEXT_DRAWING_DRAWING = "drawing";
+	
+	public static final String EL_SUBMIT_DRAWING = "submit_drawing";
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -27,7 +28,8 @@ public class UserRequest implements RequestHandler {
 		throws SQLException, IOException {
 		
 		// Get resultset
-		ResultSet res = SQLWrapper.getUser(conn, userID);
+		PreparedStatement pstmt = SQLWrapper.getUser(conn, userID);
+		ResultSet res = pstmt.executeQuery();
 		
 		// Check for first.  If get a result, send back user details.  If no
 		// result just send back id.
@@ -51,6 +53,9 @@ public class UserRequest implements RequestHandler {
 			out.writeElement(XMLConsts.EL_USER_ID, userID);
 			out.endElement(XMLConsts.EL_USER_DETAILS);
 		}
+		
+		res.close();
+		pstmt.close();
 	}
 
 	/**

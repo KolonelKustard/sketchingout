@@ -156,13 +156,4 @@ public class XMLHandler extends DefaultHandler {
 		errs.addException(this.getClass(), e);
 	}
 
-	/**
-	 * Gets added to error cache
-	 * 
-	 * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
-	 */
-	public void fatalError(SAXParseException e) throws SAXException {
-		errs.addException(this.getClass(), e);
-	}
-
 }

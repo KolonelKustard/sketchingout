@@ -29,27 +29,54 @@ public class SQLWrapper {
 	private static final String DB_PASSWORD = "";
 	
 	public static final Connection makeConnection() throws ClassNotFoundException, 
-	  SQLException {
+		SQLException {
+			
 		Class.forName(DB_CLASSNAME);
 		Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
 		return conn;
 	}
 	
-	public static final ResultSet getUser(Connection conn, String userID) throws
-	  SQLException {
+	public static final PreparedStatement getUser(Connection conn, String userID) throws
+		SQLException {
+			
 		PreparedStatement pstmt = conn.prepareStatement(
-			"SELECT * FROM users WHERE id = ?"
+			"SELECT id, name, email, signature FROM users WHERE id = ?"
 		);
 		
 		pstmt.setString(1, userID);
 		
-		return pstmt.executeQuery();
+		return pstmt;
 	}
 	
-	public static final void setUser(Connection conn) {
+	public static final int INS_USER_ID = 1;
+	public static final int INS_USER_NAME = 2;
+	public static final int INS_USER_EMAIL = 3;
+	public static final int INS_USER_SIGNATURE = 4; 
+	public static final PreparedStatement insertUser(Connection conn) throws
+		SQLException {
+			
+		PreparedStatement pstmt = conn.prepareStatement(
+			"INSERT INTO users(id, name, email, signature) VALUES(?, ?, ?, ?)"
+		);
+		
+		return pstmt;
 	}
 	
-	public static final ResultSet getNextDrawingPublic(Connection conn, String userID)
+	public static final int UPD_USER_ID = 4;
+	public static final int UPD_USER_NAME = 1;
+	public static final int UPD_USER_EMAIL = 2;
+	public static final int UPD_USER_SIGNATURE = 3;
+	public static final PreparedStatement updateUser(Connection conn) throws
+		SQLException {
+			
+		PreparedStatement pstmt = conn.prepareStatement(
+			"UPDATE users SET name = ?, email = ?, signature = ? WHERE id = ?"
+		);
+		
+		return pstmt;
+	}
+	
+	public static final PreparedStatement getNextDrawingPublic(Connection conn, String userID)
 		throws SQLException {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
@@ -77,10 +104,10 @@ public class SQLWrapper {
 		pstmt.setString(3, userID);
 		pstmt.setString(4, userID);
 		
-		return pstmt.executeQuery();
+		return pstmt;
 	}
 	
-	public static final ResultSet getNextDrawingPrivate(Connection conn, 
+	public static final PreparedStatement getNextDrawingPrivate(Connection conn, 
 		String distinguishedID) throws SQLException {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
@@ -99,7 +126,7 @@ public class SQLWrapper {
 		
 		pstmt.setString(1, distinguishedID);
 		
-		return pstmt.executeQuery();
+		return pstmt;
 	}
 	
 	public static final void lockDrawing(Connection conn, String drawingID,
@@ -123,6 +150,13 @@ public class SQLWrapper {
 		
 		// Execute
 		pstmt.execute();
+		
+		// Close
+		pstmt.close();
+	}
+	
+	public static final PreparedStatement insertDrawing() {
+		return null;
 	}
 	
 	/**
