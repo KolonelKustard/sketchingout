@@ -5,7 +5,7 @@
 	
 	<property name="db_folder" value="mysql"/>
 	<property name="db_driver" value="com.mysql.jdbc.Driver"/>
-	<property name="db_url" value="jdbc:mysql://localhost/consequences"/>
+	<property name="db_url" value="jdbc:mysql://localhost/sketchingout"/>
 	<property name="db_username" value=""/>
 	<property name="db_password" value=""/>
 	

@@ -12,7 +12,7 @@
 		
 		// Submit submitted xml to the submitted url.
 		// First get a reference to the url and open a connection...
-		URL url = new URL("http://localhost:8080/consequences/consequences");
+		URL url = new URL("http://localhost:8080/sketchingout/sketchingout");
 		HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
 		
 		// Make sure set to POST

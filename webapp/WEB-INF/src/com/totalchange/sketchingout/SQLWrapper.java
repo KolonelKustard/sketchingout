@@ -21,7 +21,7 @@ import java.sql.*;
  */
 public class SQLWrapper {
 	private static final String DB_CLASSNAME = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost/consequences";
+	private static final String DB_URL = "jdbc:mysql://localhost/sketchingout";
 	private static final String DB_USERNAME = "";
 	private static final String DB_PASSWORD = "";
 	

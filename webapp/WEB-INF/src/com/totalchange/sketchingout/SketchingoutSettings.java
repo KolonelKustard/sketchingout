@@ -55,22 +55,22 @@ public class SketchingoutSettings {
 	/**
 	 * The email From name
 	 */
-	public static final String EMAIL_FROM_NAME = "Consequences";
+	public static final String EMAIL_FROM_NAME = "Sketching Out";
 	
 	/**
 	 * The email From address
 	 */
-	public static final String EMAIL_FROM_EMAIL = "consequences@slagtard.cum";
+	public static final String EMAIL_FROM_EMAIL = "sketchingout@totalchange.cum";
 	
 	/**
-	 * The root URL to access Consequences
+	 * The root URL to access Sketching Out
 	 */
-	public static final String URL_ROOT = "http://localhost:8080/consequences/";
+	public static final String URL_ROOT = "http://localhost:8080/sketchingout/";
 	
 	/**
 	 * The full URL to access the main drawing page
 	 */
-	public static final String URL_DRAWING = URL_ROOT + "consequences.jsp";
+	public static final String URL_DRAWING = URL_ROOT + "sketchingout.jsp";
 	
 	/**
 	 * The user id parameter to be sent to Flash

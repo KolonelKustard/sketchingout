@@ -257,19 +257,19 @@
 <table border="1">
   <tr>
     <td><b>Public Drawing Lock Time:</b></td>
-    <td><%= ConsequencesSettings.DEFAULT_LOCK_SECS %> secs (<%= (double)ConsequencesSettings.DEFAULT_LOCK_SECS / 60 / 60 %>hrs)</td>
+    <td><%= SketchingoutSettings.DEFAULT_LOCK_SECS %> secs (<%= (double)SketchingoutSettings.DEFAULT_LOCK_SECS / 60 / 60 %>hrs)</td>
   </tr>
   <tr>
     <td><b>Private Drawing Lock Time:</b></td>
-    <td><%= ConsequencesSettings.PRIVATE_LOCK_SECS %> secs (<%= (double)ConsequencesSettings.PRIVATE_LOCK_SECS / 60 / 60 %>hrs)</td>
+    <td><%= SketchingoutSettings.PRIVATE_LOCK_SECS %> secs (<%= (double)SketchingoutSettings.PRIVATE_LOCK_SECS / 60 / 60 %>hrs)</td>
   </tr>
   <tr>
     <td><b>Number of Stages:</b></td>
-    <td><%= ConsequencesSettings.MAX_NUM_STAGES %></td>
+    <td><%= SketchingoutSettings.MAX_NUM_STAGES %></td>
   </tr>
   <tr>
     <td><b>SMTP Address:</b></td>
-    <td><%= ConsequencesSettings.SMTP_SERVER_ADDR + ":" + ConsequencesSettings.SMTP_SERVER_PORT %></td>
+    <td><%= SketchingoutSettings.SMTP_SERVER_ADDR + ":" + SketchingoutSettings.SMTP_SERVER_PORT %></td>
   </tr>
 </table>
 </body>
