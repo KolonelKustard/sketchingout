@@ -26,7 +26,7 @@ import com.totalchange.consequences.imageparsers.SwfImageParser;
  */
 public class DrawingServlet extends HttpServlet {
 	
-	private void parseRequest(String type, String drawingID, OutputStream out)
+	private void parseRequest(String type, String drawingID, int scale, OutputStream out)
 		throws SQLException, ClassNotFoundException, ConsequencesImageParserException {
 		
 		// Make connection
@@ -54,6 +54,7 @@ public class DrawingServlet extends HttpServlet {
 				res.getInt("version"),
 				res.getInt("width"),
 				res.getInt("height"),
+				scale,
 				out, 
 				parser
 			);
@@ -122,10 +123,16 @@ public class DrawingServlet extends HttpServlet {
 		// Get type and id parameters
 		String type = request.getParameter("type");
 		String id = request.getParameter("id");
+		String scaleStr = request.getParameter("scale");
 		
 		// Throw errors if blank
 		if (type == null) throw new ServletException("No image type specified");
 		if (id == null) throw new ServletException("No drawing id specified");
+		
+		int scale;
+		if (scaleStr == null) scale = 100;
+	    else scale = Integer.parseInt(scaleStr);
+	    
 		
 		// Find a mime type from basic type
 		String mimeType = getAllowedMimeType(type);
@@ -136,7 +143,7 @@ public class DrawingServlet extends HttpServlet {
 		
 		try {
 			// Parse the request and output it
-			parseRequest(type, id, response.getOutputStream());
+			parseRequest(type, id, scale, response.getOutputStream());
 		}
 		catch (Exception e) {
 			// Wrap the error in a ServletException
