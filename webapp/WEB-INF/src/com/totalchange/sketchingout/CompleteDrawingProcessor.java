@@ -205,7 +205,7 @@ public class CompleteDrawingProcessor {
 				CompleteDrawingTransfer.save(conn, drawingID);
 				
 				// Delete the drawing from the active drawings table
-				//SQLWrapper.deleteDrawing(conn, drawingID);
+				SQLWrapper.deleteDrawing(conn, drawingID);
 			}
 			finally {
 				conn.close();
