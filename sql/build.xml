@@ -30,20 +30,9 @@
 		/>
 	</target>
 	
-	<target name="emails" description="Fills the email table with email templates">
-		<sql
-			driver="${db_driver}"
-			url="${db_url}"
-			userid="${db_username}"
-			password="${db_password}"
-			src="${db_folder}/emails.sql"
-			onerror="continue"
-		/>
-	</target>
-	
 	<target 
 		name="recreate"
-		depends="drop, create, emails"
+		depends="drop, create"
 		description="Drop and re-create the database tables"
 	/>
 </project>
