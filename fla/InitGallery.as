@@ -6,36 +6,35 @@ galleryMusic.attachSound("gallerymusic");
 galleryMusic.start("gallerymusic", 999)
 
 //init gallery object
-var gallery:Gallery = new Gallery();
-//create and setup loader clip
-attachMovie("UIloader", "UIloader", 100)
-UIloader._x = 687;
-UIloader._xscale = 40;
-UIloader._yscale = 40;
+gallery = new Gallery();
 
-//only called when first drawing finished and past halfway
-UIloader.onMovieClipPlayed = function() {
-	//should I create a new UIloader clip here??
-	//
-	
-	//Attempt at getting next pic and loading into new clip
-	/*
+// Incrementing ID for the next drawings
+newID = 1;
+
+// The event that will be fired when a gallery drawing is finished
+function drawingOnMovieClipPlayed() {
+	// Just ask for another picture
 	gallery.next();
-	attachMovie("UIloader", "UIloader1", 200)
-	UIloader1._x = 687;
-	UIloader1._xscale = 40;
-	UIloader1._yscale = 40;
-	UIloader1.loadMovie(currentDrawing.urlAnimatedSWF);
-	*/
+}
+
+// The event that is fired by the gallery when the next drawing is ready
+function galleryOnNext(drawing: GalleryDrawing) {
+	// Create a new GalleryInterface on the stage
+	var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
+	newDrawing._x = 687;
+	newDrawing._xscale = 40;
+	newDrawing._yscale = 40;
+	
+	// Make sure when it finishes we catch its finished event
+	newDrawing.onMovieClipPlayed = drawingOnMovieClipPlayed;
+	
+	// Now load the drawing into it
+	newDrawing.loadMovie(drawing.urlAnimatedSWF);
 };
 
-gallery.onNext = function(drawing:GalleryDrawing) {
-	currentDrawing = drawing;
-	//load the next pic into the loader clip
-	UIloader.loadMovie(currentDrawing.urlAnimatedSWF);
-
-};
-//get first pic
+// Link gallery onNext event and get first pic
+gallery.onNext = galleryOnNext;
 gallery.next();
 
+// Now go autonomous
 stop();
