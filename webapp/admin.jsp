@@ -202,24 +202,24 @@
 		<p>&nbsp;</p>
 		<h2><%= tableTitle %></h2>
 		<table border="1">
-		  <tr>
-		    <td nowrap><b>Friendly ID</b></td>
-		    <td nowrap><b>Actual ID</b></td>
-		    <td nowrap><b>Distinguished ID</b></td>
-		    <td nowrap><b>Complete</b></td>
-		    <td nowrap><b>Locked Until</b></td>
-		    <td nowrap><b>Width</b></td>
-		    <td nowrap><b>Height</b></td>
-		    <td nowrap><b>Stage</b></td>
-		    <td nowrap><b>Stage 1 Name</b></td>
-		    <td nowrap><b>Stage 1 Email</b></td>
-		    <td nowrap><b>Stage 2 Name</b></td>
-		    <td nowrap><b>Stage 2 Email</b></td>
-		    <td nowrap><b>Stage 3 Name</b></td>
-		    <td nowrap><b>Stage 3 Email</b></td>
-		    <td nowrap><b>Stage 4 Name</b></td>
-		    <td nowrap><b>Stage 4 Email</b></td>
-		  </tr>
+			<tr>
+				<td nowrap><b>Friendly ID</b></td>
+				<td nowrap><b>Actual ID</b></td>
+				<td nowrap><b>Distinguished ID</b></td>
+				<td nowrap><b>Complete</b></td>
+				<td nowrap><b>Locked Until</b></td>
+				<td nowrap><b>Width</b></td>
+				<td nowrap><b>Height</b></td>
+				<td nowrap><b>Stage</b></td>
+				<td nowrap><b>Stage 1 Name</b></td>
+				<td nowrap><b>Stage 1 Email</b></td>
+				<td nowrap><b>Stage 2 Name</b></td>
+				<td nowrap><b>Stage 2 Email</b></td>
+				<td nowrap><b>Stage 3 Name</b></td>
+				<td nowrap><b>Stage 3 Email</b></td>
+				<td nowrap><b>Stage 4 Name</b></td>
+				<td nowrap><b>Stage 4 Email</b></td>
+			</tr>
 			<%
 			// Execute query
 			res = pstmt.executeQuery();
@@ -228,35 +228,81 @@
 			while (res.next()) {
 				%>
 				<tr>
-				  <td nowrap><a href="drawing?type=pdf&scale=100&loss=0&id=<%= res.getInt("friendly_id") %>" target="pic"><%= res.getInt("friendly_id") %></a></td>
-				  <td nowrap><%= res.getString("id") %></td>
-				  <td nowrap><a href="?pub_d=<%= res.getString("id") %>"><%= res.getString("distinguished_id") %></a></td>
-				  <td nowrap><%= res.getString("completed") %></td>
-				  <td nowrap><a href="?unl_d=<%= res.getString("id") %>"><%= res.getTimestamp("locked") %></a></td>
-				  <td nowrap><%= res.getInt("width") %></td>
-				  <td nowrap><%= res.getInt("height") %></td>
-				  <td nowrap><%= res.getInt("stage") %></td>
-				  <td nowrap><%= res.getString("stage_1_author_name") %></td>
-				  <td nowrap><%= res.getString("stage_1_author_email") %></td>
-				  <td nowrap><%= res.getString("stage_2_author_name") %></td>
-				  <td nowrap><%= res.getString("stage_2_author_email") %></td>
-				  <td nowrap><%= res.getString("stage_3_author_name") %></td>
-				  <td nowrap><%= res.getString("stage_3_author_email") %></td>
-				  <td nowrap><%= res.getString("stage_4_author_name") %></td>
-				  <td nowrap><%= res.getString("stage_4_author_email") %></td>
-				  <td nowrap><a href="?complete=<%= res.getString("id") %>">Complete</a></td>
-				  <td nowrap><a href="?del_d=<%= res.getString("id") %>">Delete</a></td>
+					<td nowrap><a href="drawing?type=pdf&scale=100&loss=0&id=<%= res.getInt("friendly_id") %>" target="pic"><%= res.getInt("friendly_id") %></a></td>
+					<td nowrap><%= res.getString("id") %></td>
+					<td nowrap><a href="?pub_d=<%= res.getString("id") %>"><%= res.getString("distinguished_id") %></a></td>
+					<td nowrap><%= res.getString("completed") %></td>
+					<td nowrap><a href="?unl_d=<%= res.getString("id") %>"><%= res.getTimestamp("locked") %></a></td>
+					<td nowrap><%= res.getInt("width") %></td>
+					<td nowrap><%= res.getInt("height") %></td>
+					<td nowrap><%= res.getInt("stage") %></td>
+					<td nowrap><%= res.getString("stage_1_author_name") %></td>
+					<td nowrap><%= res.getString("stage_1_author_email") %></td>
+					<td nowrap><%= res.getString("stage_2_author_name") %></td>
+					<td nowrap><%= res.getString("stage_2_author_email") %></td>
+					<td nowrap><%= res.getString("stage_3_author_name") %></td>
+					<td nowrap><%= res.getString("stage_3_author_email") %></td>
+					<td nowrap><%= res.getString("stage_4_author_name") %></td>
+					<td nowrap><%= res.getString("stage_4_author_email") %></td>
+					<td nowrap><a href="?complete=<%= res.getString("id") %>">Complete</a></td>
+					<td nowrap><a href="?del_d=<%= res.getString("id") %>">Delete</a></td>
 				</tr>
 				<%
 			}
 			%>
 		</table>
 		<%
-		
 		// Close queries
 		res.close();
 		pstmt.close();
 	}
+	
+	// Show the gallery drawings
+	pstmt = conn.prepareStatement("SELECT * FROM gallery ORDER BY friendly_id");
+	res = pstmt.executeQuery();
+	%>
+	<p>&nbsp;</p>
+	<h2>Gallery</h2>
+	<table border="1">
+		<tr>
+			<td nowrap><b>Friendly ID</b></td>
+			<td nowrap><b>Thumb</b></td>
+			<td nowrap><b>Anim SWF</b></td>
+			<td nowrap><b>PDF</b></td>
+			<td nowrap><b>Width</b></td>
+			<td nowrap><b>Height</b></td>
+			<td nowrap><b>Stage</b></td>
+			<td nowrap><b>Stage 1 Name</b></td>
+			<td nowrap><b>Stage 2 Name</b></td>
+			<td nowrap><b>Stage 3 Name</b></td>
+			<td nowrap><b>Stage 4 Name</b></td>
+			<td nowrap><b>Actual ID</b></td>
+		</tr>
+		<%
+		while (res.next()) {
+			%>
+			<tr>
+				<td nowrap><%= res.getInt("friendly_id") %></td>
+				<td nowrap><a href="<%= SketchingoutSettings.URL_DRAWING_STORE + res.getString("thumbnail_filename") %>" target="thumb"><%= res.getString("thumbnail_filename") %></td>
+				<td nowrap><a href="<%= SketchingoutSettings.URL_DRAWING_STORE + res.getString("anim_swf_filename") %>" target="animswf"><%= res.getString("anim_swf_filename") %></td>
+				<td nowrap><a href="<%= SketchingoutSettings.URL_DRAWING_STORE + res.getString("pdf_filename") %>" target="pdf"><%= res.getString("pdf_filename") %></a></td>
+				<td nowrap><%= res.getInt("width") %></td>
+				<td nowrap><%= res.getInt("height") %></td>
+				<td nowrap><%= res.getInt("stage") %></td>
+				<td nowrap><%= res.getString("stage_1_author_name") %></td>
+				<td nowrap><%= res.getString("stage_2_author_name") %></td>
+				<td nowrap><%= res.getString("stage_3_author_name") %></td>
+				<td nowrap><%= res.getString("stage_4_author_name") %></td>
+				<td nowrap><%= res.getString("id") %></td>
+			</tr>
+			<%
+		}
+		%>
+	</table>
+	<%
+	// Close gallery query
+	res.close();
+	pstmt.close();
 %>
 <p>&nbsp;</p>
 <h2>Server Settings</h2>
