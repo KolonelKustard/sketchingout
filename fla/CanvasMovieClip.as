@@ -1,17 +1,38 @@
 ﻿class CanvasMovieClip extends MovieClip {
+	private static var DEFAULT_OFFSET_Y: Number = 20;
+	
 	private var theDrawing: Drawing;
 	private var currLine: Line;
-	
 	private var minX, minY, maxX, maxY: Number;
-	
 	public var modified: Boolean = false;
+	
+	private var linkedDragClip: DragMovieClip = null;
+	private var bottomOfDrawing: Number;
 	
 	private function clearCanvas(): Void {
 		clear();
+		bottomOfDrawing = 0;
 	}
 	
 	private function inBounds(theX, theY: Number): Boolean {
 		return ((theX >= minX) && (theX <= maxX) && (theY >= minY) && (theY <= maxY) && (!theDrawing.readOnly));
+	}
+	
+	private function moveDragClip(): Void {
+		// If no drag clip do nothing
+		if (linkedDragClip == null) return;
+		
+		// Get the current actual bottom of the drawing
+		var bottom: Number = bottomOfDrawing + _y;
+		
+		// Get the bottom of the drag clip
+		var dragBottom: Number = linkedDragClip._y + linkedDragClip._height;
+		
+		// See if the offset is ok
+		if ((dragBottom - DEFAULT_OFFSET_Y) <> bottom) {
+			// Set the location of the drag clip accordingly
+			linkedDragClip._y = (bottom - DEFAULT_OFFSET_Y) - linkedDragClip._height;
+		}
 	}
 	
 	public function onMouseDown(): Void {
@@ -28,6 +49,9 @@
 			// Start line actually drawn on the canvas
 			lineStyle(1, 0x000000, 100);
 			moveTo(currX, currY);
+			
+			// Set the bottom of the drawing to here
+			if (bottomOfDrawing < currY) bottomOfDrawing = currY;
 		}
 	}
 	
@@ -49,6 +73,11 @@
 				lineTo(currX, currY);
 				
 				modified = true;
+				
+				// Set the bottom of the drawing to here and call the move drag clip
+				// function
+				if (bottomOfDrawing < currY) bottomOfDrawing = currY;
+				moveDragClip();
 			}
 		}
 	}
@@ -112,6 +141,16 @@
 		
 		// But make sure records that it's modified
 		modified = true;
+	}
+	
+	public function set dragClip(dragClip: DragMovieClip) {
+		linkedDragClip = dragClip;
+		
+		if (linkedDragClip != null) {
+			
+		}
+		else {
+		}
 	}
 	
 	/**
