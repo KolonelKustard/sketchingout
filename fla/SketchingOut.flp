@@ -27,4 +27,5 @@
     <project_file path="./DrawingPage.as" filetype="as" />
     <project_file path="./SketchingoutSettings.as" filetype="as" />
     <project_file path="./CountdownMovieClip.as" filetype="as" />
+    <project_file path="./DrawInterface.as" filetype="as" />
 </flash_project>

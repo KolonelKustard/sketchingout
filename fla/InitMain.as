@@ -1,4 +1,4 @@
-// **************************************************************
+﻿// **************************************************************
 // * Create and set the properties of the main controller class *
 // **************************************************************
 holderClip = new DrawingPage();
@@ -14,7 +14,15 @@ holderClip.friendsEmailEdit = friendsEmail_txt;
 holderClip.countdownClip = countdownClip;
 
 
-
+logo_ldr.loadMovie("uiparts/logo.swf");
+whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
+introtxt_ldr.loadMovie("uiparts/introtext.swf");
+newsbox_ldr.loadMovie("uiparts/news_box.swf");
+drawbox_ldr.loadMovie("uiparts/draw_box.swf");
+sigbox_ldr.loadMovie("uiparts/sig_box.swf");
+viewgallerybtn_ldr.loadMovie("uiparts/viewgallery_btn.swf");
+hintsbox_ldr.loadMovie("uiparts/hints_box.swf");
+txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 
 // **************************************************************
 // * Define event functions                                     *
