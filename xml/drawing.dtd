@@ -1,0 +1,11 @@
+<!ELEMENT canvas (line+)>
+  <!ELEMENT line (point+)>
+    <!ELEMENT point EMPTY>
+
+<!ATTLIST canvas width CDATA #REQUIRED>
+<!ATTLIST canvas height CDATA #REQUIRED>
+<!ATTLIST canvas offsetx CDATA #REQUIRED>
+<!ATTLIST canvas offsety CDATA #REQUIRED>
+
+<!ATTLIST point x CDATA #REQUIRED>
+<!ATTLIST point y CDATA #REQUIRED>
