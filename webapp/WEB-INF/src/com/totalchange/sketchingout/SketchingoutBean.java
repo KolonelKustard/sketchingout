@@ -6,6 +6,11 @@
  */
 package com.totalchange.sketchingout;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
@@ -24,13 +29,20 @@ import com.totalchange.sketchingout.RandomGUID;
  * more later on by doing a database check.  But it seems pretty pointless at
  * present to try and tackle spoofing.  In fact it may prove quite amusing if
  * some little punk does decide to spoof others.</p>
+ * <p>Now this class also provides a few thumbnails from the gallery</p>
  */
 public class SketchingoutBean {
 	private static final String COOKIE_NAME = "consequences";
 	private static final int SECONDS_PER_YEAR = 60*60*24*365;
 	
+	private static final int NUM_GALLERY_THUMBS = 5;
+	
 	private String userID;
 	private String drawingID;
+	
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet res;
 	
 	public String getFlashParams() {
 		// See if got to pass a next drawing parameter or not
@@ -78,5 +90,59 @@ public class SketchingoutBean {
 		
 		// Look for drawing id
 		drawingID = request.getParameter(SketchingoutSettings.URL_PARAM_DRAWING_ID);
+	}
+	
+	/**
+	 * <p>For the client to use to decide how many thumbnails to get from the
+	 * gallery</p>
+	 * 
+	 * @return Number of gallery thumbnails to display
+	 */
+	public int getNumThumbnails() {
+		return NUM_GALLERY_THUMBS;
+	}
+	
+	/**
+	 * <p>Must be called by the client before attempting to get any thumbnails</p>
+	 */
+	public void connect() throws SQLException, ClassNotFoundException {
+		conn = SQLWrapper.makeConnection();
+		pstmt = SQLWrapper.getHomepageThumbnails(conn, NUM_GALLERY_THUMBS);
+		res = pstmt.executeQuery();
+	}
+	
+	/**
+	 * <p>The client calls this method to get the next thumbnail.  Returns null
+	 * if no more drawings left</p>
+	 * 
+	 * @return The url to the next thumbnail
+	 */
+	public String getNextThumbnail() throws SQLException {
+		if (res.next()) {
+			return SketchingoutSettings.URL_DRAWING_STORE + res.getString("thumbnail_filename");
+		}
+		else {
+			return null;
+		}
+	}
+	
+	/**
+	 * <p>Must be called by the client once finished with thumbnails</p>
+	 */
+	public void disconnect() throws SQLException {
+		if (res != null) {
+			res.close();
+			res = null;
+		}
+		
+		if (pstmt != null) {
+			pstmt.close();
+			pstmt = null;
+		}
+		
+		if (conn != null) {
+			conn.close();
+			conn = null;
+		}
 	}
 }
