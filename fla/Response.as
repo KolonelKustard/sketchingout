@@ -44,8 +44,8 @@
 				case "next_drawing":
 					responseOp = new NextDrawingResponse();
 					break;
-				case "gallery_drawing":
-					responseOp = new GalleryDrawingResponse();
+				case "gallery_drawings":
+					responseOp = new GalleryDrawingsResponse();
 					break;
 				case "errors":
 					parseErrors(rootNode.childNodes[num]);
