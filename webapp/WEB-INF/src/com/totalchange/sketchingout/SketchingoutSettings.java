@@ -107,5 +107,5 @@ public class SketchingoutSettings {
 	/**
 	 * The url in which completed drawings can be found
 	 */
-	public static final String URL_DRAWING_STORE = URL_ROOT + FS_DRAWING_STORE;
+	public static final String URL_DRAWING_STORE = URL_ROOT + "drawings/";
 }
