@@ -82,6 +82,7 @@ public class SQLWrapper {
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
 			"  id, " +
+			"  stage, " +
 			"  head, " +
 			"  body, " + 
 			"  legs " +
@@ -90,12 +91,11 @@ public class SQLWrapper {
 			"WHERE " +
 			"  completed = 'N' AND " +
 			"  locked < ? AND " +
-			"  head_author_id <> ? AND " +
-			"  body_author_id <> ? AND " +
-			"  legs_author_id <> ? " +
+			"  stage_1_author_id <> ? AND " +
+			"  stage_2_author_id <> ? AND " +
+			"  stage_3_author_id <> ? " +
 			"ORDER BY " +
-			"  body, " +
-			"  legs " +
+			"  stage DESC " +
 			"LIMIT 1"
 		);
 		
@@ -113,7 +113,7 @@ public class SQLWrapper {
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
 			"  id, " +
-			"  locked, " +
+			"  stage, " +
 			"  head, " +
 			"  body, " + 
 			"  legs " +
@@ -155,7 +155,85 @@ public class SQLWrapper {
 		pstmt.close();
 	}
 	
-	public static final PreparedStatement insertDrawing() {
+	public static final int INS_DRAW_DRAWING = 7;
+	public static final int INS_DRAW_SIGNATURE = 8;
+	public static final PreparedStatement insertDrawing(Connection conn, 
+		String drawingID, String distinguishedID, String userID, String userName, 
+		String userEmail) throws SQLException{
+			
+		PreparedStatement pstmt = conn.prepareStatement(
+			"INSERT INTO drawings(" +
+			"  id, completed, locked, distinguished_id, stage, " +
+			"  stage_1_author_id, stage_1_author_name, stage_1_author_email, " +
+			"  stage_1, stage_1_signature" +
+			") VALUES( " +
+			"  ?, 'N', ?, ?, 1, ?, ?, ?, ?, ?" +
+			")"
+		);
+		
+		// Set parameters
+		pstmt.setString(1, drawingID);
+		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+		pstmt.setString(3, distinguishedID);
+		pstmt.setString(4, userID);
+		pstmt.setString(5, userName);
+		pstmt.setString(6, userEmail);
+		
+		// Default drawing and signature to null
+		pstmt.setString(INS_DRAW_DRAWING, null);
+		pstmt.setString(INS_DRAW_SIGNATURE, null);
+		
+		return pstmt;
+	}
+	
+	public static final int UPD_DRAW_DRAWING = 8;
+	public static final int UPD_DRAW_SIGNATURE = 9;
+	public static final PreparedStatement updateDrawing(Connection conn, 
+		String drawingID, boolean complete, String distinguishedID, int stage,
+		String userID, String userName,	String userEmail) throws SQLException {
+		
+		// Convert the stage number into a string to use to identify the field names
+		// in the statement
+		String stageID = String.valueOf(stage);
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"UPDATE " +
+			"  drawings " +
+			"SET " +
+			"  completed = ?, " +
+			"  locked = ?, " +
+			"  distinguished_id = ?, " +
+			"  stage = ?, " +
+			"  stage_" + stageID + "_author_id = ?, " +
+			"  stage_" + stageID + "_author_name = ?, " +
+			"  stage_" + stageID + "_author_email = ?, " +
+			"  stage_" + stageID + " = ?, " +
+			"  stage_" + stageID + "_signature = ? " +
+			"WHERE " +
+			"  id = ?"
+		);
+		
+		// Set parameters
+		if (complete) {
+			pstmt.setString(1, "Y");
+		} else {
+			pstmt.setString(1, "N");
+		}
+		
+		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+		pstmt.setString(3, distinguishedID);
+		pstmt.setInt(4, stage);
+		pstmt.setString(5, userID);
+		pstmt.setString(6, userName);
+		pstmt.setString(7, userEmail);
+		
+		// Initialise drawing and signature to null
+		pstmt.setString(UPD_DRAW_DRAWING, null);
+		pstmt.setString(UPD_DRAW_SIGNATURE, null);
+		
+		// Set drawing id into place
+		pstmt.setString(10, drawingID);
+		
 		return null;
 	}
 	
@@ -181,6 +259,38 @@ public class SQLWrapper {
 					inChar = in.read();
 				}
 			}
+		}
+	}
+	
+	/**
+	 * Utility procedure to copy a clob from one result set to a clob in another
+	 * prepared statement.
+	 * 
+	 * @param in
+	 * @param out
+	 * @param param
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public static final void copyClob(Clob in, PreparedStatement out, int param)
+		throws SQLException {
+			
+		if (in == null) {
+			// Set to null
+			out.setString(param, null);
+		}
+		else {
+			// Try and get a reader
+			Reader reader = in.getCharacterStream();
+			
+			if ((reader == null) || (in.length() <= 0)) {
+				// No reader or no chars, set to null
+				out.setString(param, null);
+			}
+			else {
+				// Send the reader to the prepared statement as a char stream
+				out.setCharacterStream(param, reader, (int)in.length());
+			} 
 		}
 	}
 }
