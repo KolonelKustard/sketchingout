@@ -359,6 +359,31 @@ public class SQLWrapper {
 		
 	}
 	
+	public static final PreparedStatement getRandomEmail(Connection conn) 
+		throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  * " +
+			"FROM " +
+			"  emails"
+		);
+		
+		return pstmt;
+	}
+	
+	public static final void deleteDrawing(Connection conn, String drawingID) 
+		throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"DELETE FROM drawings WHERE drawing_id = ?"
+		);
+		
+		pstmt.setString(1, drawingID);
+		pstmt.execute();
+		pstmt.close();
+	}
+	
 	/**
 	 * Utility procedure to output a blob to the xml writer as the data in an element 
 	 * 
