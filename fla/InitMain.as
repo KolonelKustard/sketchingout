@@ -19,18 +19,12 @@ hintsLoader.addAssociation(yourName_txt, "uiparts/pleaseentername_msg.swf");
 hintsLoader.addAssociation(yourEmail_txt, "uiparts/enteryouremail_msg.swf");
 hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
 hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
+//not working - no nested movie clips?
+hintsLoader.addAssociation(dragClip_mc.dragHandle_mc, "uiparts/dragthis_msg.swf");
+
+
 
 //Set up custom cursor
-/**this.attachMovie("pencil_id", "pencil_mc", this.getNextHighestDepth());
-Mouse.hide();
-var mouseListener:Object = new Object();
-mouseListener.onMouseMove = function() {
-  pencil_mc._x = _xmouse;
-  pencil_mc._y = _ymouse;
-  updateAfterEvent();
-};
-Mouse.addListener(mouseListener);
-*/
 this.attachMovie("pencil_id", "pencil_mc", this.getNextHighestDepth());
 pencil_mc._visible = false;
 mainCanvas.penMovieClip = pencil_mc;
@@ -113,10 +107,7 @@ txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 function onStartLoading(): Void {
 	trace("Loading...");
 	_root.hintsLoader.defaultHint = "uiparts/loading_msg.swf";
-	headHighlight._visible = false;
-	bodyHighlight._visible = false;
-	legsHighlight._visible = false;
-	feetHighlight._visible = false;
+
 }
 
 /**
@@ -127,7 +118,7 @@ function onStartLoading(): Void {
 function onEndLoading(loadedOK: Boolean): Void {
 	trace("Done " + loadedOK);
 	//focus 'Name' text field
-	Selection.setFocus("yourEmail_txt");
+	//Selection.setFocus("yourEmail_txt");
 		
 }
 
@@ -159,7 +150,7 @@ holderClip.onNewDrawing = function(stage: Number): Void {
 			bodyparts._visible = true;
 			break;
 		default :
-			trace("oh dear")
+			_root.hintsLoader.defaultHint = "uiparts/oopsgonewrong_msg.swf";
 	}
 }
 
@@ -218,9 +209,9 @@ holderClip.onErrorInvalidFriendsEmail = function(): Void {
  */
 holderClip.userDetails.onErrorNoName = function(): Void {
 	trace("Spaz alert: What's your name bitch?");
-//	_root.hintsLoader.loadMovie("uiparts/entername_msg.swf");
+	_root.hintsLoader.defaultHint = "uiparts/pleaseentername_msg.swf";
 	//focus 'Name' text field
-	Selection.setFocus("yourEmail_txt");
+	//Selection.setFocus("yourEmail_txt");
 }
 
 /**
@@ -228,7 +219,7 @@ holderClip.userDetails.onErrorNoName = function(): Void {
  */
 holderClip.userDetails.onErrorInvalidEmail = function(): Void {
 	trace("Spaz alert: That email address does not conform to the ISO 9765523789834 standards.");
-//	_root.hintsLoader.loadMovie("uiparts/checkyouremail_msg.swf");
+	_root.hintsLoader.defaultHint = "uiparts/checkyouremail_msg.swf";
 	}
 
 /**
@@ -240,6 +231,7 @@ holderClip.userDetails.onErrorInvalidEmail = function(): Void {
 holderClip.onError = function(error: ResponseError): Void {
 	trace("Error: " + error.message);
 	trace("Stack trace: " + error.fullStackTrace);
+	_root.hintsLoader.defaultHint = "uiparts/oopsgonewrong_msg.swf";
 }
 
 
