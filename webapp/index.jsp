@@ -17,5 +17,18 @@
   <param name="bgcolor" value="#ffffff" />
   <embed src="sketchingout.swf?<jsp:getProperty name="sketchingoutBean" property="flashParams" />&make_flash_refresh=<%= new com.totalchange.sketchingout.RandomGUID().toString() %>" quality="high" bgcolor="#ffffff" width="790" height="500" name="sketchingout" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 </object>
+<table width="790">
+	<tr>
+	<%
+		sketchingoutBean.connect();
+		for (int num = 0; num < sketchingoutBean.getNumThumbnails(); num++) {
+			%>
+			<td><img src="<%= sketchingoutBean.getNextThumbnail() %>" /></td>
+			<%
+		}
+		sketchingoutBean.disconnect();
+	%>
+	</tr>
+</table>
 </body>
 </html>
