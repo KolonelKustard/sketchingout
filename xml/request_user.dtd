@@ -1,0 +1,3 @@
+<!ELEMENT request_user_details EMPTY>
+
+<!ATTLIST request_user_details user_id CDATA #REQUIRED>

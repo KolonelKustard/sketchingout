@@ -26,5 +26,7 @@ end function
 ValidateXMLDoc("drawing.xml")
 ValidateXMLDoc("request_next.xml")
 ValidateXMLDoc("response_next.xml")
+ValidateXMLDoc("request_user.xml")
+ValidateXMLDoc("response_user.xml")
 
 MsgBox("No errors in XML documents")

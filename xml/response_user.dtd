@@ -1,0 +1,6 @@
+<!ELEMENT user_details (name?, email?, signature?)>
+  <!ELEMENT name (#PCDATA)>
+  <!ELEMENT email (#PCDATA)>
+  <!ELEMENT signature (#PCDATA)>
+  
+<!ATTLIST user_details id CDATA #REQUIRED>
