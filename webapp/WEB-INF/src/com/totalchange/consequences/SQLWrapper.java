@@ -338,6 +338,8 @@ public class SQLWrapper {
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
 			"  friendly_id, " +
+			"  width, " +
+			"  height, " +
 			"  stage, " +
 			"  stage_1_author_name, " +
 			"  stage_2_author_name, " +
@@ -348,7 +350,7 @@ public class SQLWrapper {
 			"WHERE " +
 			"  completed = 'Y' " +
 			"ORDER BY " +
-			"  friendly_id DESC" +
+			"  friendly_id DESC " +
 			"LIMIT " + offset + ", " + rowCount
 		);
 			
