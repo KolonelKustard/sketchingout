@@ -11,6 +11,10 @@
 		<mkdir dir="${dest}"/>
 	</target>
 	
+	<target name="clean">
+		<delete dir="${dest}"/>
+	</target>
+	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
 		<javac srcdir="${src}" destdir="${dest}" classpath="servlet.jar">
 			<classpath>
@@ -20,4 +24,6 @@
 			</classpath>
 		</javac>
 	</target>
+	
+	<target name="rebuild" depends="clean, compile" />
 </project>
