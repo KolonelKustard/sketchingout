@@ -14,20 +14,46 @@ holderClip.friendsEmailEdit = friendsEmail_txt;
 holderClip.countdownClip = countdownClip;
 
 
+
+
+
+// **************************************************************
+// * Load UI parts into the loader clips                        *
+// **************************************************************
+logo_ldr.onMovieClipPlayed = function() {trace("Logo Done");}
 logo_ldr.loadMovie("uiparts/logo.swf");
+
+whatsthis_ldr.onMovieClipPlayed = function() {trace("What's This Done");}
 whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
+
+introtxt_ldr.onMovieClipPlayed = function() {trace("Intro Done");}
 introtxt_ldr.loadMovie("uiparts/introtext.swf");
+
+newsbox_ldr.onMovieClipPlayed = function() {trace("News Box Done");}
 newsbox_ldr.loadMovie("uiparts/news_box.swf");
+
+drawbox_ldr.onMovieClipPlayed = function() {trace("Draw Box Done");}
 drawbox_ldr.loadMovie("uiparts/draw_box.swf");
+
+sigbox_ldr.onMovieClipPlayed = function() {trace("Sig Box Done");}
 sigbox_ldr.loadMovie("uiparts/sig_box.swf");
+
+viewgallerybtn_ldr.onMovieClipPlayed = function() {trace("View Gallery Done");}
 viewgallerybtn_ldr.loadMovie("uiparts/viewgallery_btn.swf");
+
+hintsbox_ldr.onMovieClipPlayed = function() {trace("Hints Box Done");}
 hintsbox_ldr.loadMovie("uiparts/hints_box.swf");
+
+txtfldsbtn_ldr.onMovieClipPlayed = function() {trace("Txt Flds Btn?!? Done");}
 txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
+
+
+
+
 
 // **************************************************************
 // * Define event functions                                     *
 // **************************************************************
-
 
 /**
  * Called before any data is sent to the server.
