@@ -40,7 +40,8 @@ CREATE TABLE drawings(
   stage_4_signature	TEXT NULL,
   
   INDEX incomplete_drawings(completed, locked, stage),
-  INDEX awaiting_drawing(distinguished_id)
+  INDEX awaiting_drawing(distinguished_id),
+  UNIQUE INDEX friendly_ids(friendly_id)
 );
 
 CREATE TABLE gallery(
