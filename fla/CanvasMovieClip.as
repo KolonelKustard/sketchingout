@@ -1,11 +1,14 @@
-class CanvasMovieClip extends MovieClip {
+﻿class CanvasMovieClip extends MovieClip {
 	private var theDrawing: Drawing;
 	private var currLine: Line;
 	private var minX, minY, maxX, maxY: Number;
-	public var modified: Boolean = false;
+	private var hasMouse: Boolean = false;
 	
 	private var linkedDragClip: DragMovieClip = null;
 	private var bottomOfDrawing: Number;
+	
+	public var modified: Boolean = false;
+	public var penMovieClip: MovieClip = null;
 	
 	private function clearCanvas(): Void {
 		clear();
@@ -60,6 +63,27 @@ class CanvasMovieClip extends MovieClip {
 	}
 	
 	public function onMouseMove(): Void {
+		// If not got mouse, see if should have mouse
+		if ((!hasMouse) && (inBounds(_xmouse, _ymouse)) && (penMovieClip != null)) {
+			hasMouse = true;
+			Mouse.hide();
+			penMovieClip._visible = true;
+		}
+		
+		// If has mouse, move pencil clip
+		if (hasMouse) {
+			penMovieClip._x = _x + _xmouse;
+			penMovieClip._y = _y + _ymouse;
+			updateAfterEvent();
+			
+			// Check to see if moved outside bounds
+			if (!inBounds(_xmouse, _ymouse)) {
+				hasMouse = false;
+				Mouse.show();
+				penMovieClip._visible = false;
+			}
+		}
+		
 		// If have a current line, add point
 		if (currLine != null) {
 			var currX: Number = _xmouse;
