@@ -184,11 +184,12 @@ public class SQLWrapper {
 			
 		PreparedStatement pstmt = conn.prepareStatement(
 			"INSERT INTO drawings(" +
-			"  id, completed, locked, distinguished_id, width, height, stage, " +
-			"  stage_1_author_id, stage_1_author_name, stage_1_author_email, " +
+			"  id, completed, locked, distinguished_id, width, height, version," +
+			"  stage, stage_1_author_id, stage_1_author_name, stage_1_author_email, " +
 			"  stage_1, stage_1_signature" +
 			") VALUES( " +
-			"  ?, 'N', ?, ?, ?, ?, 1, ?, ?, ?, ?, ?" +
+			"  ?, 'N', ?, ?, ?, ?, " + ConsequencesSettings.PRESENT_DRAWING_VERSION + 
+			"  , 1, ?, ?, ?, ?, ?" +
 			")"
 		);
 		
@@ -268,6 +269,7 @@ public class SQLWrapper {
 		
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
+			"  version, " +
 			"  width, " +
 			"  height, " +
 			"  stage, " +
