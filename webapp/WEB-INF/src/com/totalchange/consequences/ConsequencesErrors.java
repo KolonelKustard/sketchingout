@@ -27,11 +27,13 @@ public class ConsequencesErrors {
 		private String source;
 		private String type;
 		private String message;
+		private StackTraceElement[] trace;
 		
 		public ConsequencesError(Class caller, Exception e) {
 			source = caller.getName();
 			type = e.getClass().getName();
 			message = e.getMessage();
+			trace = e.getStackTrace();
 		}
 		
 		public String getSource() {
@@ -44,6 +46,10 @@ public class ConsequencesErrors {
 		
 		public String getMessage() {
 			return message;
+		}
+		
+		public StackTraceElement[] getTrace() {
+			return trace;
 		}
 	}
 	
@@ -86,6 +92,20 @@ public class ConsequencesErrors {
 			out.writeElement(XMLConsts.EL_ERROR_SRC, err.getSource());
 			out.writeElement(XMLConsts.EL_ERROR_TYPE, err.getType());
 			out.writeElement(XMLConsts.EL_ERROR_MESSAGE, err.getMessage());
+			
+			// See if there's a stack trace
+			StackTraceElement[] trace = err.getTrace();
+			if ((trace != null) && (trace.length > 0)) {
+				// Add stack trace elements
+				out.startElement(XMLConsts.EL_ERROR_STACK_TRACE);
+				
+				for (int numSt = 0; numSt < trace.length; numSt++) {
+					out.writeElement(XMLConsts.EL_ERROR_TRACE, trace[numSt].toString());
+				}
+				
+				out.endElement(XMLConsts.EL_ERROR_STACK_TRACE);
+			}
+			
 			out.endElement(XMLConsts.EL_ERROR);
 		}
 		

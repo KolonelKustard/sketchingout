@@ -13,6 +13,7 @@ package com.totalchange.consequences;
  * elements and attributes or whatever.</p>
  */
 public class XMLConsts {
+	public static final String EL_REQUEST = "request";
 	public static final String EL_RESPONSE = "response";
 	
 	public static final String EL_ERRORS = "errors";
@@ -20,4 +21,6 @@ public class XMLConsts {
 	public static final String EL_ERROR_SRC = "src";
 	public static final String EL_ERROR_TYPE = "type";
 	public static final String EL_ERROR_MESSAGE = "message";
+	public static final String EL_ERROR_STACK_TRACE = "stacktrace";
+	public static final String EL_ERROR_TRACE = "trace";
 }

@@ -45,7 +45,7 @@ public class ConsequencesServlet extends HttpServlet {
 		try {			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			parser.parse(request.getInputStream(), new XMLHandler(writer));
+			parser.parse(request.getInputStream(), new XMLHandler(writer, errs));
 		}
 		catch(Exception e) {
 			// Add error to the error cache

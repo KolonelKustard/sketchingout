@@ -5,6 +5,7 @@ package com.totalchange.consequences;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -15,9 +16,11 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLHandler extends DefaultHandler {
 	private XMLWriter out;
+	private ConsequencesErrors errs;
 	
-	public XMLHandler(XMLWriter out) {
+	public XMLHandler(XMLWriter out, ConsequencesErrors errs) {
 		this.out = out;
+		this.errs = errs;
 	}
 	
 	/* (non-Javadoc)
@@ -31,4 +34,39 @@ public class XMLHandler extends DefaultHandler {
 		throws SAXException {
 			
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
+	 */
+	public void characters(char[] ch, int start, int length)
+		throws SAXException {
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void endElement(String uri, String localName, String qName)
+		throws SAXException {
+		
+	}
+
+	/**
+	 * Gets added to error cache
+	 * 
+	 * @see org.xml.sax.ErrorHandler#error(org.xml.sax.SAXParseException)
+	 */
+	public void error(SAXParseException e) throws SAXException {
+		errs.addException(this.getClass(), e);
+	}
+
+	/**
+	 * Gets added to error cache
+	 * 
+	 * @see org.xml.sax.ErrorHandler#fatalError(org.xml.sax.SAXParseException)
+	 */
+	public void fatalError(SAXParseException e) throws SAXException {
+		errs.addException(this.getClass(), e);
+	}
+
 }
