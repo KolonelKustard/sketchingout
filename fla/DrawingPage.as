@@ -40,6 +40,9 @@
 		// cover up
 		dragClip.nextDrawing = nextDrawing;
 		dragClip.resetPos();
+		
+		// Set the drag clip into the canvas clip
+		nextDrawing.dragClip = dragClip;
 	}
 	
 	/**
