@@ -1,0 +1,11 @@
+﻿<flash_project name="consequences" version="1">
+    <project_file path="./consequences.fla" filetype="fla" profile="" />
+    <project_file path="./Drawing.as" filetype="as" />
+    <project_file path="./Line.as" filetype="as" />
+    <project_file path="./Request.as" filetype="as" />
+    <project_file path="./Response.as" filetype="as" />
+    <project_file path="./RequestOperator.as" filetype="as" />
+    <project_file path="./Point.as" filetype="as" />
+    <project_file path="./SubmitDrawingRequest.as" filetype="as" />
+    <project_file path="./test.fla" filetype="fla" profile="" />
+</flash_project>
