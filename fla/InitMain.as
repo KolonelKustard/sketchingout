@@ -48,6 +48,7 @@ bodyHighlight._visible = false;
 legsHighlight._visible = false;
 feetHighlight._visible = false;
 news_txt._visible = false;
+viewGallery_btn._visible = false;
 
 //called when specified drawn UI part has finished
 function showNonDrawUI() {
@@ -58,6 +59,7 @@ function showNonDrawUI() {
 	mainCanvas._visible = true;
 	countdownClip._visible = true;
 	news_txt._visible = true;
+	viewGallery_btn._visible = true;
 	//bodyparts._visible = true;
 }
 
@@ -258,6 +260,10 @@ clearSig_btn.onPress = function() {
 }
 // Prevent tab stop on this button
 clearSig_btn.tabEnabled = false;
+
+viewGallery_btn.onPress = function() {
+	_root.loadMovie("gallery.swf",1)
+}
 
 
 
