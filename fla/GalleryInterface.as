@@ -5,13 +5,11 @@
  */
 class GalleryInterface extends DrawInterface {
 	// The number of milliseconds a drawing takes to cross the screen
-	private static var TIME_TO_CROSS_SCREEN: Number = 25 * 1000;
-	
-	// The number of milliseconds a drawing waits in the middle of the
-	// screen before it moves off again
+	private static var TIME_TO_CROSS_TO_MIDDLE: Number = 10 * 1000;
 	private static var TIME_TO_WAIT_IN_MIDDLE: Number = 5 * 1000;
+	private static var TIME_TO_CROSS_FROM_MIDDLE: Number = 3 * 1000;
 	
-	private var startTime, waitTime, startX, endX: Number = -1;
+	private var startTime, endTime, startX, endX, totalStartX, totalEndX: Number = -1;
 	private var inMiddle, beenInMiddle: Boolean = false;
 	
 	public function onEnterFrame(): Void {
@@ -21,26 +19,37 @@ class GalleryInterface extends DrawInterface {
 		// See if in the middle
 		if (inMiddle) {
 			// Don't move, but check to see if should move
-			if ((getTimer() - waitTime) >= TIME_TO_WAIT_IN_MIDDLE) {
+			if (getTimer() >= endTime) {
 				inMiddle = false;
 				beenInMiddle = true;
+				
+				startTime = getTimer();
+				endTime = startTime + TIME_TO_CROSS_FROM_MIDDLE;
+				startX = _x;
+				endX = totalEndX;
 			}
 		}
 		else {
-			// Move this instance left by the correct amount
-			var percent: Number = (getTimer() - startTime) / (TIME_TO_CROSS_SCREEN - TIME_TO_WAIT_IN_MIDDLE);
+			// Move this instance by the correct amount
+			var percent: Number = (getTimer() - startTime) / endTime;
 			var offset: Number = percent * (0 - (startX - endX));
 			var newX: Number = Math.round(startX + offset);
-		
+			
+			// Only move if not gone beyond end
 			if ((_x != newX) && (percent <= 1)) {
 				// Move this
 				_x = newX;
+				trace(Math.round(percent) + " " + Math.round(offset) + " " + Math.round(getTimer() / 1000) + " " + Math.round(startTime / 1000) + " " + Math.round(endTime / 1000) + " " + newX + " " + startX + " " + endX);
+			}
+			
+			// See whether been in middle before and if in middle
+			if (!beenInMiddle && (percent >= 1)) {
+				inMiddle = true;
 				
-				// See if in middle and whether been in middle before
-				if (!beenInMiddle && (percent >= 0.5)) {
-					inMiddle = true;
-					waitTime = getTimer();
-				}
+				startTime = getTimer();
+				endTime = startTime + TIME_TO_WAIT_IN_MIDDLE;
+				startX = _x;
+				endX = _x;
 			}
 		}
 	}
@@ -49,7 +58,12 @@ class GalleryInterface extends DrawInterface {
 		super.loadMovie(drawing.urlAnimatedSWF);
 		
 		startTime = getTimer();
-		startX = 687;
-		endX = -50;
+		endTime = startTime + TIME_TO_CROSS_TO_MIDDLE;
+		totalStartX = 687;
+		totalEndX = -50;
+		
+		// Move to the middle
+		startX = totalStartX;
+		endX = (totalStartX / 2) + (totalEndX / 2);
 	}
 }
