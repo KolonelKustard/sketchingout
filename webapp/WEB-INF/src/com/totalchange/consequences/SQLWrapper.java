@@ -298,6 +298,29 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
+	public static final PreparedStatement getLatestGalleryDrawings(Connection conn) 
+		throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  friendly_id, " +
+			"  stage, " +
+			"  stage_1_author_name, " +
+			"  stage_2_author_name, " +
+			"  stage_3_author_name, " +
+			"  stage_4_author_name " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  completed = 'Y' " +
+			"ORDER BY " +
+			"  friendly_id DESC"
+		);
+			
+		return pstmt;
+		
+	}
+	
 	/**
 	 * Utility procedure to output a blob to the xml writer as the data in an element 
 	 * 
