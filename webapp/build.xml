@@ -5,6 +5,7 @@
 
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
+	<property environment="env"/>
 	
 	<target name="makedirs">
 	  <mkdir dir="${dest}"/>
@@ -13,7 +14,7 @@
 	<target name="compile" depends="makedirs" description="Compiles the web app">
 		<javac srcdir="${src}" destdir="${dest}" classpath="servlet.jar">
 			<classpath>
-				<fileset dir="${catalina.home}/common/lib/">
+				<fileset dir="${env.CATALINA_HOME}/common/lib/">
 					<include name="*.jar"/>
 				</fileset>
 			</classpath>
