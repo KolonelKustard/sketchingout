@@ -1,4 +1,4 @@
-// **************************************************************
+﻿// **************************************************************
 // * Create and set the properties of the main controller class *
 // **************************************************************
 holderClip = new DrawingPage();
@@ -20,11 +20,13 @@ holderClip.countdownClip = countdownClip;
 // * Define event functions                                     *
 // **************************************************************
 
+
 /**
  * Called before any data is sent to the server.
  */
 function onStartLoading(): Void {
 	trace("Loading...");
+	_root.hintsLoader.loadMovie("uiparts/loading_msg.swf")
 }
 
 /**
@@ -34,6 +36,7 @@ function onStartLoading(): Void {
  */
 function onEndLoading(loadedOK: Boolean): Void {
 	trace("Done " + loadedOK);
+	
 }
 
 /**
@@ -42,6 +45,22 @@ function onEndLoading(loadedOK: Boolean): Void {
  */
 holderClip.onNewDrawing = function(stage: Number): Void {
 	trace("Starting new drawing of stage: " + stage);
+	switch (stage) {
+		case 1 :
+			_root.hintsLoader.loadMovie("uiparts/yourturnhead_msg.swf");
+			break;
+		case 2 :
+			_root.hintsLoader.loadMovie("uiparts/yourturnbody_msg.swf");
+			break;
+		case 3 :
+			_root.hintsLoader.loadMovie("uiparts/yourturnlegs_msg.swf");
+			break;
+		case 4 :
+			_root.hintsLoader.loadMovie("uiparts/yourturnfeet_msg.swf");
+			break;
+		default :
+			trace("oh dear")
+	}
 }
 
 /**
