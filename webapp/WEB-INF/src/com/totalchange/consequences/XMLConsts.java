@@ -49,15 +49,21 @@ public class XMLConsts {
 	public static final String AT_SUBMIT_DRAWING_NEXT_USER_EMAIL = "next_user_email";
 	public static final String EL_SUBMIT_DRAWING_DRAWING = "drawing";
 	
+	public static final String EL_GALLERY_DRAWINGS = "gallery_drawings";
+	public static final String AT_GALLERY_DRAWINGS_TYPE = "type";
+	public static final String AT_GALLERY_DRAWINGS_START = "start";
+	public static final String AT_GALLERY_DRAWINGS_QUANTITY = "quantity";
+	
 	public static final String EL_GALLERY_DRAWING = "gallery_drawing";
 	public static final String AT_GALLERY_DRAWING_ID = "drawing_id";
 	public static final String EL_GALLERY_DRAWING_ID = "drawing_id";
+	public static final String EL_GALLERY_DRAWING_WIDTH = "width";
+	public static final String EL_GALLERY_DRAWING_HEIGHT = "height";
 	public static final String EL_GALLERY_DRAWING_NUM_STAGES = "num_stages";
-	public static final String EL_GALLERY_DRAWING_STAGE = "drawing_stage";
-	public static final String EL_GALLERY_DRAWING_STAGE_NUM = "stage";
-	public static final String EL_GALLERY_DRAWING_NAME = "name";
-	public static final String EL_GALLERY_DRAWING_DRAWING = "drawing";
-	public static final String EL_GALLERY_DRAWING_SIGNATURE = "signature";
+	
+	public static final String EL_GALLERY_DRAWING_STAGE_AUTHOR = "stage_author";
+	public static final String EL_GALLERY_DRAWING_STAGE_AUTHOR_STAGE = "stage";
+	public static final String EL_GALLERY_DRAWING_STAGE_AUTHOR_NAME = "name";
 	
 	public static final String EL_DRAWING_CANVAS = "canvas";
 	public static final String AT_DRAWING_CANVAS_WIDTH = "width";
