@@ -46,11 +46,7 @@ public class NextDrawingRequest implements RequestHandler {
 		
 		// Use the stage value to find out which drawing to return
 		Clob draw = null;
-		switch (stage) {
-			case 1: draw = next.getClob("head");
-			case 2: draw = next.getClob("body");
-			case 3: draw = next.getClob("legs");
-		}
+		draw = next.getClob("stage_" + stage);
 		
 		// Check have a previous drawing to give
 		if ((draw == null) || (draw.length() <= 0)) {
@@ -60,7 +56,9 @@ public class NextDrawingRequest implements RequestHandler {
 		
 		// Output drawing
 		out.startElement(XMLConsts.EL_NEXT_DRAWING_DRAWING);
+		out.startCData();
 		SQLWrapper.outputClob(out, draw);
+		out.endCData();
 		out.endElement(XMLConsts.EL_NEXT_DRAWING_DRAWING);
 		
 		// End next
