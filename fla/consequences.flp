@@ -1,5 +1,4 @@
 ﻿<flash_project name="consequences" version="1">
-    <project_file path="./consequences.fla" filetype="fla" profile="" />
     <project_file path="./Drawing.as" filetype="as" />
     <project_file path="./Line.as" filetype="as" />
     <project_file path="./Request.as" filetype="as" />
@@ -7,7 +6,6 @@
     <project_file path="./RequestOperator.as" filetype="as" />
     <project_file path="./Point.as" filetype="as" />
     <project_file path="./SubmitDrawingRequest.as" filetype="as" />
-    <project_file path="./test.fla" filetype="fla" profile="" />
     <project_file path="./User.as" filetype="as" />
     <project_file path="./PublicDrawingRequest.as" filetype="as" />
     <project_file path="./PrivateDrawingRequest.as" filetype="as" />
@@ -22,4 +20,7 @@
     <project_file path="./GalleryDrawingsRequest.as" filetype="as" />
     <project_file path="./GalleryDrawing.as" filetype="as" />
     <project_file path="./GalleryDrawingAuthor.as" filetype="as" />
+    <project_file path="./GuiGallery.as" filetype="as" />
+    <project_file path="./GuiDraw.as" filetype="as" />
+    <project_file path="./consequences.fla" filetype="fla" profile="" def_file="true" />
 </flash_project>
