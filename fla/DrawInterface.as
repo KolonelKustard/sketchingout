@@ -1,7 +1,6 @@
 ﻿class DrawInterface extends MovieClip {
 	private var innerMC: MovieClip = null;
 	private var eventGone: Boolean = true;
-	private var mcNum: Number = 1;
 	
 	public var onMovieClipPlayed: Function = null;
 
