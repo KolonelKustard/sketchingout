@@ -1,0 +1,3 @@
+﻿class GalleryPage extends MovieClip {
+	
+}

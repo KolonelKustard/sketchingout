@@ -1,0 +1,2 @@
+﻿class DragMovieClip extends MovieClip {
+}
