@@ -45,7 +45,7 @@ public class DrawingServlet extends HttpServlet {
 			// Run through the stages adding them to the parser
 			for (int num = 0; num < numStages; num++) {
 				try {
-					parser.addStage(res.getCharacterStream("stage_" + num));
+					parser.addStage(res.getCharacterStream("stage_" + (num + 1)));
 				}
 				catch (Exception e) {
 					// If have an exception just print it to the console
@@ -71,6 +71,7 @@ public class DrawingServlet extends HttpServlet {
 	 */
 	private String getAllowedMimeType(String type) {
 		if (type.equals("png")) return "image/png";
+		else if (type.equals("jpg")) return "image/jpeg";
 		else return null;
 	}
 	
