@@ -25,6 +25,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.totalchange.sketchingout.imageparsers.PdfImageParser;
 import com.totalchange.sketchingout.imageparsers.SwfAnimatedImageParser;
 
 class CompleteDrawingTransferException extends Exception {
@@ -186,6 +187,9 @@ public class CompleteDrawingTransfer {
 			CompleteDrawingTransferException {
 		// Output the drawing to a file
 		try {
+			// Define filenames for pdf and swf for saving
+			String pdf, swf = "";
+			
 			PreparedStatement ps = SQLWrapper.getCompleteDrawing(conn, drawingID);
 			ResultSet res = ps.executeQuery();
 			
@@ -195,16 +199,29 @@ public class CompleteDrawingTransfer {
 					throw new SQLException("Could not find drawing with ID: " + drawingID);
 				}
 				
-				// Make file output stream
-				OutputStream fo = new FileOutputStream("./test.swf");
+				// Make filenames for pdf and animated swf versions
+				pdf = res.getInt("friendly_id") + ".pdf";
+				swf = res.getInt("friendly_id") + ".swf";
+				 
+				OutputStream fo;
 				
-				// Send drawing to file output stream
+				// Make file for pdf
+				fo = new FileOutputStream(SketchingoutSettings.FS_DRAWING_STORE + pdf);
+				ImageParser.parseResultSet(res, 100, 0, fo, new PdfImageParser());
+				fo.close();
+				
+				// Make file for swf 
+				fo = new FileOutputStream(SketchingoutSettings.FS_DRAWING_STORE + swf);
 				ImageParser.parseResultSet(res, 100, 0, fo, new SwfAnimatedImageParser());
+				fo.close();
 			}
 			finally {
 				res.close();
 				ps.close();
 			}
+			
+			// Now transfer the drawing from the active drawings table to the gallery
+			SQLWrapper.saveToGallery(conn, drawingID, pdf, swf);
 		}
 		catch(Exception e) {
 			throw new CompleteDrawingTransferException(e);
