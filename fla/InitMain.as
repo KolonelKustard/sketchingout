@@ -117,7 +117,9 @@ function onStartLoading(): Void {
  */
 function onEndLoading(loadedOK: Boolean): Void {
 	trace("Done " + loadedOK);
-	
+	//focus 'Name' text field
+	Selection.setFocus("yourEmail_txt");
+		
 }
 
 /**
@@ -209,6 +211,8 @@ holderClip.onErrorInvalidFriendsEmail = function(): Void {
 holderClip.userDetails.onErrorNoName = function(): Void {
 	trace("Spaz alert: What's your name bitch?");
 	_root.hintsLoader.loadMovie("uiparts/entername_msg.swf");
+	//focus 'Name' text field
+	Selection.setFocus("yourEmail_txt");
 }
 
 /**
