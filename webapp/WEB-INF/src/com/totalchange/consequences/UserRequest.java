@@ -42,7 +42,9 @@ public class UserRequest implements RequestHandler {
 			Clob clob = res.getClob("signature");
 			if ((clob != null) && (clob.length() > 0)) {
 				out.startElement(XMLConsts.EL_USER_SIGNATURE);
+				out.startCData();
 				SQLWrapper.outputClob(out, clob);
+				out.endCData();
 				out.endElement(XMLConsts.EL_USER_SIGNATURE);
 			}
 			
