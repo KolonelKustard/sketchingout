@@ -1,7 +1,4 @@
 ﻿class DrawingPage {
-	private static var MIN_OFFSET_Y: Number = 10;
-	private static var MAX_OFFSET_Y: Number = 80;
-	
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
 	// Objects public properties
@@ -93,13 +90,13 @@
 		}
 		
 		var currOffsetY: Number = dragClip.getOffsetY();
-		if (currOffsetY < MIN_OFFSET_Y) {
-			if (onErrorTooMuchCovered <> null) onErrorTooMuchCovered(currOffsetY, MIN_OFFSET_Y);
+		if (currOffsetY < ConsequencesSettings.MIN_OFFSET_Y) {
+			if (onErrorTooMuchCovered <> null) onErrorTooMuchCovered(currOffsetY, ConsequencesSettings.MIN_OFFSET_Y);
 			return false;
 		}
 		
-		if (currOffsetY > MAX_OFFSET_Y) {
-			if (onErrorNotEnoughCovered <> null) onErrorNotEnoughCovered(currOffsetY, MAX_OFFSET_Y);
+		if (currOffsetY > ConsequencesSettings.MAX_OFFSET_Y) {
+			if (onErrorNotEnoughCovered <> null) onErrorNotEnoughCovered(currOffsetY, ConsequencesSettings.MAX_OFFSET_Y);
 			return false;
 		}
 		
