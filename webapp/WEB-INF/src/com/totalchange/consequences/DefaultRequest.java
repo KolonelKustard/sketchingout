@@ -42,6 +42,9 @@ public class DefaultRequest implements RequestHandler {
 		if (name.equals(XMLConsts.EL_USER_DETAILS)) {
 			return new UserRequest();
 		}
+		else if (name.equals(XMLConsts.EL_NEXT_DRAWING)) {
+			return new NextDrawingRequest();
+		}
 		else {
 			return null;
 		}
