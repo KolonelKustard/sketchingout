@@ -156,7 +156,8 @@ public class SQLWrapper {
 			"UPDATE " +
 			"  drawings " +
 			"SET " +
-			"  locked = ? " +
+			"  locked = ?, " +
+			"  distinguished_id = null " +
 			"WHERE " +
 			"  id = ?"
 		);
