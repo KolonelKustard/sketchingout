@@ -18,5 +18,5 @@
       <!ELEMENT message (#PCDATA)>
       <!ELEMENT stacktrace (trace+)>
         <!ELEMENT trace (#PCDATA)>
-    
+
 <!ATTLIST drawing bodypart (head|body|legs) #REQUIRED>
