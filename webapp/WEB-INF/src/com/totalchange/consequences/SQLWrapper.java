@@ -264,6 +264,39 @@ public class SQLWrapper {
 		
 		return pstmt;
 	}
+
+	public static final PreparedStatement getCompleteDrawing(Connection conn, 
+		String drawingID) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  stage, " +
+			"  stage_1_author_name, " +
+			"  stage_1_author_email, " +
+			"  stage_2_author_name, " +
+			"  stage_2_author_email, " +
+			"  stage_3_author_name, " +
+			"  stage_3_author_email, " +
+			"  stage_4_author_name, " +
+			"  stage_4_author_email, " +
+			"  stage_1, " +
+			"  stage_1_signature, " +
+			"  stage_2, " +
+			"  stage_2_signature, " +
+			"  stage_3, " +
+			"  stage_3_signature, " +
+			"  stage_4, " +
+			"  stage_4_signature " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  id = ?"
+		);
+		
+		pstmt.setString(1, drawingID);
+		
+		return pstmt;
+	}
 	
 	/**
 	 * Utility procedure to output a blob to the xml writer as the data in an element 
