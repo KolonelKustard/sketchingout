@@ -117,7 +117,7 @@ public class SimpleSmtpServer implements Runnable {
         socket.close();
       }
     } catch (Exception e) {
-     // e.printStackTrace();
+      e.printStackTrace();
     } finally {
       if (serverSocket != null) {
         try {
