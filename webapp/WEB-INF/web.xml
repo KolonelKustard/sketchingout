@@ -3,16 +3,6 @@
   "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-
-  <servlet>
-    <servlet-name>Tester</servlet-name>
-    <servlet-class>com.totalchange.consequences.Tester</servlet-class>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>Tester</servlet-name>
-    <url-pattern>/tester</url-pattern>
-  </servlet-mapping>
   
   <servlet>
     <servlet-name>Consequences</servlet-name>
