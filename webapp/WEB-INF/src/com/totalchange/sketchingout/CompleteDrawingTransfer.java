@@ -25,6 +25,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
 import com.totalchange.sketchingout.imageparsers.PdfImageParser;
 import com.totalchange.sketchingout.imageparsers.SwfAnimatedImageParser;
 
@@ -188,7 +189,7 @@ public class CompleteDrawingTransfer {
 		// Output the drawing to a file
 		try {
 			// Define filenames for pdf and swf for saving
-			String pdf, swf = "";
+			String thumb, pdf, swf = "";
 			
 			PreparedStatement ps = SQLWrapper.getCompleteDrawing(conn, drawingID);
 			ResultSet res = ps.executeQuery();
@@ -200,10 +201,16 @@ public class CompleteDrawingTransfer {
 				}
 				
 				// Make filenames for pdf and animated swf versions
+				thumb = res.getInt("friendly_id") + ".png";
 				pdf = res.getInt("friendly_id") + ".pdf";
 				swf = res.getInt("friendly_id") + ".swf";
 				 
 				OutputStream fo;
+				
+				// Make file for thumbnail
+				fo = new FileOutputStream(SketchingoutSettings.FS_DRAWING_STORE + thumb);
+				ImageParser.parseResultSet(res, 50, 0, fo, new BufferedImageParser("png"));
+				fo.close();
 				
 				// Make file for pdf
 				fo = new FileOutputStream(SketchingoutSettings.FS_DRAWING_STORE + pdf);
@@ -221,7 +228,7 @@ public class CompleteDrawingTransfer {
 			}
 			
 			// Now transfer the drawing from the active drawings table to the gallery
-			SQLWrapper.saveToGallery(conn, drawingID, pdf, swf);
+			SQLWrapper.saveToGallery(conn, drawingID, thumb, pdf, swf);
 		}
 		catch(Exception e) {
 			throw new CompleteDrawingTransferException(e);
