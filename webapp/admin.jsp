@@ -34,6 +34,32 @@
 	// Make blank prepared statement and resultset
 	PreparedStatement pstmt;
 	ResultSet res;
+	
+	// Check for requested things to do like delete or unlock drawings and stuff
+	if (request.getParameter("del_d") != null) {
+		// Delete a drawing
+		pstmt = conn.prepareStatement("DELETE FROM drawings WHERE id = ?");
+		pstmt.setString(1, request.getParameter("del_d"));
+		pstmt.execute();
+		pstmt.close();
+	}
+	
+	if (request.getParameter("unl_d") != null) {
+		// Unlock a drawing by setting the locked time to one second ago
+		pstmt = conn.prepareStatement("UPDATE drawings SET locked = ? WHERE id = ?");
+		pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis() - 1000));
+		pstmt.setString(2, request.getParameter("unl_d"));
+		pstmt.execute();
+		pstmt.close();
+	}
+	
+	if (request.getParameter("pub_d") != null) {
+		// Make a private drawing public by making the distinguished ID null
+		pstmt = conn.prepareStatement("UPDATE drawings SET distinguished_id = NULL WHERE id = ?");
+		pstmt.setString(1, request.getParameter("pub_d"));
+		pstmt.execute();
+		pstmt.close();
+	}
 %>
 <html>
 <head>
@@ -62,15 +88,15 @@
 %>
 <table border="1">
   <tr>
-    <td>User ID:</td>
+    <td><b>User ID:</b></td>
     <td><%= userID %></td>
   </tr>
   <tr>
-    <td>Name:</td>
+    <td><b>Name:</b></td>
     <td><%= name %></td>
   </tr>
   <tr>
-    <td>Email:</td>
+    <td><b>Email:</b></td>
     <td><%= email %></td>
   </tr>
 </table>
@@ -196,9 +222,9 @@
 				<tr>
 				  <td nowrap><%= res.getInt("friendly_id") %></td>
 				  <td nowrap><%= res.getString("id") %></td>
-				  <td nowrap><%= res.getString("distinguished_id") %></td>
+				  <td nowrap><a href="?pub_d=<%= res.getString("id") %>"><%= res.getString("distinguished_id") %></a></td>
 				  <td nowrap><%= res.getString("completed") %></td>
-				  <td nowrap><%= res.getTimestamp("locked") %></td>
+				  <td nowrap><a href="?unl_d=<%= res.getString("id") %>"><%= res.getTimestamp("locked") %></a></td>
 				  <td nowrap><%= res.getInt("stage") %></td>
 				  <td nowrap><%= res.getString("stage_1_author_name") %></td>
 				  <td nowrap><%= res.getString("stage_1_author_email") %></td>
@@ -208,6 +234,7 @@
 				  <td nowrap><%= res.getString("stage_3_author_email") %></td>
 				  <td nowrap><%= res.getString("stage_4_author_name") %></td>
 				  <td nowrap><%= res.getString("stage_4_author_email") %></td>
+				  <td nowrap><a href="?del_d=<%= res.getString("id") %>">Delete</a></td>
 				</tr>
 				<%
 			}
@@ -220,6 +247,26 @@
 		pstmt.close();
 	}
 %>
+<p>&nbsp;</p>
+<h2>Server Settings</h2>
+<table border="1">
+  <tr>
+    <td><b>Public Drawing Lock Time:</b></td>
+    <td><%= ConsequencesSettings.DEFAULT_LOCK_SECS %> secs (<%= (double)ConsequencesSettings.DEFAULT_LOCK_SECS / 60 / 60 %>hrs)</td>
+  </tr>
+  <tr>
+    <td><b>Private Drawing Lock Time:</b></td>
+    <td><%= ConsequencesSettings.PRIVATE_LOCK_SECS %> secs (<%= (double)ConsequencesSettings.PRIVATE_LOCK_SECS / 60 / 60 %>hrs)</td>
+  </tr>
+  <tr>
+    <td><b>Number of Stages:</b></td>
+    <td><%= ConsequencesSettings.MAX_NUM_STAGES %></td>
+  </tr>
+  <tr>
+    <td><b>SMTP Address:</b></td>
+    <td><%= ConsequencesSettings.SMTP_SERVER_ADDR + ":" + ConsequencesSettings.SMTP_SERVER_PORT %></td>
+  </tr>
+</table>
 </body>
 </html>
 <%
