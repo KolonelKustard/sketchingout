@@ -1,4 +1,4 @@
-<!ELEMENT response (user_details?, next_drawing?, errors?)>
+<!ELEMENT response (user_details?, next_drawing?, gallery_drawing?, errors?)>
 
   <!ELEMENT user_details (id, name?, email?, signature?)>
     <!ELEMENT id (#PCDATA)>
@@ -11,6 +11,9 @@
     <!ELEMENT stage (#PCDATA)>
     <!ELEMENT locked_secs (#PCDATA)>
     <!ELEMENT drawing (#PCDATA)>
+
+  <!ELEMENT gallery_drawing (drawing_id, num_stages, drawing+)>
+    <!ELEMENT num_stages (#PCDATA)>
     
   <!ELEMENT errors (error+)>
     <!ELEMENT error (src, type, message, stacktrace?)>

@@ -29,5 +29,8 @@ ValidateXMLDoc("response_next.xml")
 ValidateXMLDoc("request_user.xml")
 ValidateXMLDoc("response_user.xml")
 ValidateXMLDoc("request_user_submit.xml")
+ValidateXMLDoc("request_submit_drawing.xml")
+ValidateXMLDoc("request_drawing.xml")
+ValidateXMLDoc("response_drawing.xml")
 
 MsgBox("No errors in XML documents")

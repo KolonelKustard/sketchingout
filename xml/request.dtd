@@ -1,4 +1,4 @@
-<!ELEMENT request (user_details?, user_submit?, next_drawing?)>
+<!ELEMENT request (user_details?, user_submit?, next_drawing?, submit_drawing?, gallery_drawing?)>
   <!ELEMENT user_details EMPTY>
   <!ELEMENT user_submit (signature?)>
     <!ELEMENT signature (#PCDATA)>
@@ -7,6 +7,8 @@
   
   <!ELEMENT submit_drawing (drawing)>
     <!ELEMENT drawing (#PCDATA)>
+    
+  <!ELEMENT gallery_drawing (#PCDATA)>
 
 <!ATTLIST user_details id CDATA #REQUIRED>
 
@@ -21,3 +23,5 @@
 <!ATTLIST submit_drawing drawing_id CDATA #REQUIRED>
 <!ATTLIST submit_drawing stage CDATA #REQUIRED>
 <!ATTLIST submit_drawing next_user_email CDATA #IMPLIED>
+
+<!ATTLIST gallery_drawing drawing_id CDATA #REQUIRED>
