@@ -36,4 +36,16 @@
 	<target name="stop_tomcat">
 		<exec executable="${env.CATALINA_HOME}/bin/shutdown.bat"/>
 	</target>
+	
+	<target name="xml2swf" depends="compile">
+		<java classname="com.totalchange.consequences.ImageParser" fork="yes">
+			<arg line="${args}"/>
+			<classpath>
+				<pathelement path="${dest}"/>
+				<fileset dir="${env.CATALINA_HOME}/common/lib/">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
 </project>
