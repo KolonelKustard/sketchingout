@@ -26,8 +26,9 @@ import com.totalchange.consequences.imageparsers.SwfImageParser;
  */
 public class DrawingServlet extends HttpServlet {
 	
-	private void parseRequest(String type, String drawingID, int scale, OutputStream out)
-		throws SQLException, ClassNotFoundException, ConsequencesImageParserException {
+	private void parseRequest(String type, String drawingID, int scale, int loss,
+		OutputStream out) throws SQLException, ClassNotFoundException,
+		ConsequencesImageParserException {
 		
 		// Make connection
 		Connection conn = SQLWrapper.makeConnection();
@@ -55,6 +56,7 @@ public class DrawingServlet extends HttpServlet {
 				res.getInt("width"),
 				res.getInt("height"),
 				scale,
+				loss,
 				out, 
 				parser
 			);
@@ -124,6 +126,7 @@ public class DrawingServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		String id = request.getParameter("id");
 		String scaleStr = request.getParameter("scale");
+		String lossStr = request.getParameter("loss");
 		
 		// Throw errors if blank
 		if (type == null) throw new ServletException("No image type specified");
@@ -133,6 +136,9 @@ public class DrawingServlet extends HttpServlet {
 		if (scaleStr == null) scale = 100;
 	    else scale = Integer.parseInt(scaleStr);
 	    
+		int loss;
+		if (lossStr == null) loss = 0;
+		else loss = Integer.parseInt(lossStr);
 		
 		// Find a mime type from basic type
 		String mimeType = getAllowedMimeType(type);
@@ -143,7 +149,7 @@ public class DrawingServlet extends HttpServlet {
 		
 		try {
 			// Parse the request and output it
-			parseRequest(type, id, scale, response.getOutputStream());
+			parseRequest(type, id, scale, loss, response.getOutputStream());
 		}
 		catch (Exception e) {
 			// Wrap the error in a ServletException
