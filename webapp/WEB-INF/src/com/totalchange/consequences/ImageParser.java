@@ -7,12 +7,14 @@
 package com.totalchange.consequences;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -264,12 +266,30 @@ public class ImageParser extends DefaultHandler{
 				// Only work on .xml files
 				if (files[num].getName().endsWith(".xml")) {
 					// Convert this file to one in the outFile directory
-					String fileName = files[num].getName().substring(0, files[num].getName().length() - 4) + ".swf";
+					String fileName = files[num].getName().substring(0, files[num].getName().length() - 4);
 					
-					OutputStream out = new FileOutputStream(new File(outFile, fileName)); 
+					// Get the default properties
+					String width = args[P_WIDTH];
+					String height = args[P_HEIGHT];
+					String scale = args[P_SCALE];
+					String loss = args[P_LOSS];
+					
+					// Try and find an associated properties file to override defaults
+					File propsFile = new File(inFile, fileName + ".cfg");
+					if (propsFile.exists()) {
+						Properties props = new Properties();
+						props.load(new FileInputStream(propsFile));
+						
+						width = props.getProperty("width", width);
+						height = props.getProperty("height", height);
+						scale = props.getProperty("scale", scale);
+						loss = props.getProperty("loss", loss);
+					}
+					
+					OutputStream out = new FileOutputStream(new File(outFile, fileName + ".swf")); 
 					ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
-							Integer.parseInt(args[P_WIDTH]), Integer.parseInt(args[P_HEIGHT]),
-							Integer.parseInt(args[P_SCALE]), Integer.parseInt(args[P_LOSS]), out,
+							Integer.parseInt(width), Integer.parseInt(height),
+							Integer.parseInt(scale), Integer.parseInt(loss), out,
 							new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
 					);
 					
