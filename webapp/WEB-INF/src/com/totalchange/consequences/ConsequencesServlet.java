@@ -5,6 +5,8 @@
 package com.totalchange.consequences;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,14 +44,30 @@ public class ConsequencesServlet extends HttpServlet {
 		// Create an instance of the error cache
 		ConsequencesErrors errs = new ConsequencesErrors();
 		
-		try {			
+		Connection conn = null;
+		
+		try {
+			// Create a JDBC connection to use for the duration of this request
+			conn = SQLWrapper.makeConnection();
+						
+			// Get a SAX parser to use to parse the incoming request
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			parser.parse(request.getInputStream(), new XMLHandler(writer, errs));
+			parser.parse(request.getInputStream(), new XMLHandler(writer, errs, conn));
 		}
 		catch(Exception e) {
 			// Add error to the error cache
 			errs.addException(this.getClass(), e);
+		}
+		finally {
+			// Close the JDBC connection
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			}
+			catch (SQLException e) {
+			}
 		}
 		
 		// If there are errors, add them to the output
