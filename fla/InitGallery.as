@@ -1,9 +1,12 @@
 ﻿//SET UP GALLERY
 
+//load UI frame border
+_root.attachMovie("CoverUp","CoverUp",999);
+
 //init sound clip
 var galleryMusic = new Sound();
 galleryMusic.attachSound("gallerymusic");
-galleryMusic.start("gallerymusic", 999)
+galleryMusic.start("gallerymusic", 999);
 
 //init gallery object
 gallery = new Gallery();
@@ -23,8 +26,9 @@ function galleryOnNext(drawing: GalleryDrawing) {
 		// Create a new GalleryInterface on the stage
 		var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
 		newDrawing._x = 687;
-		newDrawing._xscale = 40;
-		newDrawing._yscale = 40;
+		newDrawing._y = 50;
+		newDrawing._xscale = 35;
+		newDrawing._yscale = 35;
 		
 		// Make sure when it finishes we catch its finished event
 		newDrawing.onMidPoint = drawingOnMovieClipPlayed;
