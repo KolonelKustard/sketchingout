@@ -8,6 +8,7 @@
 	public var hintFocused: Boolean;
 	
 	public var control: Object;
+	public var clipUrl: String;
 	public var clip: MovieClip;
 	
 	public function showHint(): Void {
@@ -43,6 +44,7 @@
 	
 	public function Hint(parent: HintsClip, control: Object, clipUrl: String) {
 		this.control = control;
+		this.clipUrl = clipUrl;
 		
 		var depthNum: Number = parent.getNextDepth();
 		clip = parent.createEmptyMovieClip("hint_clip_" + depthNum, depthNum);
