@@ -30,9 +30,17 @@ public class ConsequencesBean {
 	private static final int SECONDS_PER_YEAR = 60*60*24*365;
 	
 	private String userID;
+	private String drawingID;
 	
-	public String getUserID() {
-		return userID;
+	public String getFlashParams() {
+		// See if got to pass a next drawing parameter or not
+		if (drawingID == null) {
+			return ConsequencesSettings.URL_PARAM_USER_ID + "=" + userID;
+		}
+		else {
+			return ConsequencesSettings.URL_PARAM_USER_ID + "=" + userID + "&" +
+				ConsequencesSettings.URL_PARAM_DRAWING_ID + "=" + drawingID;
+		}
 	}
 	
 	/**
@@ -47,7 +55,8 @@ public class ConsequencesBean {
 	public void initiate(HttpServletRequest request, HttpServletResponse response) {
 		Cookie[] cookies = request.getCookies();
 		
-		userID = "";
+		// Look for userID from cookie
+		userID = null;
 		if (cookies != null) {
 			for (int num = 0; num < cookies.length; num++) {
 				if (cookies[num].getName().equals(COOKIE_NAME)) {
@@ -57,7 +66,8 @@ public class ConsequencesBean {
 			}
 		}
 		
-		if (userID.equals("")) {
+		// If no user id, make one
+		if (userID == null) {
 			userID = new RandomGUID().toString();
 		}
 		
@@ -65,5 +75,8 @@ public class ConsequencesBean {
 		Cookie cookie = new Cookie(COOKIE_NAME, userID);
 		cookie.setMaxAge(SECONDS_PER_YEAR);
 		response.addCookie(cookie);
+		
+		// Look for drawing id
+		drawingID = request.getParameter(ConsequencesSettings.URL_PARAM_DRAWING_ID);
 	}
 }
