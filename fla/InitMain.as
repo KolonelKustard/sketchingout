@@ -5,6 +5,7 @@ holderClip = new DrawingPage();
 
 holderClip.prevDrawing = lastDrawCanvas;
 holderClip.nextDrawing = mainCanvas;
+holderClip.nextDrawingID = _root.did;
 holderClip.userDetails.userID = _root.uid;
 holderClip.userDetails.nameEdit = yourName_txt;
 holderClip.userDetails.emailEdit = yourEmail_txt;
