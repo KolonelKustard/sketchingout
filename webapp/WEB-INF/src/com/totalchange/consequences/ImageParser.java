@@ -6,6 +6,8 @@
  */
 package com.totalchange.consequences;
 
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -221,13 +223,19 @@ public class ImageParser extends DefaultHandler{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		//ImageParser parser = new ImageParser(200, 400); 
-		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
-		//parser.addStage(new java.io.FileInputStream("C:\\tdev\\consequences\\xml\\drawing.xml"));
+		if (args.length < 4) {
+			System.out.println("Usage: [width] [height] [scale] [infile.xml] [outfile.swf]");
+			return;
+		}
 		
-		//RenderedImage image = parser.getRenderedImage();
-		//javax.imageio.ImageIO.write(image, "png", new java.io.File("C:\\test.png"));
+		OutputStream out = new FileOutputStream(args[4]); 
+		ImageParser parse = new ImageParser(ConsequencesSettings.PRESENT_DRAWING_VERSION,
+				Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), out,				
+				new com.totalchange.consequences.imageparsers.SwfAnimatedImageParser()
+		);
+		
+		parse.addStage(new FileReader(args[3]));
+		parse.close();
+		out.close();
 	}
 }
