@@ -53,9 +53,6 @@
 			}
 		}
 		
-		// Make sure the new height is represented by a whole integer value
-		newHeight = Math.ceil(newHeight);
-		
 		// If the new height is different to the current height of this drawing
 		// then set the height of this drawing to it.
 		if (height <> newHeight) height = newHeight;
