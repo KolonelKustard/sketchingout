@@ -13,6 +13,8 @@ package com.totalchange.consequences;
  * elements and attributes or whatever.</p>
  */
 public class XMLConsts {
+	public static final int DEFAULT_LOCK_SECS = 3600;
+	
 	public static final String EL_REQUEST = "request";
 	public static final String EL_RESPONSE = "response";
 	
