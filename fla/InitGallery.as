@@ -25,10 +25,13 @@ function galleryOnNext(drawing: GalleryDrawing) {
 	if (drawing != null) {
 		// Create a new GalleryInterface on the stage
 		var newDrawing: GalleryInterface = attachMovie("UILoader", "UILoader" + newID, newID++);
-		newDrawing._x = 687;
+		
+		// Set the position on the Y coord to sit
 		newDrawing._y = 50;
-		newDrawing._xscale = 35;
-		newDrawing._yscale = 35;
+		
+		// Set the start and end points
+		newDrawing.rightX = 670;
+		newDrawing.leftX = -75;
 		
 		// Make sure when it finishes we catch its finished event
 		newDrawing.onMidPoint = drawingOnMovieClipPlayed;
