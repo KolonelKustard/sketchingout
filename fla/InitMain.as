@@ -22,6 +22,10 @@ hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf
 //not working - no nested movie clips?
 hintsLoader.addAssociation(dragClip_mc.dragHandle_mc, "uiparts/dragthis_msg.swf");
 
+// Cache error messages as hints
+hintsLoader.addAssociation(null, "uiparts/entername_msg.swf");
+hintsLoader.addAssociation(null, "uiparts/checkyouremail_msg.swf");
+hintsLoader.addAssociation(null, "uiparts/oopsgonewrong_msg.swf");
 
 
 //Set up custom cursor
@@ -208,19 +212,15 @@ holderClip.onErrorInvalidFriendsEmail = function(): Void {
  * Called when no name is entered in the user details.
  */
 holderClip.userDetails.onErrorNoName = function(): Void {
-	trace("Spaz alert: What's your name bitch?");
-	_root.hintsLoader.defaultHint = "uiparts/pleaseentername_msg.swf";
-	//focus 'Name' text field
-	//Selection.setFocus("yourEmail_txt");
+	hintsLoader.showCachedHint("uiparts/entername_msg.swf");
 }
 
 /**
  * Called when no email address or an invalid email address is entered.
  */
 holderClip.userDetails.onErrorInvalidEmail = function(): Void {
-	trace("Spaz alert: That email address does not conform to the ISO 9765523789834 standards.");
-	_root.hintsLoader.defaultHint = "uiparts/checkyouremail_msg.swf";
-	}
+	hintsLoader.showCachedHint("uiparts/checkyouremail_msg.swf");
+}
 
 /**
  * Generic error handler.  This is only called in the event of a very
@@ -231,7 +231,7 @@ holderClip.userDetails.onErrorInvalidEmail = function(): Void {
 holderClip.onError = function(error: ResponseError): Void {
 	trace("Error: " + error.message);
 	trace("Stack trace: " + error.fullStackTrace);
-	_root.hintsLoader.defaultHint = "uiparts/oopsgonewrong_msg.swf";
+	hintsLoader.showCachedHint("uiparts/oopsgonewrong_msg.swf");
 }
 
 
