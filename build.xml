@@ -5,6 +5,7 @@
 	
 	<property name="webapp" value="webapp"/>
 	<property name="sql" value="sql"/>
+	<property name="smtp" value="smtp"/>
 	
 	<target name="compile">
 		<ant dir="${webapp}" target="compile"/>
@@ -12,5 +13,9 @@
 	
 	<target name="initdb">
 		<ant dir="${sql}" target="recreate"/>
+	</target>
+	
+	<target name="smtp">
+		<ant dir="${smtp}" target="run"/>
 	</target>
 </project>
