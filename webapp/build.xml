@@ -6,6 +6,7 @@
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
 	<property name="catalina_work" value="work"/>
+	<property name="args" value="300 200 100 0 uixml uiparts"/>
 	<property environment="env"/>
 	
 	<target name="makedirs">
