@@ -131,11 +131,13 @@ public class NextDrawingRequest implements RequestHandler {
 				try {
 					// When specifying next drawing, need to make sure get a result.
 					// If don't get a result it could mean this person is too late
-					// and the lock time has expired.
+					// and the lock time has expired.  This is because every time a
+					// drawing is submitted the distinguished id for the picture is
+					// changed.
 					if (next.first()) {
 						// Got a result.  Figure out how much time is left before
 						// the private picture is unlocked.
-						long locked = next.getTimestamp(1).getTime();
+						long locked = next.getTimestamp("locked").getTime();
 						int lock = (int) (locked - System.currentTimeMillis()) / 1000;
 						
 						outputDrawing(next, out, lock);
