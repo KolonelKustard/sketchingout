@@ -4,11 +4,12 @@
 	public var id: String;
 	public var width: Number;
 	public var height: Number;
+	public var scale: Number;
 	public var numStages: Number;
 	public var authors: Array = new Array();
 	
 	private function getDrawingURL(): String {
-		return URL_BASE + "?id=" + id + "&type=";
+		return URL_BASE + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
 	}
 	
 	public function get urlPNG(): String {
