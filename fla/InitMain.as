@@ -1,11 +1,11 @@
-﻿// **************************************************************
+// **************************************************************
 // * Create and set the properties of the main controller class *
 // **************************************************************
 holderClip = new DrawingPage();
 
 holderClip.prevDrawing = lastDrawCanvas;
 holderClip.nextDrawing = mainCanvas;
-//holderClip.userDetails.userID = _root.uid;
+holderClip.userDetails.userID = _root.uid;
 holderClip.userDetails.nameEdit = yourName_txt;
 holderClip.userDetails.emailEdit = yourEmail_txt;
 holderClip.userDetails.sigCanvas = sigCanvas;
