@@ -13,8 +13,45 @@ holderClip.dragClip = dragClip_mc;
 holderClip.friendsEmailEdit = friendsEmail_txt;
 holderClip.countdownClip = countdownClip;
 
+//Set up custom cursor
+this.attachMovie("pencil_id", "pencil_mc", this.getNextHighestDepth());
+Mouse.hide();
+var mouseListener:Object = new Object();
+mouseListener.onMouseMove = function() {
+  pencil_mc._x = _xmouse;
+  pencil_mc._y = _ymouse;
+  updateAfterEvent();
+};
+Mouse.addListener(mouseListener);
 
 
+//hide UI parts that do not draw
+send_btn._visible = false;
+yourName_txt._visible = false;
+yourEmail_txt._visible = false;
+friendsEmail_txt._visible = false;
+dragClip_mc._visible = false;
+mainCanvas._visible = false;
+countdownClip._visible = false;
+bodyparts._visible = false;
+headHighlight._visible = false;
+bodyHighlight._visible = false;
+legsHighlight._visible = false;
+feetHighlight._visible = false;
+news_txt._visible = false;
+
+//called when specified drawn UI part has finished
+function showNonDrawUI() {
+	send_btn._visible = true;
+	yourName_txt._visible = true;
+	yourEmail_txt._visible = true;
+	friendsEmail_txt._visible = true;
+	dragClip_mc._visible = true;
+	mainCanvas._visible = true;
+	countdownClip._visible = true;
+	news_txt._visible = true;
+	//bodyparts._visible = true;
+}
 
 
 // **************************************************************
@@ -26,7 +63,11 @@ logo_ldr.loadMovie("uiparts/logo.swf");
 whatsthis_ldr.onMovieClipPlayed = function() {trace("What's This Done");}
 whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
 
-introtxt_ldr.onMovieClipPlayed = function() {trace("Intro Done");}
+introtxt_ldr.onMovieClipPlayed = function() 
+	{
+		trace("Intro Done");
+		showNonDrawUI();
+	}
 introtxt_ldr.loadMovie("uiparts/introtext.swf");
 
 newsbox_ldr.onMovieClipPlayed = function() {trace("News Box Done");}
@@ -51,6 +92,8 @@ txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 
 
 
+
+
 // **************************************************************
 // * Define event functions                                     *
 // **************************************************************
@@ -60,7 +103,11 @@ txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
  */
 function onStartLoading(): Void {
 	trace("Loading...");
-	_root.hintsLoader.loadMovie("uiparts/loading_msg.swf")
+	_root.hintsLoader.loadMovie("uiparts/loading_msg.swf");
+	headHighlight._visible = false;
+	bodyHighlight._visible = false;
+	legsHighlight._visible = false;
+	feetHighlight._visible = false;
 }
 
 /**
@@ -82,15 +129,24 @@ holderClip.onNewDrawing = function(stage: Number): Void {
 	switch (stage) {
 		case 1 :
 			_root.hintsLoader.loadMovie("uiparts/yourturnhead_msg.swf");
+			headHighlight._visible = true;
+			bodyparts._visible = true;
 			break;
 		case 2 :
 			_root.hintsLoader.loadMovie("uiparts/yourturnbody_msg.swf");
+			bodyHighlight._visible = true;
+			bodyparts._visible = true;
 			break;
 		case 3 :
 			_root.hintsLoader.loadMovie("uiparts/yourturnlegs_msg.swf");
+			legsHighlight._visible = true;
+			bodyparts._visible = true;
 			break;
 		case 4 :
 			_root.hintsLoader.loadMovie("uiparts/yourturnfeet_msg.swf");
+			feetHighlight._visible = true;
+			bodyparts._visible = true;
+			dragClip_mc._visible = false;
 			break;
 		default :
 			trace("oh dear")
@@ -152,6 +208,7 @@ holderClip.onErrorInvalidFriendsEmail = function(): Void {
  */
 holderClip.userDetails.onErrorNoName = function(): Void {
 	trace("Spaz alert: What's your name bitch?");
+	_root.hintsLoader.loadMovie("uiparts/entername_msg.swf");
 }
 
 /**
@@ -159,7 +216,8 @@ holderClip.userDetails.onErrorNoName = function(): Void {
  */
 holderClip.userDetails.onErrorInvalidEmail = function(): Void {
 	trace("Spaz alert: That email address does not conform to the ISO 9765523789834 standards.");
-}
+	_root.hintsLoader.loadMovie("uiparts/checkyouremail_msg.swf");
+	}
 
 /**
  * Generic error handler.  This is only called in the event of a very

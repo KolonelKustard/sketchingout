@@ -11,9 +11,9 @@
 	public static var SKETCHINGOUT_URL: String = BASE_URL + "sketchingout";
 	public static var GALLERY_URL: String = BASE_URL + "drawing";
 	
-	public static var MIN_OFFSET_Y: Number = 5;
-	public static var MAX_OFFSET_Y: Number = 30;
-	public static var DEFAULT_OFFSET_Y: Number = 10;
+	public static var MIN_OFFSET_Y: Number = 20;
+	public static var MAX_OFFSET_Y: Number = 40;
+	public static var DEFAULT_OFFSET_Y: Number = 20;
 	
 	// A reminder gets sent out after this period in milliseconds.
 	public static var COUNTDOWN_TIMER_REMINDER: Number = 1000 * 60;
