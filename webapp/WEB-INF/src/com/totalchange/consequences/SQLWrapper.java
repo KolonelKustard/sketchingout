@@ -20,8 +20,8 @@ import java.sql.*;
  * why this current version is using HSQLDB</p>
  */
 public class SQLWrapper {
-	private static final String DB_CLASSNAME = "org.hsqldb.jdbcDriver";
-	private static final String DB_URL = "";
+	private static final String DB_CLASSNAME = "com.mysql.jdbc.Driver";
+	private static final String DB_URL = "jdbc:mysql://localhost/consequences";
 	private static final String DB_USERNAME = "";
 	private static final String DB_PASSWORD = "";
 	
