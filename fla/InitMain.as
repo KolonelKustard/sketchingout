@@ -247,6 +247,8 @@ holderClip.onError = function(error: ResponseError): Void {
 clearDrawing_btn.onPress = function() {
 	holderClip.clearDrawing();
 }
+// Prevent tab stop on this button
+clearDrawing_btn.tabEnabled = false;
 
 /**
  * Clear the signature canvas
@@ -254,6 +256,8 @@ clearDrawing_btn.onPress = function() {
 clearSig_btn.onPress = function() {
 	holderClip.clearSignature();
 }
+// Prevent tab stop on this button
+clearSig_btn.tabEnabled = false;
 
 
 
@@ -289,6 +293,8 @@ send_btn.onPress = function() {
 		submitRequest.sendAndLoad(SketchingoutSettings.SKETCHINGOUT_URL, responseXML);
 	}
 }
+// Prevent tab stop on this button
+send_btn.tabEnabled = false;
 
 
 
