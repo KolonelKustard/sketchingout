@@ -51,6 +51,7 @@ public class DrawingServlet extends HttpServlet {
 			
 			// Make an image parser
 			ImageParser imageParser = new ImageParser(
+				res.getInt("version"),
 				res.getInt("width"),
 				res.getInt("height"),
 				out, 
@@ -67,6 +68,18 @@ public class DrawingServlet extends HttpServlet {
 				}
 				catch (Exception e) {
 					// If have an exception just print it to the console
+					e.printStackTrace();
+				}
+			}
+			
+			// Run through the signatures adding them to the parser
+			for (int num = 0; num < numStages; num++) {
+				try {
+					imageParser.addSignature(res.getCharacterStream("stage_" + 
+						(num + 1) + "_signature"));
+				}
+				catch (Exception e) {
+					// Again just print exception to the stage
 					e.printStackTrace();
 				}
 			}
