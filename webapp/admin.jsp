@@ -222,7 +222,7 @@
 			while (res.next()) {
 				%>
 				<tr>
-				  <td nowrap><a href="drawing?type=png&id=<%= res.getInt("friendly_id") %>" target="pic"><%= res.getInt("friendly_id") %></a></td>
+				  <td nowrap><a href="drawing?type=png&scale=50&id=<%= res.getInt("friendly_id") %>" target="pic"><%= res.getInt("friendly_id") %></a></td>
 				  <td nowrap><%= res.getString("id") %></td>
 				  <td nowrap><a href="?pub_d=<%= res.getString("id") %>"><%= res.getString("distinguished_id") %></a></td>
 				  <td nowrap><%= res.getString("completed") %></td>
