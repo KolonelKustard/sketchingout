@@ -6,7 +6,6 @@
  */
 package com.totalchange.consequences;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -34,6 +33,7 @@ public class ImageParser extends DefaultHandler{
 	private static final int TYPE_DRAWING = 1;
 	private static final int TYPE_SIGNATURE = 2;
 	
+	private int scale;
 	private ConsequencesImageParser parser;
 	private SAXParser saxParser;
 	
@@ -41,18 +41,29 @@ public class ImageParser extends DefaultHandler{
 	private boolean lineStart;
 	private int offsetX, offsetY, nextOffsetX, nextOffsetY = 0;
 	private boolean sigOdd = true;
-
+	
+	private int scaleIt(int num) {
+		return (num * scale) / 100;
+	}
+	
+	private double scaleIt(double num) {
+		return (num * scale) / 100;
+	}
+	
 	/**
 	 * Constructor makes the base rendered image
 	 */
-	public ImageParser(int version, int width, int height, OutputStream out,
+	public ImageParser(int version, int width, int height, int scale, OutputStream out,
 		ConsequencesImageParser parser) throws ConsequencesImageParserException {
+		
+		// Set the scaling factor
+		this.scale = scale;
 		
 		// Set this parser in
 		this.parser = parser;
 		
 		// Forward on the start of the image to the parser
-		parser.startImage(width, height, out);
+		parser.startImage(scaleIt(width), scaleIt(height), out);
 		
 		// Setup SAX XML Parser
 		try { 
@@ -86,7 +97,7 @@ public class ImageParser extends DefaultHandler{
 			if (lineStart) {
 				try {
 					// Start of a line, move the pen for first point
-					parser.moveTo(x, y);
+					parser.moveTo(scaleIt(x), scaleIt(y));
 				}
 				catch (ConsequencesImageParserException cipe) {
 					throw new SAXException(cipe);
@@ -97,7 +108,7 @@ public class ImageParser extends DefaultHandler{
 			else {
 				try {
 					// Mid-line, draw to the point
-					parser.lineTo(x, y);
+					parser.lineTo(scaleIt(x), scaleIt(y));
 				}
 				catch (ConsequencesImageParserException cipe) {
 					throw new SAXException(cipe);
@@ -139,10 +150,10 @@ public class ImageParser extends DefaultHandler{
 			
 			try {
 				parser.startCanvas(
-					offsetX,
-					offsetY,
-					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH)),
-					Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT))
+					scaleIt(offsetX),
+					scaleIt(offsetY),
+					scaleIt(Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_WIDTH))),
+					scaleIt(Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)))
 				);
 			}
 			catch (ConsequencesImageParserException cipe) {
@@ -172,19 +183,37 @@ public class ImageParser extends DefaultHandler{
 		}
 	}
 	
-	public void addStage(InputStream xmlData) throws SAXException, IOException {
+	public void addStage(InputStream xmlData) throws ConsequencesImageParserException {
 		currType = TYPE_DRAWING;
-		saxParser.parse(xmlData, this);
+		
+		try {
+			saxParser.parse(xmlData, this);
+		}
+		catch (Exception e) {
+			throw new ConsequencesImageParserException(e);
+		}
 	}
 	
-	public void addStage(Reader xmlData) throws SAXException, IOException {
+	public void addStage(Reader xmlData) throws ConsequencesImageParserException {
 		currType = TYPE_DRAWING;
-		saxParser.parse(new InputSource(xmlData), this);
+
+		try {
+			saxParser.parse(new InputSource(xmlData), this);
+		}
+		catch (Exception e) {
+			throw new ConsequencesImageParserException(e);
+		}
 	}
 	
-	public void addSignature(Reader xmlData) throws SAXException, IOException {
+	public void addSignature(Reader xmlData) throws ConsequencesImageParserException {
 		currType = TYPE_SIGNATURE;
-		saxParser.parse(new InputSource(xmlData), this);
+
+		try {
+			saxParser.parse(new InputSource(xmlData), this);
+		}
+		catch (Exception e) {
+			throw new ConsequencesImageParserException(e);
+		}
 	}
 	
 	public void close() throws ConsequencesImageParserException {
