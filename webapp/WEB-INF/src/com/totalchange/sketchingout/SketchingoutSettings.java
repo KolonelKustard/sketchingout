@@ -98,4 +98,9 @@ public class SketchingoutSettings {
 	 * The location on the file system in which to store completed drawings
 	 */
 	public static final String FS_DRAWING_STORE = "drawings/";
+	
+	/**
+	 * The url in which completed drawings can be found
+	 */
+	public static final String URL_DRAWING_STORE = URL_ROOT + FS_DRAWING_STORE;
 }
