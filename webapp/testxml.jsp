@@ -50,7 +50,7 @@
         <td valign="top"><textarea name="xmlin" cols="60" rows="10"></textarea></td>
         <td valign="top">
           <input type="submit" /><br />
-          <a href="admin.jsp">Admin Page</a>
+          <a href="admin.jsp" target="admin">Admin Page</a>
         </td>
       </tr>
     </table>
