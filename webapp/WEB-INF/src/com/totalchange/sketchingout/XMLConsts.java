@@ -65,6 +65,8 @@ public class XMLConsts {
 	public static final String EL_GALLERY_DRAWING_WIDTH = "width";
 	public static final String EL_GALLERY_DRAWING_HEIGHT = "height";
 	public static final String EL_GALLERY_DRAWING_NUM_STAGES = "num_stages";
+	public static final String EL_GALLERY_DRAWING_ANIM_SWF_URL = "anim_swf_url";
+	public static final String EL_GALLERY_DRAWING_PDF_URL = "pdf_url";
 	
 	public static final String EL_GALLERY_DRAWING_STAGE_AUTHOR = "stage_author";
 	public static final String EL_GALLERY_DRAWING_STAGE_AUTHOR_STAGE = "stage";
