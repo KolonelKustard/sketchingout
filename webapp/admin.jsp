@@ -323,6 +323,14 @@
     <td><b>SMTP Address:</b></td>
     <td><%= SketchingoutSettings.SMTP_SERVER_ADDR + ":" + SketchingoutSettings.SMTP_SERVER_PORT %></td>
   </tr>
+  <tr>
+  	<td><b>SketchingOut Font:</b></td>
+  	<td><%= new java.io.File(SketchingoutSettings.SKETCHING_OUT_FONT).getAbsolutePath() %></td>
+  </tr>
+  <tr>
+  	<td><b>Gallery Directory:</b></td>
+  	<td><%= new java.io.File(SketchingoutSettings.FS_DRAWING_STORE).getAbsolutePath() %></td>
+  </tr>
 </table>
 </body>
 </html>
