@@ -3,8 +3,6 @@
  */
 package com.totalchange.consequences;
 
-import java.io.OutputStream;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -16,10 +14,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * client and sets up the appropriate response.
  */
 public class XMLHandler extends DefaultHandler {
-	private OutputStream response;
+	private XMLWriter out;
 	
-	public XMLHandler(OutputStream response) {
-		this.response = response;
+	public XMLHandler(XMLWriter out) {
+		this.out = out;
 	}
 	
 	/* (non-Javadoc)
@@ -32,6 +30,5 @@ public class XMLHandler extends DefaultHandler {
 		Attributes attributes)
 		throws SAXException {
 			
-		System.out.println(uri + " " + localName + " " + qName);
 	}
 }
