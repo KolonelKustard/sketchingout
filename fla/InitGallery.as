@@ -29,7 +29,7 @@ function galleryOnNext(drawing: GalleryDrawing) {
 	newDrawing.onMovieClipPlayed = drawingOnMovieClipPlayed;
 	
 	// Now load the drawing into it
-	newDrawing.loadMovie(drawing.urlAnimatedSWF);
+	newDrawing.loadDrawing(drawing);
 };
 
 // Link gallery onNext event and get first pic
