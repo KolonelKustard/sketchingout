@@ -12,8 +12,9 @@
     <!ELEMENT locked_secs (#PCDATA)>
     <!ELEMENT drawing (#PCDATA)>
 
-  <!ELEMENT gallery_drawing (drawing_id, num_stages, drawing+)>
+  <!ELEMENT gallery_drawing (drawing_id, num_stages, drawing_stage+)>
     <!ELEMENT num_stages (#PCDATA)>
+    <!ELEMENT drawing_stage (stage, name, drawing, signature)>
     
   <!ELEMENT errors (error+)>
     <!ELEMENT error (src, type, message, stacktrace?)>

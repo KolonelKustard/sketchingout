@@ -6,56 +6,112 @@
     <drawing_id>234</drawing_id>
     <num_stages>4</num_stages>
     
-    <drawing>
-      <![CDATA[
-        <canvas width="200" height="100" offsetx="0" offsety="0">
-          <line>
-            <point x="100" y="200"/>
-            <point x="245" y="423"/>
-            <point x="234" y="543"/>
-            <point x="431" y="343"/>
-          </line>
-        </canvas>
-      ]]>
-    </drawing>
+    <drawing_stage>
+      <stage>1</stage>
+      <name>User 1</name>
+      <drawing>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+              <point x="234" y="543"/>
+              <point x="431" y="343"/>
+            </line>
+          </canvas>
+        ]]>
+      </drawing>
+      <signature>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+            </line>
+          </canvas>
+        ]]>
+      </signature>
+    </drawing_stage>
     
-    <drawing>
-      <![CDATA[
-        <canvas width="200" height="100" offsetx="0" offsety="0">
-          <line>
-            <point x="100" y="200"/>
-            <point x="245" y="423"/>
-            <point x="234" y="543"/>
-            <point x="431" y="343"/>
-          </line>
-        </canvas>
-      ]]>
-    </drawing>
+    <drawing_stage>
+      <stage>2</stage>
+      <name>User 2</name>
+      <drawing>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+              <point x="234" y="543"/>
+              <point x="431" y="343"/>
+            </line>
+          </canvas>
+        ]]>
+      </drawing>
+      <signature>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+            </line>
+          </canvas>
+        ]]>
+      </signature>
+    </drawing_stage>
     
-    <drawing>
-      <![CDATA[
-        <canvas width="200" height="100" offsetx="0" offsety="0">
-          <line>
-            <point x="100" y="200"/>
-            <point x="245" y="423"/>
-            <point x="234" y="543"/>
-            <point x="431" y="343"/>
-          </line>
-        </canvas>
-      ]]>
-    </drawing>
+    <drawing_stage>
+      <stage>3</stage>
+      <name>User 3</name>
+      <drawing>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+              <point x="234" y="543"/>
+              <point x="431" y="343"/>
+            </line>
+          </canvas>
+        ]]>
+      </drawing>
+      <signature>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+            </line>
+          </canvas>
+        ]]>
+      </signature>
+    </drawing_stage>
     
-    <drawing>
-      <![CDATA[
-        <canvas width="200" height="100" offsetx="0" offsety="0">
-          <line>
-            <point x="100" y="200"/>
-            <point x="245" y="423"/>
-            <point x="234" y="543"/>
-            <point x="431" y="343"/>
-          </line>
-        </canvas>
-      ]]>
-    </drawing>
+    <drawing_stage>
+      <stage>4</stage>
+      <name>User 4</name>
+      <drawing>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+              <point x="234" y="543"/>
+              <point x="431" y="343"/>
+            </line>
+          </canvas>
+        ]]>
+      </drawing>
+      <signature>
+        <![CDATA[
+          <canvas width="200" height="100" offsetx="0" offsety="0">
+            <line>
+              <point x="100" y="200"/>
+              <point x="245" y="423"/>
+            </line>
+          </canvas>
+        ]]>
+      </signature>
+    </drawing_stage>
   </gallery_drawing>
 </response>
