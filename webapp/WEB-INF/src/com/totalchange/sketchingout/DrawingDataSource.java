@@ -13,7 +13,7 @@ import java.io.Reader;
 import javax.activation.DataSource;
 
 import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParserException;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 
 /**
  * @author RalphJones
@@ -28,7 +28,7 @@ public class DrawingDataSource implements DataSource {
 	private byte[] drawing = null;
 	
 	public DrawingDataSource(int version, int width, int height, int scale) throws
-		ConsequencesImageParserException {
+		SketchingoutImageParserException {
 		
 		// Make somewhere to store the image data
 		out = new ByteArrayOutputStream();
@@ -76,14 +76,14 @@ public class DrawingDataSource implements DataSource {
 		throw new IOException("Output stream not supported");
 	}
 	
-	public void addStage(Reader xmlData) throws ConsequencesImageParserException {
+	public void addStage(Reader xmlData) throws SketchingoutImageParserException {
 		if (parser == null) throw new RuntimeException("Cannot add to drawing once " +
 			"a call to getInputSource has been made.");
 		
 		parser.addStage(xmlData);
 	}
 	
-	public void addSignature(Reader xmlData) throws ConsequencesImageParserException {
+	public void addSignature(Reader xmlData) throws SketchingoutImageParserException {
 		if (parser == null) throw new RuntimeException("Cannot add to drawing once " +
 			"a call to getInputSource has been made.");
 		

@@ -25,8 +25,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParser;
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParserException;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParser;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 
 /**
  * @author Ralph Jones
@@ -42,7 +42,7 @@ public class ImageParser extends DefaultHandler{
 	private int scale;
 	private int loss;
 	private int currPoint;
-	private ConsequencesImageParser parser;
+	private SketchingoutImageParser parser;
 	private SAXParser saxParser;
 	
 	private int currType = -1;
@@ -62,8 +62,8 @@ public class ImageParser extends DefaultHandler{
 	 * Constructor makes the base rendered image
 	 */
 	public ImageParser(int version, int width, int height, int scale, int loss, 
-		OutputStream out, ConsequencesImageParser parser)
-		throws ConsequencesImageParserException {
+		OutputStream out, SketchingoutImageParser parser)
+		throws SketchingoutImageParserException {
 		
 		// Set the scaling factor and the number of points to skip
 		this.scale = scale;
@@ -80,10 +80,10 @@ public class ImageParser extends DefaultHandler{
 			saxParser = SAXParserFactory.newInstance().newSAXParser();
 		}
 		catch (SAXException se) {
-			throw new ConsequencesImageParserException(se);
+			throw new SketchingoutImageParserException(se);
 		}
 		catch (ParserConfigurationException pe) {
-			throw new ConsequencesImageParserException(pe);
+			throw new SketchingoutImageParserException(pe);
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class ImageParser extends DefaultHandler{
 					parser.moveTo(scaleIt(x), scaleIt(y));
 					currPoint = 0;
 				}
-				catch (ConsequencesImageParserException cipe) {
+				catch (SketchingoutImageParserException cipe) {
 					throw new SAXException(cipe);
 				}
 				
@@ -125,7 +125,7 @@ public class ImageParser extends DefaultHandler{
 					}
 					else currPoint++;
 				}
-				catch (ConsequencesImageParserException cipe) {
+				catch (SketchingoutImageParserException cipe) {
 					throw new SAXException(cipe);
 				}
 			}
@@ -171,7 +171,7 @@ public class ImageParser extends DefaultHandler{
 					scaleIt(Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_CANVAS_HEIGHT)))
 				);
 			}
-			catch (ConsequencesImageParserException cipe) {
+			catch (SketchingoutImageParserException cipe) {
 				throw new SAXException(cipe);
 			}
 		}
@@ -192,46 +192,46 @@ public class ImageParser extends DefaultHandler{
 				
 				parser.endCanvas();
 			}
-			catch (ConsequencesImageParserException cipe) {
+			catch (SketchingoutImageParserException cipe) {
 				throw new SAXException(cipe);
 			}
 		}
 	}
 	
-	public void addStage(InputStream xmlData) throws ConsequencesImageParserException {
+	public void addStage(InputStream xmlData) throws SketchingoutImageParserException {
 		currType = TYPE_DRAWING;
 		
 		try {
 			saxParser.parse(xmlData, this);
 		}
 		catch (Exception e) {
-			throw new ConsequencesImageParserException(e);
+			throw new SketchingoutImageParserException(e);
 		}
 	}
 	
-	public void addStage(Reader xmlData) throws ConsequencesImageParserException {
+	public void addStage(Reader xmlData) throws SketchingoutImageParserException {
 		currType = TYPE_DRAWING;
 
 		try {
 			saxParser.parse(new InputSource(xmlData), this);
 		}
 		catch (Exception e) {
-			throw new ConsequencesImageParserException(e);
+			throw new SketchingoutImageParserException(e);
 		}
 	}
 	
-	public void addSignature(Reader xmlData) throws ConsequencesImageParserException {
+	public void addSignature(Reader xmlData) throws SketchingoutImageParserException {
 		currType = TYPE_SIGNATURE;
 
 		try {
 			saxParser.parse(new InputSource(xmlData), this);
 		}
 		catch (Exception e) {
-			throw new ConsequencesImageParserException(e);
+			throw new SketchingoutImageParserException(e);
 		}
 	}
 	
-	public void close() throws ConsequencesImageParserException {
+	public void close() throws SketchingoutImageParserException {
 		parser.endImage();
 	}
 	

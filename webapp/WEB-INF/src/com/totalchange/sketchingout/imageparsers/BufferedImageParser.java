@@ -20,7 +20,7 @@ import java.io.OutputStream;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class BufferedImageParser implements ConsequencesImageParser {
+public class BufferedImageParser implements SketchingoutImageParser {
 	
 	private String basicType;
 	private OutputStream out;
@@ -37,10 +37,10 @@ public class BufferedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startImage(int, int, java.io.OutputStream)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startImage(int, int, java.io.OutputStream)
 	 */
 	public void startImage(int width, int height, OutputStream out)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 			
 		this.out = out;
 			
@@ -63,23 +63,23 @@ public class BufferedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endImage()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endImage()
 	 */
-	public void endImage() throws ConsequencesImageParserException {
+	public void endImage() throws SketchingoutImageParserException {
 		// Write the image according to the basic type asked for
 		try {
 			javax.imageio.ImageIO.write(bufferedImage, basicType, out);
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startCanvas(int, int, int, int)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startCanvas(int, int, int, int)
 	 */
 	public void startCanvas(int x, int y, int width, int height)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		// Set the offsets
 		offsetX = x;
@@ -87,16 +87,16 @@ public class BufferedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endCanvas()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endCanvas()
 	 */
-	public void endCanvas() throws ConsequencesImageParserException {
+	public void endCanvas() throws SketchingoutImageParserException {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#moveTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#moveTo(double, double)
 	 */
 	public void moveTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		// Set the current position
 		posX = x;
@@ -104,10 +104,10 @@ public class BufferedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#lineTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
 	public void lineTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 			
 		// Draw a line from current pos to new pos
 		line.setLine(posX + offsetX, posY + offsetY, x + offsetX, y + offsetY);

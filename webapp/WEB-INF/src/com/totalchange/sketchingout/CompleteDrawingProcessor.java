@@ -22,7 +22,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParserException;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 
 class CompleteDrawingProcessorException extends Exception {
 	public CompleteDrawingProcessorException(String msg) {
@@ -122,7 +122,7 @@ public class CompleteDrawingProcessor {
 						(num + 1) + "_signature"));
 				}
 			}
-			catch (ConsequencesImageParserException ce) {
+			catch (SketchingoutImageParserException ce) {
 				throw new CompleteDrawingProcessorException(ce);
 			}
 			

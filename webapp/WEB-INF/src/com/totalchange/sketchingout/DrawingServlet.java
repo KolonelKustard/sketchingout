@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParser;
-import com.totalchange.sketchingout.imageparsers.ConsequencesImageParserException;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParser;
+import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 import com.totalchange.sketchingout.imageparsers.SwfAnimatedImageParser;
 import com.totalchange.sketchingout.imageparsers.SwfImageParser;
 
@@ -28,7 +28,7 @@ public class DrawingServlet extends HttpServlet {
 	
 	private void parseRequest(String type, String drawingID, int scale, int loss,
 		OutputStream out) throws SQLException, ClassNotFoundException,
-		ConsequencesImageParserException {
+		SketchingoutImageParserException {
 		
 		// Make connection
 		Connection conn = SQLWrapper.makeConnection();
@@ -43,12 +43,12 @@ public class DrawingServlet extends HttpServlet {
 				drawingID);
 				
 			// Make a parser depending on the type
-			ConsequencesImageParser parser;
+			SketchingoutImageParser parser;
 			if (type.equals("png")) parser = new BufferedImageParser(type);
 			else if (type.equals("jpg")) parser = new BufferedImageParser(type);
 			else if (type.equals("swf")) parser = new SwfImageParser();
 			else if (type.equals("animswf")) parser = new SwfAnimatedImageParser();
-			else throw new ConsequencesImageParserException(type + " not a supported type.");
+			else throw new SketchingoutImageParserException(type + " not a supported type.");
 			
 			// Make an image parser
 			ImageParser imageParser = new ImageParser(

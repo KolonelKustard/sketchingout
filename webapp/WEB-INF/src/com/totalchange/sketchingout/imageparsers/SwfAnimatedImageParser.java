@@ -22,7 +22,7 @@ import com.anotherbigidea.flash.writers.TagWriter;
  * <p>This implementation of the image parser interface outputs a drawing to an
  * .swf format file (Macromedia's Flash format).</p>
  */
-public class SwfAnimatedImageParser implements ConsequencesImageParser {
+public class SwfAnimatedImageParser implements SketchingoutImageParser {
 	
 	private static final int SWF_FPS = 30;
 	private static final int POINTS_PER_FRAME = 10;
@@ -37,10 +37,10 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	private int lastPosX, lastPosY = 0;
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startImage(int, int, java.io.OutputStream)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startImage(int, int, java.io.OutputStream)
 	 */
 	public void startImage(int width, int height, OutputStream out)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		// Init
 		lineID = 0;
@@ -59,14 +59,14 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 			swf.tagSetBackgroundColor(new Color(255,255,255));
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endImage()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endImage()
 	 */
-	public void endImage() throws ConsequencesImageParserException {
+	public void endImage() throws SketchingoutImageParserException {
 		try{
 			// Send a stop action to the current frame
 			SWFActions actions = swf.tagDoAction();
@@ -82,15 +82,15 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 			swf.tagEnd();
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startCanvas(int, int, int, int)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startCanvas(int, int, int, int)
 	 */
 	public void startCanvas(int x, int y, int width, int height)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		// Define the bounds of this canvas
 		currRect = new Rect(0, 0, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS);
@@ -115,9 +115,9 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endCanvas()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endCanvas()
 	 */
-	public void endCanvas() throws ConsequencesImageParserException {
+	public void endCanvas() throws SketchingoutImageParserException {
 		/*try {
 			// Draw the canvas to the movie
 			canvas.done();
@@ -129,10 +129,10 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#moveTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#moveTo(double, double)
 	 */
 	public void moveTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		try {
 			// Draw previous line
@@ -155,15 +155,15 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 			currLine.move(lastPosX, lastPosY);
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#lineTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
 	public void lineTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 			
 		pointNum++;
 		
@@ -201,7 +201,7 @@ public class SwfAnimatedImageParser implements ConsequencesImageParser {
 			}
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 

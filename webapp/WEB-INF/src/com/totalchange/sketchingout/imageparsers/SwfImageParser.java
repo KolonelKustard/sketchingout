@@ -21,7 +21,7 @@ import com.anotherbigidea.flash.writers.TagWriter;
  * <p>This implementation of the image parser interface outputs a drawing to an
  * .swf format file (Macromedia's Flash format).</p>
  */
-public class SwfImageParser implements ConsequencesImageParser {
+public class SwfImageParser implements SketchingoutImageParser {
 	
 	private SWFTagTypes swf;
 	private SWFShape canvas;
@@ -31,10 +31,10 @@ public class SwfImageParser implements ConsequencesImageParser {
 	private int lastPosX, lastPosY = 0;
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startImage(int, int, java.io.OutputStream)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startImage(int, int, java.io.OutputStream)
 	 */
 	public void startImage(int width, int height, OutputStream out)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		// Init
 		canvasID = 0;
@@ -52,14 +52,14 @@ public class SwfImageParser implements ConsequencesImageParser {
 			swf.tagSetBackgroundColor(new Color(255,255,255));
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endImage()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endImage()
 	 */
-	public void endImage() throws ConsequencesImageParserException {
+	public void endImage() throws SketchingoutImageParserException {
 		try{
 			// Show the first frame
 			swf.tagShowFrame();
@@ -68,15 +68,15 @@ public class SwfImageParser implements ConsequencesImageParser {
 			swf.tagEnd();
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#startCanvas(int, int, int, int)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startCanvas(int, int, int, int)
 	 */
 	public void startCanvas(int x, int y, int width, int height)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		try {
 			// Start a new canvas
@@ -91,29 +91,29 @@ public class SwfImageParser implements ConsequencesImageParser {
 			canvasPos = new Matrix(x * SWFConstants.TWIPS, y * SWFConstants.TWIPS);
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#endCanvas()
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endCanvas()
 	 */
-	public void endCanvas() throws ConsequencesImageParserException {
+	public void endCanvas() throws SketchingoutImageParserException {
 		try {
 			// Draw the canvas to the movie
 			canvas.done();
 			swf.tagPlaceObject2(false, -1, 1, canvasID, canvasPos, null, -1, null, 0);
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#moveTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#moveTo(double, double)
 	 */
 	public void moveTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 		
 		try {
 			// Set current position
@@ -124,15 +124,15 @@ public class SwfImageParser implements ConsequencesImageParser {
 			canvas.move(lastPosX, lastPosY);
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
 	/**
-	 * @see com.totalchange.sketchingout.imageparsers.ConsequencesImageParser#lineTo(double, double)
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
 	public void lineTo(double x, double y)
-		throws ConsequencesImageParserException {
+		throws SketchingoutImageParserException {
 			
 		try {
 			// Get new absolute position in twips
@@ -147,7 +147,7 @@ public class SwfImageParser implements ConsequencesImageParser {
 			lastPosY = newPosY;
 		}
 		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
+			throw new SketchingoutImageParserException(ie);
 		}
 	}
 
