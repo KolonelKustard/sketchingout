@@ -22,26 +22,157 @@ public class SketchingoutEmails {
 	public static final int EMAILS_BODY = 3;
 	public static final String[][] EMAILS = {
 		{
-			"Bob Geldof",
-			"bob.geldof@sketchingout.co.uk",
-			"Some email subject",
+			"Bobby McFerrin",
+			"bobbymcferrin@sketchingout.co.uk",
+			"SketchingOut Strikes Again",
 			"Hi " + SUBST_NAME + ",\n\n" +
-			"Please find attached your sketching out picture.  The starving children of Africa love it more than stale bread and rancid water.\n\n" +
+			"The drawing you did on SketchingOut is completed! We think your " + SUBST_BODY_PART + " makes the drawing...!\n\n" +
 			"Kind regards,\n\n" +
 			"Bob"
 		}, 
 		{
-			"Test Person",
-			"test@sketchingout.co.uk",
-			"Test Subject",
-			"Test Body"
+			"Jimmy Jim",
+			"jimmyjim@sketchingout.co.uk",
+			"A sketchingOut production",
+			"What on earth is this? its your completed drawing from SketchingOut. Thats what.\n\n" +
+			"Best washes,\n\n" +
+			"jim"
 		},
 		{
-			"Test Person 2",
-			"test2@sketchingout.co.uk",
-			"Test Subject to " + SUBST_NAME + " for drawing " + SUBST_BODY_PART,
-			"Test multiple: " + SUBST_NAME + ", " + SUBST_NAME + ", " + SUBST_NAME + "\n" +
-			"URL to get back to SketchingOut: " + SUBST_URL
+			"Wailing Tuff",
+			"wailingtuff@sketchingout.co.uk",
+			"Here me now, its SketchingOut so it is",
+			"Here's your drawing. Remember? SketchingOut? oh well, just have a look anyway.\n\n" +
+			"Love,\n\n" +
+			"Wailing T"
+		},
+		{
+			"Devious Honey R. Smooth",
+			"devious@sketchingout.co.uk",
+			"Are you down with this?",
+			"You have Won...! ...A drawing. Enjoy your prize.\n\n" +
+			"All the best,\n\n" +
+			"Mr. Smooth"
+		},
+		{
+			"Stealth Maestro leech Loco",
+			"stealth@sketchingout.co.uk",
+			"SketchingOut is commin' at ya!",
+			"Crikey, look at the state of this! We think its ace. well done.\n\n" +
+			"Peace,\n\n" +
+			"S. Loco"
+		},
+		{
+			"D. Magical Robinson Clinton",
+			"d_mag@sketchingout.co.uk",
+			"Word. SketchingOut says safety first",
+			"Have you seen this? well have a look, its your finished drawing!\n\n" +
+			"Massive respect,\n\n" +
+			"Mr. Magic"
+		},
+		{
+			"Master Fly Beazer Slick",
+			"fly@sketchingout.co.uk",
+			"SketchingOut is big in the area",
+			"Does this look normal to you? " +SUBST_THOSE_ARE_OR_THAT_IS+ " the strangest " + SUBST_BODY_PART + " We've ever seen!\n\n" +
+			"Shhhh,\n\n" +
+			"Fly"
+		},
+		{
+			"Mack P. Bobby Kicks",
+			"mack@sketchingout.co.uk",
+			"This isn't junk, its SketchingOut!",
+			"Hey, your drawing is done! lets take a look, arrgghhh! it's hideous!\n\n" +
+			"Check yourself,\n\n" +
+			"Mack"
+		},
+		{
+			"Adam Ant",
+			"adamant@sketchingout.co.uk",
+			"Stand and Deliver! its SketchingOut!",
+			"Is this not the best picture you've ever seen?!\n\n" +
+			"Kind regards,\n\n" +
+			"The Dandy Highwayman"
+		},
+		{
+			"Shakin' Stevens",
+			"shakey@sketchingout.co.uk",
+			"News of This Old House (and a SketchingOut picture)",
+			"I lied about the old house, its rubbish, unlike this picture!\n\n" +
+			"Keep on Rockin',\n\n" +
+			"Shakey"
+		},
+		{
+			"Your Mum",
+			"mumsie@sketchingout.co.uk",
+			"What time do you call this?",
+			"Hey that looks like my mother! how dare you!\n\n" +
+			"Tsk,\n\n" +
+			"Mum"
+		},
+		{
+			"A Wellwisher",
+			"wellwisher@sketchingout.co.uk",
+			"I'm very proud of you",
+			"This picture would have been fantastic. If you hadn't drawn " + SUBST_A_OR_SOME + " stupid " + SUBST_BODY_PART + "!\n\n" +
+			"Wishing you well,\n\n" +
+			"From nobody in particular"
+		},
+		{
+			"E.T.",
+			"et@sketchingout.co.uk",
+			"SketchingOut phone home",
+			"Your picture is ready! I bet the other drawers are glad you were involved...\n\n" +
+			"Stay tuned,\n\n" +
+			"E.T"
+		},
+		{
+			"Boney M",
+			"boneym@sketchingout.co.uk",
+			"Another SketchingOut exclusive",
+			"Wow, what an ace piece of drawing teamwork!\n\n" +
+			"You've made my day,\n\n" +
+			"Boney"
+		},
+		{
+			"David Bellamy",
+			"daveb@sketchingout.co.uk",
+			"I love SketchingOut and mucky moss",
+			"Here's your finished drawing. Make of it what you will.\n\n" +
+			"Lovely,\n\n" +
+			"Mr. B"
+		},
+		{
+			"Rolf Harris",
+			"daveb@sketchingout.co.uk",
+			"SketchingOut is taking my job",
+			"Can you guess what this is yet? No, me neither...!\n\n" +
+			"G'Day,\n\n" +
+			"Rolf"
+		},
+		{
+			"Bobby Bones",
+			"bb@sketchingout.co.uk",
+			"Last night SketchingOut saved my life",
+			"Here's your drawing. We hope you like it. If you don't, we really are very sorry.\n\n" +
+			"Hope you get better soon,\n\n" +
+			"Bob"
+		},
+		{
+			"Denzil",
+			"denzil@sketchingout.co.uk",
+			"oo bee ee? oh Sketchingout",
+			"Here's your drawing. Wasn't it worth the wait?!\n\n" +
+			"I think so,\n\n" +
+			"Denzil"
+		},
+		{
+			"Frankie",
+			"frankie@sketchingout.co.uk",
+			"Frankie says, choose SketchingOut",
+			"Here's your completed drawing. My 2 year old sister couldn't have done any better...\n\n" +
+			"Relax, don't do it,\n\n" +
+			"Frank"
 		}
 	}; 
 }
