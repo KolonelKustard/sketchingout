@@ -11,6 +11,7 @@ CREATE TABLE drawings(
   completed		CHAR(1) NOT NULL,
   locked		DATETIME NOT NULL,
   distinguished_id	VARCHAR(36) NULL,
+  stage			INTEGER NOT NULL,
   head_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
   head_author_email	VARCHAR(100) NULL,
   head			TEXT NOT NULL,
