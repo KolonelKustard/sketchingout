@@ -10,17 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
 import com.totalchange.sketchingout.imageparsers.PdfImageParser;
@@ -49,46 +41,17 @@ public class CompleteDrawingProcessor {
 		UnsupportedEncodingException {
 		
 		// Make new email
-		SketchingoutEmail sketchEmail = new SketchingoutEmail(name, email, stage);
+		SketchingoutEmail msg = new SketchingoutEmail(session, SketchingoutEmails.EMAILS);
+		msg.setToName(name);
+		msg.setToEmail(email);
+		msg.setStage(stage);
 		
-		// Make new SMTP email
-		Message msg = new MimeMessage(session);
+		// Add attachments
+		msg.addAttachment(imageDS);
+		msg.addAttachment(pdfDS);
 		
-		// Who from
-		msg.setFrom(new InternetAddress(sketchEmail.getFromEmail(), 
-				sketchEmail.getFromName()));
-		
-		// Who to
-		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, name));
-		
-		// Set subject
-		msg.setSubject(sketchEmail.getSubject());
-		
-		// Create the MIME multi part
-		MimeMultipart multiPart = new MimeMultipart();
-		
-		// Create and add the body part
-		BodyPart body = new MimeBodyPart();
-		body.setText(sketchEmail.getBody());
-		multiPart.addBodyPart(body);
-		
-		// Create and add the image
-		BodyPart img = new MimeBodyPart();
-		img.setDataHandler(new DataHandler(imageDS));
-		img.setFileName(imageDS.getName());
-		multiPart.addBodyPart(img);
-		
-		// Create and add the pdf
-		BodyPart pdf = new MimeBodyPart();
-		pdf.setDataHandler(new DataHandler(pdfDS));
-		pdf.setFileName(pdfDS.getName());
-		multiPart.addBodyPart(pdf);
-		
-		// Put the parts to the message
-		msg.setContent(multiPart);
-		
-		// Send the message
-		Transport.send(msg);
+		// Send message
+		msg.send();
 	}
 	
 	private static final void processMessages(Connection conn, 
