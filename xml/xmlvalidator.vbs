@@ -28,5 +28,6 @@ ValidateXMLDoc("request_next.xml")
 ValidateXMLDoc("response_next.xml")
 ValidateXMLDoc("request_user.xml")
 ValidateXMLDoc("response_user.xml")
+ValidateXMLDoc("request_user_submit.xml")
 
 MsgBox("No errors in XML documents")
