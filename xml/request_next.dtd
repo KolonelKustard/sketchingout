@@ -1,4 +1,0 @@
-<!ELEMENT request_next_drawing EMPTY>
-
-<!ATTLIST request_next_drawing user_id CDATA #REQUIRED>
-<!ATTLIST request_next_drawing drawing_id CDATA #IMPLIED>
