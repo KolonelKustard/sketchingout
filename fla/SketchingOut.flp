@@ -30,4 +30,5 @@
     <project_file path="./DrawInterface.as" filetype="as" />
     <project_file path="./HintsClip.as" filetype="as" />
     <project_file path="./Gallery.as" filetype="as" />
+    <project_file path="./Hint.as" filetype="as" />
 </flash_project>
