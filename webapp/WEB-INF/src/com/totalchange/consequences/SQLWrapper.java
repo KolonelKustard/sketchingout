@@ -1,8 +1,5 @@
 /*
  * Created on 05-May-2004
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package com.totalchange.consequences;
 
@@ -113,6 +110,7 @@ public class SQLWrapper {
 		PreparedStatement pstmt = conn.prepareStatement(
 			"SELECT " +
 			"  id, " +
+			"  locked, " +
 			"  stage, " +
 			"  stage_1, " +
 			"  stage_2, " + 
@@ -159,7 +157,7 @@ public class SQLWrapper {
 	public static final int INS_DRAW_SIGNATURE = 8;
 	public static final PreparedStatement insertDrawing(Connection conn, 
 		String drawingID, String distinguishedID, String userID, String userName, 
-		String userEmail) throws SQLException{
+		String userEmail, int lockSecs) throws SQLException{
 			
 		PreparedStatement pstmt = conn.prepareStatement(
 			"INSERT INTO drawings(" +
@@ -173,7 +171,7 @@ public class SQLWrapper {
 		
 		// Set parameters
 		pstmt.setString(1, drawingID);
-		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis() + (lockSecs * 1000)));
 		pstmt.setString(3, distinguishedID);
 		pstmt.setString(4, userID);
 		pstmt.setString(5, userName);
@@ -190,7 +188,8 @@ public class SQLWrapper {
 	public static final int UPD_DRAW_SIGNATURE = 9;
 	public static final PreparedStatement updateDrawing(Connection conn, 
 		String drawingID, boolean complete, String distinguishedID, int stage,
-		String userID, String userName,	String userEmail) throws SQLException {
+		String userID, String userName,	String userEmail, int lockSecs)
+		throws SQLException {
 		
 		// Convert the stage number into a string to use to identify the field names
 		// in the statement
@@ -220,7 +219,7 @@ public class SQLWrapper {
 			pstmt.setString(1, "N");
 		}
 		
-		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+		pstmt.setTimestamp(2, new Timestamp(System.currentTimeMillis() + (lockSecs * 1000)));
 		pstmt.setString(3, distinguishedID);
 		pstmt.setInt(4, stage);
 		pstmt.setString(5, userID);
