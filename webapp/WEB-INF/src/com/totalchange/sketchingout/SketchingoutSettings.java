@@ -61,6 +61,11 @@ public class SketchingoutSettings {
 	 * The email From address
 	 */
 	public static final String EMAIL_FROM_EMAIL = "sketcher@sketchingout.co.uk";
+	
+	/**
+	 * Where to send a copy of all finished drawings to
+	 */
+	public static final String COMPLETE_DRAWING_TO_EMAIL = "sketchingout@totalchange.com";
 
 	/**
 	 * The root URL to access Sketching Out
@@ -83,4 +88,14 @@ public class SketchingoutSettings {
 	 * the GET query string.
 	 */
 	public static final String URL_PARAM_DRAWING_ID = "did";
+	
+	/**
+	 * Where on the file system to find the truetype SketchingOut font
+	 */
+	public static final String SKETCHING_OUT_FONT = "DeannasHand.ttf";
+	
+	/**
+	 * The location on the file system in which to store completed drawings
+	 */
+	public static final String FS_DRAWING_STORE = "drawings/";
 }
