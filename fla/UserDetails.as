@@ -6,6 +6,14 @@
 	public var emailEdit: TextField;
 	public var sigCanvas: CanvasMovieClip;
 	
+	// Event handlers
+	public var onErrorNoName: Function = null;
+	public var onErrorInvalidEmail: Function = null;
+	
+	private function validateEmailAddress(email: String): Boolean {
+		return null;
+	}
+	
 	public function setUserDetails(user: User): Void {
 		this.user = user;
 		userID = user.id;
@@ -17,6 +25,8 @@
 		if (user.email != null) {
 			emailEdit.text = user.email;
 		}
+		
+		sigCanvas.drawing = user.signature;
 	}
 	
 	public function modified(): Boolean {
@@ -26,11 +36,34 @@
 		// Compare values
 		if (
 			(nameEdit.text != user.name) or
-			(emailEdit.text != user.email)
+			(emailEdit.text != user.email) or
+			(sigCanvas.modified)
 		)
 			return true
 		else
 			return false;
+	}
+	
+	public function validateUserDetails(): Boolean {
+		// Check the name
+		if (nameEdit.text == "") {
+			if (onErrorNoName <> null) onErrorNoName();
+			return false;
+		}
+		
+		// Check the email address entered
+		if (emailEdit.text == "") {
+			if (onErrorInvalidEmail <> null) onErrorInvalidEmail();
+			return false;
+		}
+		else {
+			if (!validateEmailAddress(emailEdit.text)) {
+				if (onErrorInvalidEmail <> null) onErrorInvalidEmail();
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public function getSubmitUserRequest(): SubmitUserRequest {
