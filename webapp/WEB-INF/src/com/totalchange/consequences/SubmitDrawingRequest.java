@@ -1,13 +1,15 @@
 /*
  * Created on 07-Jun-2004
- *
  */
 package com.totalchange.consequences;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.mail.MessagingException;
 
 import org.xml.sax.Attributes;
 
@@ -22,7 +24,7 @@ public class SubmitDrawingRequest implements RequestHandler {
 	private PreparedStatement pstmt;
 	
 	private String drawingID = null;
-	private boolean complete = false; 
+	private boolean complete = false;
 	
 	private int paramDrawing = 0;
 
@@ -61,10 +63,13 @@ public class SubmitDrawingRequest implements RequestHandler {
 		
 		String nextUserEmail = attributes.getValue(XMLConsts.AT_SUBMIT_DRAWING_NEXT_USER_EMAIL);
 		String distinguishedID = null;
+		int lockSecs = 0;
 		
-		// If got a next user, will need to define a distiguished id
+		// If got a next user, will need to define a distiguished id and set locked
+		// time for drawing.
 		if (nextUserEmail != null) {
 			distinguishedID = new RandomGUID().toString();
+			lockSecs = ConsequencesSettings.PRIVATE_LOCK_SECS;
 		}
 		
 		// Convert stage to an int.
@@ -79,6 +84,15 @@ public class SubmitDrawingRequest implements RequestHandler {
 		// See if completed or not 
 		complete = (stage >= ConsequencesSettings.MAX_NUM_STAGES);
 		
+		// If completed AND trying to send on to someone, let client know that the
+		// next person won't be notified but the drawing will be processed anyway.
+		if (complete && (distinguishedID != null)) {
+			errs.addException(this.getClass(), new HandlerException("This drawing has " +
+				"been completed but a recipient was specified to continue the " +
+				"drawing.  The drawing will complete as normal but the recipient " +
+				"will not be notified."));
+		}
+		
 		try {
 			// Get users details to fill in the statement parameters
 			PreparedStatement usrPstmt = SQLWrapper.getUser(conn, userID);
@@ -90,12 +104,16 @@ public class SubmitDrawingRequest implements RequestHandler {
 				throw new HandlerException("Could not find a user with ID: " + userID);
 			}
 			
+			// Get this users details
+			String usrName = usrRes.getString("name");
+			String usrEmail = usrRes.getString("email");
+			
 			// Decide on whether to insert or update.  If on stage 1 then insert.
 			// Otherwise update.
 			if (stage == 1) {
 				// Insert a drawing
 				pstmt = SQLWrapper.insertDrawing(conn, drawingID, distinguishedID, userID,
-					usrRes.getString("name"), usrRes.getString("email"));
+					usrName, usrEmail, lockSecs);
 					
 				// Copy across signature
 				SQLWrapper.copyClob(usrRes.getClob("signature"), pstmt, SQLWrapper.INS_DRAW_SIGNATURE);
@@ -106,14 +124,28 @@ public class SubmitDrawingRequest implements RequestHandler {
 			else {
 				// Update a drawing
 				pstmt = SQLWrapper.updateDrawing(conn, drawingID, complete, 
-					distinguishedID, stage, userID,	usrRes.getString("name"), 
-					usrRes.getString("email"));
+					distinguishedID, stage, userID,	usrName, usrEmail, lockSecs);
 					
 				// Copy across signature
 				SQLWrapper.copyClob(usrRes.getClob("signature"), pstmt, SQLWrapper.UPD_DRAW_SIGNATURE);
 				
 				// Get parameter for updating drawing
 				paramDrawing = SQLWrapper.UPD_DRAW_DRAWING;
+			}
+			
+			// If not complete and have requested this to be sent on to an email address,
+			// send it on!
+			if ((distinguishedID != null) && (!complete)) {
+				try {
+					PrivateDrawingProcessor.sendDrawingOn(usrName, usrEmail,
+						nextUserEmail, distinguishedID);
+				}
+				catch (MessagingException me) {
+					errs.addException(this.getClass(), me);
+				}
+				catch (UnsupportedEncodingException ee) {
+					errs.addException(this.getClass(), ee);
+				}
 			}
 			
 			// Close statements
