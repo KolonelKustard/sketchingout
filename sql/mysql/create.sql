@@ -43,11 +43,3 @@ CREATE TABLE drawings(
   INDEX awaiting_drawing(distinguished_id),
   UNIQUE INDEX complete_drawings(friendly_id)
 );
-
-CREATE TABLE emails(
-  id		INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  from_name	VARCHAR(40) NOT NULL,
-  from_email	VARCHAR(40) NOT NULL,
-  subject	VARCHAR(150) NOT NULL,
-  body		VARCHAR(255) NOT NULL
-);
