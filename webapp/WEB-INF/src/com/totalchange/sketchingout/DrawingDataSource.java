@@ -49,8 +49,16 @@ public class DrawingDataSource implements DataSource {
 	 * @see javax.activation.DataSource#getInputStream()
 	 */
 	public InputStream getInputStream() throws IOException {
+		
 		if (drawing == null) {
 			// If no drawing, get it out the byte array input stream
+			try {
+				parser.close();
+			}
+			catch(SketchingoutImageParserException se) {
+				throw new IOException(se.getMessage());
+			}
+			
 			drawing = out.toByteArray();
 			
 			// Have now finished with the input stream so can signal to
@@ -66,7 +74,7 @@ public class DrawingDataSource implements DataSource {
 	 * @see javax.activation.DataSource#getName()
 	 */
 	public String getName() {
-		return "Consequences.png";
+		return "sketchingout.png";
 	}
 
 	/**
