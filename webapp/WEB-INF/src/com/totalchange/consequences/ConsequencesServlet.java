@@ -4,8 +4,6 @@
  */
 package com.totalchange.consequences;
 
-import com.totalchange.consequences.XMLHandler;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -33,19 +31,34 @@ public class ConsequencesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws ServletException, IOException {
+			
+		// Make sure response is formatted to XML
+		response.setContentType("text/xml");
+			
+		// Create an instance of the XML writer used for the response
+		XMLWriter writer = new XMLWriter(response.getWriter());
+		writer.startElement(XMLConsts.EL_RESPONSE);
 		
-		try {
-			// Make sure response is formatted to XML
-			response.setContentType("text/xml");
-			
-			response.getWriter().write("<somexml><test>Some test!</test></somexml>");
-			
+		// Create an instance of the error cache
+		ConsequencesErrors errs = new ConsequencesErrors();
+		
+		try {			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
-			parser.parse(request.getInputStream(), new XMLHandler(response.getOutputStream()));
+			parser.parse(request.getInputStream(), new XMLHandler(writer));
 		}
 		catch(Exception e) {
+			// Add error to the error cache
+			errs.addException(this.getClass(), e);
 		}
+		
+		// If there are errors, add them to the output
+		if (errs.size() > 0) {
+			errs.outputErrors(writer);
+		}
+		
+		// Finish the output
+		writer.endElement(XMLConsts.EL_RESPONSE);
 	}
 
 }
