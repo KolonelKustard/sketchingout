@@ -18,7 +18,7 @@
 		point.y = y;
 		
 		// Make sure not duplicating last added point before adding this one
-		if ((x != lastPointX) && (y != lastPointY)) {
+		if ((x != lastPointX) || (y != lastPointY)) {
 			points.push(point);
 		}
 		
