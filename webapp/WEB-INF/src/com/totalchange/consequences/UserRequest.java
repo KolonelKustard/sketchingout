@@ -6,6 +6,7 @@ package com.totalchange.consequences;
 
 import java.io.IOException;
 
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +36,13 @@ public class UserRequest implements RequestHandler {
 			out.writeElement(XMLConsts.EL_USER_ID, res.getString("id"));
 			out.writeElement(XMLConsts.EL_USER_NAME, res.getString("name"));
 			out.writeElement(XMLConsts.EL_USER_EMAIL, res.getString("email"));
-			out.writeElement(XMLConsts.EL_USER_SIGNATURE, res.getString("signature"));
+			
+			Clob clob = res.getClob("signature");
+			if ((clob != null) && (clob.length() > 0)) {
+				out.startElement(XMLConsts.EL_USER_SIGNATURE);
+				SQLWrapper.outputClob(out, clob);
+				out.endElement(XMLConsts.EL_USER_SIGNATURE);
+			}
 			
 			out.endElement(XMLConsts.EL_USER_DETAILS);
 		}
