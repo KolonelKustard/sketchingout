@@ -22,25 +22,38 @@
 		if (timeRemaining < 0) timeRemaining = 0;
 		
 		// Determine time remaining in minutes and seconds
-		var mins: Number = Math.floor((timeRemaining / 1000) / 60);
 		var secs: Number = Math.floor((timeRemaining / 1000) % 60);
 		
 		// See if the text in the field should be changed
-		if ((mins != minsRemaining) || (secs != secsRemaining)) {
+		if (secs != secsRemaining) {
+			var hrs: Number = Math.floor((timeRemaining / 1000) / 3600);
+			var mins: Number = Math.floor((timeRemaining / 1000) / 60);
+			
 			minsRemaining = mins;
 			secsRemaining = secs;
 			
+			var hrsTxt: String;
 			var minsTxt: String;
 			var secsTxt: String;
 			
+			if (hrs == 1) hrsTxt = "hr"; else hrsTxt = "hrs";
 			if (mins == 1) minsTxt = "min"; else minsTxt = "mins";
 			if (secs == 1) secsTxt = "sec"; else secsTxt = "secs";
 			
-			txtFld.text =
-				prefix +
-				String(mins) + " " + minsTxt + " " +
-				String(secs) + " " + secsTxt +
-				suffix;
+			if (hrs > 0) {
+				txtFld.text =
+					prefix +
+					String(hrs) + " " + hrsTxt + " " +
+					String(mins) + " " + minsTxt +
+					suffix;
+			}
+			else {
+				txtFld.text =
+					prefix +
+					String(mins) + " " + minsTxt + " " +
+					String(secs) + " " + secsTxt +
+					suffix;
+			}
 		}
 		
 		// If gone over the reminder period, send reminder
