@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -233,6 +235,61 @@ public class ImageParser extends DefaultHandler{
 	
 	public void close() throws SketchingoutImageParserException {
 		parser.endImage();
+	}
+	
+	/**
+	 * <p>A utility function to parse a standard resultset using an image
+	 * parser to an output stream</p>
+	 * 
+	 * @param res
+	 * @param scale
+	 * @param loss
+	 * @param out
+	 * @param parser
+	 */
+	public static void parseResultSet(ResultSet res, int scale, int loss, 
+			OutputStream out, SketchingoutImageParser parser) throws
+			SketchingoutImageParserException, SQLException {
+		
+		// Make an image parser
+		ImageParser imageParser = new ImageParser(
+			res.getInt("version"),
+			res.getInt("width"),
+			res.getInt("height"),
+			scale,
+			loss,
+			out, 
+			parser
+		);
+			
+		// Find the number of stages
+		int numStages = res.getInt("stage");
+		
+		// Run through the stages adding them to the parser
+		for (int num = 0; num < numStages; num++) {
+			try {
+				imageParser.addStage(res.getCharacterStream("stage_" + (num + 1)));
+			}
+			catch (Exception e) {
+				// If have an exception just print it to the console
+				e.printStackTrace();
+			}
+		}
+		
+		// Run through the signatures adding them to the parser
+		for (int num = 0; num < numStages; num++) {
+			try {
+				imageParser.addSignature(res.getCharacterStream("stage_" + 
+					(num + 1) + "_signature"));
+			}
+			catch (Exception e) {
+				// Again just print exception to the stage
+				e.printStackTrace();
+			}
+		}
+		
+		// Close parser
+		imageParser.close();
 	}
 	
 	public static void main(String[] args) throws Exception {
