@@ -332,6 +332,23 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
+	public static final PreparedStatement getDrawingForTransfer(Connection conn, 
+		String drawingID) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  * " +
+			"FROM " +
+			"  drawings " +
+			"WHERE " +
+			"  id = ?"
+		);
+		
+		pstmt.setString(1, drawingID);
+		
+		return pstmt;
+	}
+	
 	public static final PreparedStatement getLatestGalleryDrawings(Connection conn, 
 		int offset, int rowCount) 
 		throws SQLException {
