@@ -23,12 +23,19 @@ import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserExceptio
  */
 public class DrawingDataSource implements DataSource {
 	
+	private String name;
+	private String type;
+	
 	private ImageParser parser;
 	private ByteArrayOutputStream out;
 	private byte[] drawing = null;
 	
 	public DrawingDataSource(int version, int width, int height, int scale,
-		SketchingoutImageParser imgParser) throws SketchingoutImageParserException {
+		SketchingoutImageParser imgParser, String name, String type)
+		throws SketchingoutImageParserException {
+		
+		this.name = name;
+		this.type = type;
 		
 		// Make somewhere to store the image data
 		out = new ByteArrayOutputStream();
@@ -41,7 +48,7 @@ public class DrawingDataSource implements DataSource {
 	 * @see javax.activation.DataSource#getContentType()
 	 */
 	public String getContentType() {
-		return "image/png";
+		return type;
 	}
 
 	/**
@@ -73,7 +80,7 @@ public class DrawingDataSource implements DataSource {
 	 * @see javax.activation.DataSource#getName()
 	 */
 	public String getName() {
-		return "sketchingout.png";
+		return name;
 	}
 
 	/**
