@@ -151,9 +151,9 @@ public class CompleteDrawingProcessor {
 			res.close();
 			pstmt.close();
 		}
-	} 
+	}
 	
-	public static final void process(String drawingID) {
+	static final void processDrawing(String drawingID) {
 		try {
 			// Get database connection
 			Connection conn = SQLWrapper.makeConnection();
@@ -176,6 +176,17 @@ public class CompleteDrawingProcessor {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static final void process(String drawingID) {
+		// If not threaded pass straight through, otherwise wake up the
+		// completion thread.
+		if (!SketchingoutSettings.COMPLETE_THREADED) {
+			processDrawing(drawingID);
+		}
+		else {
+			processDrawing(drawingID);
 		}
 	}
 	
