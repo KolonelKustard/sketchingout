@@ -1,4 +1,6 @@
 ﻿class Drawing {
+	public var readOnly: Boolean = false;
+	
 	public var width: Number = 0;
 	public var height: Number = 0;
 	public var offsetX: Number = 0;
