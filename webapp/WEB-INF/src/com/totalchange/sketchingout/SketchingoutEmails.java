@@ -186,7 +186,9 @@ public class SketchingoutEmails {
 			"whoareyou@sketchingout.co.uk",
 			"A SketchingOut.co.uk drawing request",
 			"Hi " + SUBST_TO_NAME + ",\n\n" +
-			"Your Pal, " + SUBST_FROM_NAME + " " + SUBST_FROM_EMAIL + "has invited you to draw a picture!" + "\n" +
+			"Your Pal, " + SUBST_FROM_NAME + " <" + SUBST_FROM_EMAIL + "> has invited you to draw a picture! " + 
+			"Click the link below to draw " + SUBST_A_OR_SOME + " " + SUBST_BODY_PART + ":\n\n" +
+			SUBST_URL + "\n\n" +
 			"Kind regards,\n\n" +
 			"www.SketchingOut.co.uk"
 		}
