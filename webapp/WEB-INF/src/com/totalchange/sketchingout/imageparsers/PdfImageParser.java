@@ -10,7 +10,9 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfAction;
 import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfDestination;
 import com.lowagie.text.pdf.PdfWriter;
 import com.totalchange.sketchingout.SketchingoutSettings;
 
@@ -66,18 +68,6 @@ public class PdfImageParser implements SketchingoutImageParser {
 		// Now need to center the drawing by calculating the insets
 		insetX = ((pWidth / 2) - ((drawingWidth * scale) / 2)) + MARGIN_LEFT;
 		insetY = ((pHeight / 2) - ((drawingHeight * scale) / 2)) + MARGIN_TOP;
-		
-		System.out.println(
-			"P: " + pageWidth + ", " + pageHeight + " " +
-			"D: " + drawingWidth + ", " + drawingHeight + " " +
-			"I: " + insetX + ", " + insetY + " " +
-			"S: " + scale
-		);
-		
-		System.out.println(
-			"NP: " + pWidth + ", " + pHeight + " " +
-			"ND: " + (drawingWidth * scale) + ", " + (drawingHeight * scale)
-		);
 	}
 
 	/**
@@ -97,23 +87,6 @@ public class PdfImageParser implements SketchingoutImageParser {
 			
 			// Embed the handwriting font
 			BaseFont baseFont = BaseFont.createFont(SKETCHING_OUT_FONT, BaseFont.WINANSI, BaseFont.EMBEDDED);
-			
-			/*
-			Font headerFont = new Font(baseFont, 24, Font.BOLD);
-			HeaderFooter header = new HeaderFooter(new Phrase("SKETCHING OUT", headerFont), false);
-			header.setAlignment(HeaderFooter.ALIGN_CENTER);
-			document.setHeader(header);
-			
-			Font footerFont = new Font(baseFont, 12);
-			//Anchor anchor = new Anchor("http://www.sketchingout.co.uk", footerFont);
-			//anchor.setReference("http://www.sketchingout.co.uk");
-			//anchor.setName("Sketching Out Website");
-			Phrase footerPhrase = new Phrase(SketchingoutSettings.URL_ROOT, footerFont);
-			
-			HeaderFooter footer = new HeaderFooter(footerPhrase, false);
-			footer.setAlignment(HeaderFooter.ALIGN_CENTER);
-			document.setFooter(footer);
-			*/
 			
 			// Open the document and begin direct writing to it
 			document.open();
@@ -135,7 +108,9 @@ public class PdfImageParser implements SketchingoutImageParser {
 			cb.endText();
 			
 			// Put an action over the footer to link to the website
-			
+			PdfAction action = PdfAction.gotoLocalPage(1, new
+					PdfDestination(PdfDestination.FIT), writer);
+			writer.setOpenAction(action);
 			
 			// Define the line width for the entire drawing
 			cb.setLineWidth(LINE_WIDTH);
