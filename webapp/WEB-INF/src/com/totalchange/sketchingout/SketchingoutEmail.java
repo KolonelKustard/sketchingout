@@ -3,22 +3,36 @@
  */
 package com.totalchange.sketchingout;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 /**
  * @author RalphJones
  */
 public class SketchingoutEmail {
-	private int emailNum;
+	public static final int EMAILS_ARRAY_FROM_NAME = 0;
+	public static final int EMAILS_ARRAY_FROM_EMAIL = 1;
+	public static final int EMAILS_ARRAY_SUBJECT = 2;
+	public static final int EMAILS_ARRAY_BODY = 3;
 	
-	private String toName, toEmail;
+	private MimeMessage msg;
+	private ArrayList attachments = new ArrayList();
+	private String fromName, fromEmail, toName, toEmail, subject, body;
 	private int stage;
 	
 	private void substStr(StringBuffer buff, String orig, String subst) {
@@ -33,8 +47,8 @@ public class SketchingoutEmail {
 		StringBuffer dest = new StringBuffer(src);
 		
 		// Substitute the easy strings
-		substStr(dest, SketchingoutEmails.SUBST_NAME, toName);
-		substStr(dest, SketchingoutEmails.SUBST_EMAIL, toEmail);
+		substStr(dest, SketchingoutEmails.SUBST_TO_NAME, toName);
+		substStr(dest, SketchingoutEmails.SUBST_TO_EMAIL, toEmail);
 		substStr(dest, SketchingoutEmails.SUBST_URL, SketchingoutSettings.URL_DRAWING);
 		
 		// Change the stage into a body part
@@ -67,53 +81,119 @@ public class SketchingoutEmail {
 		return dest.toString();
 	}
 	
-	public SketchingoutEmail(int emailNum, String toName, String toEmail, int stage) {
-		this.emailNum = emailNum; 
-		this.toName = toName;
-		this.toEmail = toEmail;
-		this.stage = stage;
-	}
-	
-	public SketchingoutEmail(String toName, String toEmail, int stage) {
-		this(new Random().nextInt(SketchingoutEmails.EMAILS.length), toName,
-				toEmail, stage);
-	}
-	
-	public String getToName() {
-		return toName;
-	}
-	
-	public String getToEmail() {
-		return toEmail;
-	}
-	
-	public int getStage() {
-		return stage;
-	}
-	
-	public String getFromName() {
-		return SketchingoutEmails.EMAILS[emailNum][SketchingoutEmails.EMAILS_FROM_NAME];
-	}
-	
-	public String getFromEmail() {
-		return SketchingoutEmails.EMAILS[emailNum][SketchingoutEmails.EMAILS_FROM_EMAIL];
-	}
-	
-	public String getSubject() {
-		return substStrs(
-				SketchingoutEmails.EMAILS[emailNum][SketchingoutEmails.EMAILS_SUBJECT]);
+	/**
+	 * 
+	 * @param session
+	 */
+	public SketchingoutEmail(Session session) {
+		// Create message
+		msg = new MimeMessage(session);
 	}
 	
 	/**
-	 * <p>Parses the body and performs basic text substitution</p>
+	 * Create a new email based upon the provided list of random emails
 	 * 
-	 * @return The body text of the email
+	 * @param session
+	 * @param emails
 	 */
-	public String getBody() {
-		return substStrs(
-				SketchingoutEmails.EMAILS[emailNum][SketchingoutEmails.EMAILS_BODY]);
+	public SketchingoutEmail(Session session, String[][] emails) {
+		this(session);
+		
+		// Initially configure the message to use random parts
+		int emailNum = new Random().nextInt(emails.length);
+		
+		setFromName(emails[emailNum][EMAILS_ARRAY_FROM_NAME]);
+		setFromEmail(emails[emailNum][EMAILS_ARRAY_FROM_EMAIL]);
+		setSubject(emails[emailNum][EMAILS_ARRAY_SUBJECT]);
+		setBody(emails[emailNum][EMAILS_ARRAY_BODY]);
 	}
-
+	
+	/**
+	 * Sends the email
+	 * 
+	 * @throws MessagingException
+	 */
+	public void send() throws UnsupportedEncodingException, MessagingException {
+		// Make the multi part to hold the message parts
+		Multipart mp = new MimeMultipart();
+		BodyPart bp;
+		
+		// Set who from and to
+		msg.setFrom(new InternetAddress(fromEmail, substStrs(fromName)));
+		msg.addRecipient(Message.RecipientType.TO,
+				new InternetAddress(toEmail, substStrs(toName)));
+		
+		// Set subject
+		msg.setSubject(substStrs(subject));
+		
+		// Add the body text
+		bp = new MimeBodyPart();
+		bp.setText(substStrs(body));
+		mp.addBodyPart(bp);
+		
+		// Add the attachments
+		int size = attachments.size();
+		for (int num = 0; num < size; num++) {
+			DataSource attach = (DataSource) attachments.get(num);
+			
+			bp = new MimeBodyPart();
+			bp.setDataHandler(new DataHandler(attach));
+			bp.setFileName(attach.getName());
+			mp.addBodyPart(bp);
+		}
+		
+		// Put the parts into the message and send it
+		msg.setContent(mp);
+		Transport.send(msg);
+	}
+	
+	public void addAttachment(DataSource attachment) {
+		attachments.add(attachment);
+	}
+	
+	public String getBody() {
+		return body;
+	}
+	public void setBody(String body) {
+		this.body = body;
+	}
+	public String getFromEmail() {
+		return fromEmail;
+	}
+	public void setFromEmail(String fromEmail) {
+		this.fromEmail = fromEmail;
+	}
+	public String getFromName() {
+		return fromName;
+	}
+	public void setFromName(String fromName) {
+		this.fromName = fromName;
+	}
+	public int getStage() {
+		return stage;
+	}
+	public void setStage(int stage) {
+		this.stage = stage;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getToEmail() {
+		return toEmail;
+	}
+	public void setToEmail(String toEmail) {
+		this.toEmail = toEmail;
+	}
+	public String getToName() {
+		return toName;
+	}
+	public void setToName(String toName) {
+		this.toName = toName;
+	}
+	
 	/**
 	 * Tests all the random emails
 	 * 
@@ -143,25 +223,14 @@ public class SketchingoutEmail {
 		
 		// Run through each email making and sending
 		for (int num = 0; num < SketchingoutEmails.EMAILS.length; num++) {
-			SketchingoutEmail email = new SketchingoutEmail(num, toName, toEmail,
-					new Random().nextInt(SketchingoutSettings.MAX_NUM_STAGES));
-			
-			// Make new SMTP email
-			Message msg = new MimeMessage(session);
-			
-			// Who from
-			msg.setFrom(new InternetAddress(email.getFromEmail(), 
-					email.getFromName()));
-			
-			// Who to
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail, toName));
-			
-			// Set subject and body
-			msg.setSubject(email.getSubject());
-			msg.setText(email.getBody());
-			
-			// Send!
-			Transport.send(msg);
+			SketchingoutEmail email = new SketchingoutEmail(session);
+			email.setFromName(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_FROM_NAME]);
+			email.setFromEmail(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_FROM_EMAIL]);
+			email.setSubject(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_SUBJECT]);
+			email.setBody(SketchingoutEmails.EMAILS[num][EMAILS_ARRAY_BODY]);
+			email.setToName(toName);
+			email.setToEmail(toEmail);
+			email.send();
 		}
 		
 		System.out.println("Done");
