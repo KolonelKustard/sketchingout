@@ -31,12 +31,8 @@
 		lines = new Array();
 	}
 	
-	/**
-	 * This function shrinks the size of a drawing so that the height of the drawing
-	 * becomes the lowest available pixel.
-	 */
-	public function shrink(): Void {
-		var newHeight: Number = 0;
+	public function getBottom(): Number {
+		var bottom: Number = 0;
 		
 		// Run through all the lines
 		for (var lineNum: Number = 0; lineNum < lines.length; lineNum++) {
@@ -49,9 +45,20 @@
 				
 				// If the Y value of this point is greater than the currently known
 				// max Y then set the max Y to this height.
-				if (point.y > newHeight) newHeight = point.y;
+				if (point.y > bottom) bottom = point.y;
 			}
 		}
+		
+		return Math.ceil(bottom);
+	}
+	
+	/**
+	 * This function shrinks the size of a drawing so that the height of the drawing
+	 * becomes the lowest available pixel.
+	 */
+	public function shrink(): Void {
+		// Find the bottom
+		var newHeight: Number = getBottom();
 		
 		// If the new height is different to the current height of this drawing
 		// then set the height of this drawing to it.
