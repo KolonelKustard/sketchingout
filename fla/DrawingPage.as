@@ -7,6 +7,7 @@
 	public var userDetails: UserDetails;
 	public var dragClip: DragMovieClip;
 	public var friendsEmailEdit: TextField;
+	public var countdownClip: CountdownMovieClip;
 	
 	// Event handlers
 	public var onNewDrawing: Function = null;
@@ -158,6 +159,12 @@
 		// Keep reference of drawing currently being used
 		this.nextDrawingResponse = next;
 		
+		// Use the event handler to announce the next drawing
+		if (onNewDrawing != null) onNewDrawing(next.stage + 1);
+		
+		// Set the timer ticking
+		if (countdownClip != null) countdownClip.countdown(next.lockedSecs);
+		
 		// Reset next drawing
 		nextDrawing.drawing = null;
 		
@@ -174,9 +181,6 @@
 		
 		// Set in the previous drawing
 		prevDrawing.drawing = prevDraw;
-		
-		// Use the event handler to announce the next drawing
-		if (onNewDrawing != null) onNewDrawing(next.stage + 1);
 	}
 	
 	/**

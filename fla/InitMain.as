@@ -11,6 +11,7 @@ holderClip.userDetails.emailEdit = yourEmail_txt;
 holderClip.userDetails.sigCanvas = sigCanvas;
 holderClip.dragClip = dragClip_mc;
 holderClip.friendsEmailEdit = friendsEmail_txt;
+holderClip.countdownClip = countdownClip;
 
 
 
@@ -41,6 +42,25 @@ function onEndLoading(loadedOK: Boolean): Void {
  */
 holderClip.onNewDrawing = function(stage: Number): Void {
 	trace("Starting new drawing of stage: " + stage);
+}
+
+/**
+ * This is called by the countdown timer to say that time is running out.
+ * The interval at which this function is called is defined in:
+ * ConsequencesSettings.COUNTDOWN_TIMER_REMINDER
+ */
+countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
+	trace("You have only " + String(timeRemaining / 1000) + " seconds remaining to draw)");
+}
+
+/**
+ * This event is called if the user runs out of time while drawing.  If this
+ * happens they can not be allowed to submit their drawing otherwise it could
+ * cock up the locking mechanisms on the server.
+ */
+countdownClip.onDone = function(): Void {
+	trace("Oops took too long in drawing.  Fetching another drawing.");
+	requestDrawing();
 }
 
 /**
@@ -162,18 +182,22 @@ send_btn.onPress = function() {
 // * Initialisation                                             *
 // **************************************************************
 
+function requestDrawing(): Void {
+	var initRequest: XML = holderClip.getInitRequest();
+	var responseXML: XML = new XML();
+	responseXML.ignoreWhite = true;
+	responseXML.onLoad = onXMLLoaded;
+
+	onStartLoading();
+	initRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
+}
+
 // Initialise the controller
 holderClip.init();
 
 // Now at the end of setting everything up, perform the initial request for user
 // details and next drawing
-var initRequest: XML = holderClip.getInitRequest();
-var responseXML: XML = new XML();
-responseXML.ignoreWhite = true;
-responseXML.onLoad = onXMLLoaded;
-
-onStartLoading();
-initRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
+requestDrawing();
 
 // Stop the playback on this frame
 stop();
