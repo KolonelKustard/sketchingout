@@ -7,6 +7,10 @@
 	<property name="sql" value="sql"/>
 	<property name="smtp" value="smtp"/>
 	
+	<target name="compile">
+		<ant dir="${webapp}" target="compile"/>
+	</target>
+	
 	<target name="rebuild">
 		<ant dir="${webapp}" target="rebuild"/>
 	</target>
@@ -17,5 +21,13 @@
 	
 	<target name="smtp">
 		<ant dir="${smtp}" target="run"/>
+	</target>
+	
+	<target name="start_tomcat">
+		<ant dir="${webapp}" target="start_tomcat"/>
+	</target>
+	
+	<target name="stop_tomcat">
+		<ant dir="${webapp}" target="stop_tomcat"/>
 	</target>
 </project>

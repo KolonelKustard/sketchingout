@@ -25,5 +25,13 @@
 		</javac>
 	</target>
 	
-	<target name="rebuild" depends="clean, compile" />
+	<target name="rebuild" depends="clean, compile"/>
+	
+	<target name="start_tomcat">
+		<exec executable="${env.CATALINA_HOME}/bin/startup.bat" spawn="true"/>
+	</target>
+	
+	<target name="stop_tomcat">
+		<exec executable="${env.CATALINA_HOME}/bin/shutdown.bat"/>
+	</target>
 </project>
