@@ -22,10 +22,13 @@
 	/**
 	 * Gets the offset Y as a value of covering the drawing.
 	 */
-	public function getOffsetY(): Number {
+	public function getOffsetY(shrunkHeightOfDrawing: Number): Number {
 		// The offset value is the bottom of the drawing minus the bottom of this
 		// movie clip
-		return 0;
+		var bottomOfDrawing: Number = nextDrawing._y + shrunkHeightOfDrawing;
+		var bottomOfDragBar: Number = this._y + this._height;
+		
+		return bottomOfDrawing - bottomOfDragBar;
 	}
 	
 	/**
