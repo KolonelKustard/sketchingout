@@ -234,4 +234,32 @@ public class CompleteDrawingTransfer {
 			throw new CompleteDrawingTransferException(e);
 		}
 	}
+	
+	/**
+	 * <p>Converts all completed drawings in the database to gallery drawings</p>
+	 * 
+	 * @param args No params
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws Exception {
+		Connection conn = SQLWrapper.makeConnection();
+		PreparedStatement pstmt = SQLWrapper.getCompleteDrawings(conn);
+		ResultSet res = pstmt.executeQuery();
+		try {
+			while (res.next()) {
+				System.out.println("Processing drawing: " + res.getString("id"));
+				
+				// Save the drawing
+				save(conn, res.getString("id"));
+				
+				// Delete this drawing
+				SQLWrapper.deleteDrawing(conn, res.getString("id"));
+			}
+		}
+		finally {
+			res.close();
+			pstmt.close();
+			conn.close();
+		}
+	}
 }
