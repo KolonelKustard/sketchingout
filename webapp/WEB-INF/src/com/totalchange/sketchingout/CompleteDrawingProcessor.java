@@ -46,39 +46,43 @@ class CompleteDrawingProcessorException extends Exception {
  */
 public class CompleteDrawingProcessor {
 	private static final void sendMessage(Session session, String name, String email,
-		DataSource imageDS, DataSource pdfDS) throws MessagingException, 
+		int stage, DataSource imageDS, DataSource pdfDS) throws MessagingException, 
 		UnsupportedEncodingException {
 		
+		// Make new email
+		SketchingoutEmail sketchEmail = new SketchingoutEmail(name, email, stage);
+		
+		// Make new SMTP email
 		Message msg = new MimeMessage(session);
 		
 		// Who from
-		msg.setFrom(new InternetAddress(SketchingoutSettings.EMAIL_FROM_EMAIL,
-			SketchingoutSettings.EMAIL_FROM_NAME));
+		msg.setFrom(new InternetAddress(sketchEmail.getFromEmail(), 
+				sketchEmail.getFromName()));
 		
-		// Who to	
-		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+		// Who to
+		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email, name));
 		
 		// Set subject
-		msg.setSubject("A drawing you were involved in has been completed.");
+		msg.setSubject(sketchEmail.getSubject());
 		
 		// Create the MIME multi part
 		MimeMultipart multiPart = new MimeMultipart();
 		
 		// Create and add the body part
 		BodyPart body = new MimeBodyPart();
-		body.setText("How do.  Your picture is ready.");
+		body.setText(sketchEmail.getBody());
 		multiPart.addBodyPart(body);
 		
 		// Create and add the image
 		BodyPart img = new MimeBodyPart();
 		img.setDataHandler(new DataHandler(imageDS));
-		img.setFileName("drawing.png");
+		img.setFileName(imageDS.getName());
 		multiPart.addBodyPart(img);
 		
 		// Create and add the pdf
 		BodyPart pdf = new MimeBodyPart();
 		pdf.setDataHandler(new DataHandler(pdfDS));
-		pdf.setFileName("drawing.pdf");
+		pdf.setFileName(pdfDS.getName());
 		multiPart.addBodyPart(pdf);
 		
 		// Put the parts to the message
@@ -88,7 +92,7 @@ public class CompleteDrawingProcessor {
 		Transport.send(msg);
 	}
 	
-	public static final void process(Connection conn, 
+	private static final void process(Connection conn, 
 		String drawingID) throws CompleteDrawingProcessorException, SQLException {
 		
 		// Get the drawing from the database with all the contact details too.
@@ -117,7 +121,9 @@ public class CompleteDrawingProcessor {
 					res.getInt("width"),
 					res.getInt("height"),
 					100,
-					new BufferedImageParser("png")
+					new BufferedImageParser("png"),
+					"sketchingout.png",
+					"image/png"
 				);
 				
 				pdfDS = new DrawingDataSource(
@@ -125,7 +131,9 @@ public class CompleteDrawingProcessor {
 					res.getInt("width"),
 					res.getInt("height"),
 					100,
-					new PdfImageParser()
+					new PdfImageParser(),
+					"sketchingout.pdf",
+					"application/pdf"
 				);
 				
 				// Now go through each stage and construct the drawing
@@ -160,22 +168,51 @@ public class CompleteDrawingProcessor {
 						session,
 						res.getString("stage_" + stageStr + "_author_name"),
 						res.getString("stage_" + stageStr + "_author_email"),
+						num + 1,
 						imageDS,
 						pdfDS
 					);
 				}
-				catch (Exception e) {
+				catch (MessagingException me) {
 					// If an address that was supplied was invalid then a messaging
 					// exception may be thrown.  Don't want to return this to the
 					// client, but want to log it somewhere so just send it to standard
 					// err output.
-					e.printStackTrace();
+					me.printStackTrace();
+				}
+				catch (UnsupportedEncodingException ee) {
+					throw new CompleteDrawingProcessorException(ee);
 				}
 			}
 		}
 		finally {
 			res.close();
 			pstmt.close();
+		}
+	}
+	
+	public static final void process(String drawingID) {
+		try {
+			// Get database connection
+			Connection conn = SQLWrapper.makeConnection();
+			try {
+				process(conn, drawingID);
+			}
+			finally {
+				conn.close();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		if (args.length < 1) {
+			System.out.println("Please provide drawing ID as argument.");
+		}
+		else {
+			CompleteDrawingProcessor.process(args[0]);
 		}
 	}
 }
