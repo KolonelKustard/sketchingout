@@ -10,8 +10,23 @@
 	public var onErrorNoName: Function = null;
 	public var onErrorInvalidEmail: Function = null;
 	
-	private function validateEmailAddress(email: String): Boolean {
-		return true;
+	public function validateEmailAddress(email: String): Boolean {
+		// Not valid if blank
+		if (email == "") return false;
+		
+		// Simple check to see that there is a character followed by an @
+		// followed by a character followed by a . followed by a character.
+		var state: Number = 0;
+		for (var num: Number = 0; num < email.length; num++) {
+			var char: String = email.charAt(num);
+			
+			if ((state == 0) && (char >= "A") && (char <= "z")) state++;
+			if ((state == 1) && (char == "@")) state++;
+			if ((state == 2) && (char >= "A") && (char <= "z")) state++;
+			if ((state == 3) && (char == ".")) state++;
+			if ((state == 4) && (char >= "A") && (char <= "z")) state++;
+		}
+		return (state == 5);
 	}
 	
 	public function setUserDetails(user: User): Void {
@@ -52,15 +67,9 @@
 		}
 		
 		// Check the email address entered
-		if (emailEdit.text == "") {
+		if (!validateEmailAddress(emailEdit.text)) {
 			if (onErrorInvalidEmail <> null) onErrorInvalidEmail();
 			return false;
-		}
-		else {
-			if (!validateEmailAddress(emailEdit.text)) {
-				if (onErrorInvalidEmail <> null) onErrorInvalidEmail();
-				return false;
-			}
 		}
 		
 		return true;

@@ -111,6 +111,11 @@
 			return false;
 		}
 		
+		if ((friendsEmailEdit.text != "") && (!userDetails.validateEmailAddress(friendsEmailEdit.text))) {
+			if (onErrorInvalidFriendsEmail <> null) onErrorInvalidFriendsEmail();
+			return false;
+		}
+		
 		return true;
 	}
 	
