@@ -46,7 +46,6 @@ function showNonDrawUI() {
 	yourName_txt._visible = true;
 	yourEmail_txt._visible = true;
 	friendsEmail_txt._visible = true;
-	dragClip_mc._visible = true;
 	mainCanvas._visible = true;
 	countdownClip._visible = true;
 	news_txt._visible = true;
@@ -148,7 +147,6 @@ holderClip.onNewDrawing = function(stage: Number): Void {
 			_root.hintsLoader.loadMovie("uiparts/yourturnfeet_msg.swf");
 			feetHighlight._visible = true;
 			bodyparts._visible = true;
-			dragClip_mc._visible = false;
 			break;
 		default :
 			trace("oh dear")
