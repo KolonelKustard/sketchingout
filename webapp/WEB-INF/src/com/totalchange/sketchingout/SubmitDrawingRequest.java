@@ -230,7 +230,7 @@ public class SubmitDrawingRequest implements RequestHandler {
 			// See if this drawing is complete
 			if (complete) {
 				// Run the procedure to deal with a completed drawing...
-				CompleteDrawingProcessor.process(conn, drawingID);
+				CompleteDrawingProcessor.process(drawingID);
 			}
 		}
 		catch (Exception e) {
