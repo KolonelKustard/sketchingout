@@ -13,8 +13,6 @@ package com.totalchange.consequences;
  * elements and attributes or whatever.</p>
  */
 public class XMLConsts {
-	public static final int DEFAULT_LOCK_SECS = 3600;
-	
 	public static final String EL_REQUEST = "request";
 	public static final String EL_RESPONSE = "response";
 	
@@ -39,14 +37,15 @@ public class XMLConsts {
 	public static final String EL_NEXT_DRAWING = "next_drawing";
 	public static final String AT_NEXT_DRAWING_ID = "drawing_id";
 	public static final String AT_NEXT_DRAWING_USER_ID = "user_id";
-	public static final String AT_NEXT_DRAWING_BODY_PART = "bodypart";
-		public static final String AV_HEAD = "head";
-		public static final String AV_BODY = "body";
-		public static final String AV_LEGS = "legs";
-		public static final String AV_FEET = "feet";
 	public static final String EL_NEXT_DRAWING_ID = "drawing_id";
+	public static final String EL_NEXT_DRAWING_STAGE = "stage";
 	public static final String EL_NEXT_DRAWING_LOCKED_SECS = "locked_secs";
 	public static final String EL_NEXT_DRAWING_DRAWING = "drawing";
 	
 	public static final String EL_SUBMIT_DRAWING = "submit_drawing";
+	public static final String AT_SUBMIT_DRAWING_USER_ID = "user_id";
+	public static final String AT_SUBMIT_DRAWING_DRAWING_ID = "drawing_id";
+	public static final String AT_SUBMIT_DRAWING_STAGE = "stage";
+	public static final String AT_SUBMIT_DRAWING_NEXT_USER_EMAIL = "next_user_email";
+	public static final String EL_SUBMIT_DRAWING_DRAWING = "drawing";
 }
