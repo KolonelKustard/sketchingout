@@ -19,7 +19,7 @@
 		<ant dir="${sql}" target="recreate"/>
 	</target>
 	
-	<target name="rehash" depends="initdb, rebuild">
+	<target name="gallerise">
 		<ant dir="${webapp}" target="gallerise"/>
 	</target>
 	
@@ -34,4 +34,6 @@
 	<target name="stop_tomcat">
 		<ant dir="${webapp}" target="stop_tomcat"/>
 	</target>
+	
+	<target name="rehash" depends="stop_tomcat, initdb, rebuild, gallerise, start_tomcat"/>
 </project>
