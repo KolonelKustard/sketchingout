@@ -51,6 +51,18 @@
 		</java>
 	</target>
 	
+	<target name="complete" depends="compile">
+		<java classname="com.totalchange.sketchingout.CompleteDrawingProcessor" fork="yes">
+			<arg line="${args}"/>
+			<classpath>
+				<pathelement path="${dest}"/>
+				<fileset dir="${env.CATALINA_HOME}/common/lib/">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
 	<target name="rebuild" depends="clean, compile, xml2swf"/>
 	
 	<target name="package" depends="compile,xml2swf">
