@@ -1,4 +1,7 @@
-class DrawingPage {
+﻿class DrawingPage {
+	private static var MIN_OFFSET_Y: Number = 10;
+	private static var MAX_OFFSET_Y: Number = 80;
+	
 	private var nextDrawingResponse: NextDrawingResponse = null;
 	
 	// Objects public properties
@@ -76,7 +79,27 @@ class DrawingPage {
 		return request.getXML();
 	}
 	
+	/**
+	 * Makes sure the drawing and whatnot are all valid.  Also fires off error
+	 * events if things go wrong.
+	 */
 	private function validateDrawing(): Boolean {
+		if (!nextDrawing.modified) {
+			if (onErrorNoDrawing <> null) onErrorNoDrawing();
+			return false;
+		}
+		
+		var currOffsetY: Number = dragClip.getOffsetY();
+		if (currOffsetY < MIN_OFFSET_Y) {
+			if (onErrorTooMuchCovered <> null) onErrorTooMuchCovered(currOffsetY, MIN_OFFSET_Y);
+			return false;
+		}
+		
+		if (currOffsetY > MAX_OFFSET_Y) {
+			if (onErrorNotEnoughCovered <> null) onErrorNotEnoughCovered(currOffsetY, MAX_OFFSET_Y);
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -95,7 +118,7 @@ class DrawingPage {
 		// The drawing has to be shrunk and the offset calculated before submission
 		subDraw.drawing = nextDrawing.drawing;
 		subDraw.drawing.shrink();
-		subDraw.drawing.offsetY = dragClip.getOffsetY(subDraw.drawing.height);
+		subDraw.drawing.offsetY = dragClip.getOffsetY();
 		
 		return subDraw;
 	}
