@@ -5,9 +5,20 @@
 	public var responses: Array = new Array();
 	
 	/**
-	 * Creates an array of errors.
+	 * Creates an array of errors based on an errors node
 	 */
 	private function parseErrors(errorsNode: XMLNode): Void {
+		for (var num: Number = 0; num < errorsNode.childNodes.length; num++) {
+			if (errorsNode.childNodes[num].nodeName = "error") {
+				// Mark that an error has occured
+				doneWithErrors = true;
+				
+				// Make a new error instance
+				var err: ResponseError = new ResponseError();
+				err.parseXML(errorsNode.childNodes[num]);
+				errs.push(err);
+			}
+		}
 	}
 	
 	/**
@@ -37,7 +48,7 @@
 					responseOp = new GalleryDrawingResponse();
 					break;
 				case "errors":
-					trace("Errors");
+					parseErrors(rootNode.childNodes[num]);
 					break;
 			}
 			
