@@ -6,7 +6,7 @@
     <!ELEMENT email (#PCDATA)>
     <!ELEMENT signature (#PCDATA)>
 
-  <!ELEMENT next_drawing (drawing_id, locked_secs, drawing)>
+  <!ELEMENT next_drawing (drawing_id, locked_secs, drawing?)>
     <!ELEMENT drawing_id (#PCDATA)>
     <!ELEMENT locked_secs (#PCDATA)>
     <!ELEMENT drawing (#PCDATA)>
