@@ -93,6 +93,29 @@ public class XMLWriter extends Writer {
 	}
 	
 	/**
+	 * <p>Utility procedure that outputs an entire element in one.  If the
+	 * writeIfNullValue boolean is true then the element is written as blank.  Otherwise
+	 * the element may be omitted if the value is null.
+	 * 
+	 * @param localName
+	 * @param data
+	 * @param writeIfNullValue Set to true to make sure an element is written
+	 * @throws IOException
+	 */
+	public void writeElement(String localName, String data, boolean writeIfNullValue) 
+		throws IOException {
+			
+		if (data != null) {
+			startElement(localName);
+			write(data);
+			endElement(localName);
+		}
+		else if (writeIfNullValue) {
+			out.write('<' + localName + " />");
+		}
+	}
+	
+	/**
 	 * <p>Utility procedure that outputs an entire element in one.  Leaves the
 	 * element out entirely if the String passed in is null.</p>
 	 * 
