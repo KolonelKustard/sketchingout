@@ -75,6 +75,25 @@
 		</java>
 	</target>
 	
+	<property name="smtpHost" value="localhost"/>
+	<property name="smtpPort" value="25"/>
+	<property name="toName" value="Test Person"/>
+	<property name="toEmail" value="test@tester.com"/>
+	<target name="emails" depends="compile">
+		<java classname="com.totalchange.sketchingout.SketchingoutEmail">
+			<arg value="${smtpHost}"/>
+			<arg value="${smtpPort}"/>
+			<arg value="${toName}"/>
+			<arg value="${toEmail}"/>
+			<classpath>
+				<pathelement path="${dest}"/>
+				<fileset dir="${env.CATALINA_HOME}/common/lib/">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>	
+	
 	<target name="rebuild" depends="clean, compile, xml2swf"/>
 	
 	<target name="package" depends="compile,xml2swf">
