@@ -1,8 +1,6 @@
 /*
  * Created on 02-May-2004
  *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 package com.totalchange.consequences;
 
@@ -14,10 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author RalphJones
+ * @author Ralph Jones
  *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * <p>This servlet is the only point of call for the Flash based consequences
+ * application.  The job of this servlet is to parse the xml request and
+ * initiate the appropriate response.</p> 
  */
 public class ConsequencesServlet extends HttpServlet {
 
