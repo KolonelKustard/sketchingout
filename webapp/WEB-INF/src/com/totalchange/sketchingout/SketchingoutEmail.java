@@ -3,7 +3,14 @@
  */
 package com.totalchange.sketchingout;
 
+import java.util.Properties;
 import java.util.Random;
+
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 /**
  * @author RalphJones
@@ -60,14 +67,16 @@ public class SketchingoutEmail {
 		return dest.toString();
 	}
 	
-	public SketchingoutEmail(String toName, String toEmail, int stage) {
-		// Pick a random email from the list
-		emailNum = new Random().nextInt(SketchingoutEmails.EMAILS.length);
-		
-		// Store the details of the recipient
+	public SketchingoutEmail(int emailNum, String toName, String toEmail, int stage) {
+		this.emailNum = emailNum; 
 		this.toName = toName;
 		this.toEmail = toEmail;
 		this.stage = stage;
+	}
+	
+	public SketchingoutEmail(String toName, String toEmail, int stage) {
+		this(new Random().nextInt(SketchingoutEmails.EMAILS.length), toName,
+				toEmail, stage);
 	}
 	
 	public String getToName() {
@@ -105,13 +114,56 @@ public class SketchingoutEmail {
 				SketchingoutEmails.EMAILS[emailNum][SketchingoutEmails.EMAILS_BODY]);
 	}
 
-	public static void main(String[] args) {
-		SketchingoutEmail email = new SketchingoutEmail("Test Recipient", 
-				"test@recipient.com", 3);
+	/**
+	 * Tests all the random emails
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) throws Exception {
+		String smtpHost = SketchingoutSettings.SMTP_SERVER_ADDR;
+		String smtpPort = SketchingoutSettings.SMTP_SERVER_PORT;
+		String toName = "Test Person";
+		String toEmail = "test@tester.com";
 		
-		System.out.println(email.getFromName());
-		System.out.println(email.getFromEmail());
-		System.out.println(email.getSubject());
-		System.out.println(email.getBody());
+		if (args.length >= 1) smtpHost = args[0];
+		if (args.length >= 2) smtpPort = args[1];
+		if (args.length >= 3) toName = args[2];
+		if (args.length >= 4) toEmail = args[3];
+		
+		System.out.println("Sending " + SketchingoutEmails.EMAILS.length +
+				" emails to " + smtpHost + ":" + smtpPort);
+		
+		// Setup SMTP properties
+		Properties props = System.getProperties();
+		props.put("mail.smtp.host", smtpHost);
+		props.put("mail.smtp.port", smtpPort);
+		
+		// Get SMTP session
+		Session session = Session.getDefaultInstance(props);
+		
+		// Run through each email making and sending
+		for (int num = 0; num < SketchingoutEmails.EMAILS.length; num++) {
+			SketchingoutEmail email = new SketchingoutEmail(num, toName, toEmail,
+					new Random().nextInt(SketchingoutSettings.MAX_NUM_STAGES));
+			
+			// Make new SMTP email
+			Message msg = new MimeMessage(session);
+			
+			// Who from
+			msg.setFrom(new InternetAddress(email.getFromEmail(), 
+					email.getFromName()));
+			
+			// Who to
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail, toName));
+			
+			// Set subject and body
+			msg.setSubject(email.getSubject());
+			msg.setText(email.getBody());
+			
+			// Send!
+			Transport.send(msg);
+		}
+		
+		System.out.println("Done");
 	}
 }
