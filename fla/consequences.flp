@@ -11,13 +11,15 @@
     <project_file path="./User.as" filetype="as" />
     <project_file path="./PublicDrawingRequest.as" filetype="as" />
     <project_file path="./PrivateDrawingRequest.as" filetype="as" />
-    <project_file path="./GalleryDrawingRequest.as" filetype="as" />
     <project_file path="./SubmitUserRequest.as" filetype="as" />
     <project_file path="./UserDetailsRequest.as" filetype="as" />
     <project_file path="./ResponseOperator.as" filetype="as" />
     <project_file path="./ResponseError.as" filetype="as" />
     <project_file path="./NextDrawingResponse.as" filetype="as" />
     <project_file path="./UserDetailsResponse.as" filetype="as" />
-    <project_file path="./GalleryDrawingResponse.as" filetype="as" />
     <project_file path="./CanvasMovieClip.as" filetype="as" />
+    <project_file path="./GalleryDrawingsResponse.as" filetype="as" />
+    <project_file path="./GalleryDrawingsRequest.as" filetype="as" />
+    <project_file path="./GalleryDrawing.as" filetype="as" />
+    <project_file path="./GalleryDrawingAuthor.as" filetype="as" />
 </flash_project>
