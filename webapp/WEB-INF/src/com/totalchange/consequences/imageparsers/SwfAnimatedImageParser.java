@@ -24,7 +24,7 @@ import com.anotherbigidea.flash.writers.TagWriter;
  */
 public class SwfAnimatedImageParser implements ConsequencesImageParser {
 	
-	private static final int SWF_FPS = 12;
+	private static final int SWF_FPS = 120;
 	
 	private SWFTagTypes swf;
 	private int drawID;
