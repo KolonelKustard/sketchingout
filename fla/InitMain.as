@@ -19,7 +19,15 @@ clearDrawing_btn.onPress = function() {
 }
 
 send_btn.onPress = function() {
-	holderClip.submitUserAndDrawing();
+	var submitRequest: XML = holderClip.getSubmitRequest();
+	
+	// Above call returns null if an error occured
+	if (submitRequest != null) {
+		var responseXML: XML = new XML();
+		responseXML.ignoreWhite = true;
+		responseXML.onLoad = onXMLLoaded;
+		submitRequest.sendAndLoad("http://localhost:8080/consequences/consequences", responseXML);
+	}
 }
 
 clearSig_btn.onPress = function() {
