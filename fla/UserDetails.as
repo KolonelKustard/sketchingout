@@ -11,7 +11,7 @@
 	public var onErrorInvalidEmail: Function = null;
 	
 	private function validateEmailAddress(email: String): Boolean {
-		return null;
+		return true;
 	}
 	
 	public function setUserDetails(user: User): Void {
