@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE request SYSTEM "request.dtd">
+
+<request>
+  <gallery_drawings
+    type="0"
+    start="0"
+    quantity="25"
+  />
+</request>

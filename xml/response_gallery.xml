@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE response SYSTEM "response.dtd">
+
+<response>
+  <gallery_drawings>
+  
+    <gallery_drawing>
+      <drawing_id>10</drawing_id>
+      <width>400</width>
+      <height>800</height>
+      <num_stages>4</num_stages>
+      <stage_author>
+        <stage>1</stage>
+        <name>User 1</name>
+      </stage_author>
+      <stage_author>
+        <stage>2</stage>
+        <name>User 2</name>
+      </stage_author>
+      <stage_author>
+        <stage>3</stage>
+        <name>User 3</name>
+      </stage_author>
+      <stage_author>
+        <stage>4</stage>
+        <name>User 4</name>
+      </stage_author>
+    </gallery_drawing>
+    
+    <gallery_drawing>
+      <drawing_id>9</drawing_id>
+      <width>400</width>
+      <height>800</height>
+      <num_stages>4</num_stages>
+      <stage_author>
+        <stage>1</stage>
+        <name>User 1</name>
+      </stage_author>
+      <stage_author>
+        <stage>2</stage>
+        <name>User 2</name>
+      </stage_author>
+      <stage_author>
+        <stage>3</stage>
+        <name>User 3</name>
+      </stage_author>
+      <stage_author>
+        <stage>4</stage>
+        <name>User 4</name>
+      </stage_author>
+    </gallery_drawing>
+    
+  </gallery_drawings>
+</response>
