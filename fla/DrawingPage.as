@@ -168,6 +168,10 @@
 		// Reset next drawing
 		nextDrawing.drawing = null;
 		
+		// Set if the drag clip is visible or not depending if on the last stage
+		// or not
+		dragClip._visible = ((next.stage + 1) < SketchingoutSettings.LAST_STAGE_NUM);
+		
 		// Reset the height of the drag clip
 		dragClip.resetPos();
 		
