@@ -1,9 +1,11 @@
 CREATE TABLE users(
-  id		VARCHAR(36) NOT NULL PRIMARY KEY,
-  name		VARCHAR(100) NULL,
-  email		VARCHAR(100) NULL,
-  password	VARCHAR(20) NULL,
-  signature	TEXT NULL
+  id			VARCHAR(36) NOT NULL PRIMARY KEY,
+  name			VARCHAR(100) NULL,
+  email			VARCHAR(100) NULL,
+  password		VARCHAR(20) NULL,
+  signature_width	INTEGER NULL,
+  signature_height	INTEGER NULL,
+  signature		TEXT NULL
 );
 
 CREATE TABLE drawings(
@@ -12,6 +14,8 @@ CREATE TABLE drawings(
   completed		CHAR(1) NOT NULL,
   locked		DATETIME NOT NULL,
   distinguished_id	VARCHAR(36) NULL,
+  width			INTEGER NOT NULL,
+  height		INTEGER NOT NULL,
   stage			INTEGER NOT NULL,
   stage_1_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
   stage_1_author_name	VARCHAR(100) NULL,
