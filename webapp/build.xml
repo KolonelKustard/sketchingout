@@ -8,7 +8,7 @@
 	<property environment="env"/>
 	
 	<target name="makedirs">
-	  <mkdir dir="${dest}"/>
+		<mkdir dir="${dest}"/>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
