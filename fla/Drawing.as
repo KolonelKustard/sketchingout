@@ -32,6 +32,36 @@
 	}
 	
 	/**
+	 * This function shrinks the size of a drawing so that the height of the drawing
+	 * becomes the lowest available pixel.
+	 */
+	public function shrink(): Void {
+		var newHeight: Number = 0;
+		
+		// Run through all the lines
+		for (var lineNum: Number = 0; lineNum < lines.length; lineNum++) {
+			var line: Line = lines[lineNum];
+			var points: Array = line.getPoints();
+			
+			// Run through all the points on this line
+			for (var pointNum: Number = 0; pointNum < points.length; pointNum++) {
+				var point: Point = points[pointNum];
+				
+				// If the Y value of this point is greater than the currently known
+				// max Y then set the max Y to this height.
+				if (point.y > newHeight) newHeight = point.y;
+			}
+		}
+		
+		// Make sure the new height is represented by a whole integer value
+		newHeight = Math.ceil(newHeight);
+		
+		// If the new height is different to the current height of this drawing
+		// then set the height of this drawing to it.
+		if (height <> newHeight) height = newHeight;
+	}
+	
+	/**
 	 * Returns this drawing as a string.  Basically serialises it.
 	 */
 	public function toString(): String {
@@ -40,10 +70,10 @@
 		
 		// Make the root canvas node
 		var canvasNode: XMLNode = xml.createElement("canvas");
-		canvasNode.attributes.width = width;
-		canvasNode.attributes.height = height;
-		canvasNode.attributes.offsetx = offsetX;
-		canvasNode.attributes.offsety = offsetY;
+		canvasNode.attributes.width = Math.ceil(width);
+		canvasNode.attributes.height = Math.ceil(height);
+		canvasNode.attributes.offsetx = Math.ceil(offsetX);
+		canvasNode.attributes.offsety = Math.ceil(offsetY);
 		
 		// Add as many line nodes as there are in the array
 		for (var lineNum: Number = 0; lineNum < lines.length; lineNum++) {
