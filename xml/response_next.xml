@@ -4,8 +4,9 @@
 <response>
   <next_drawing>
     <drawing_id>AC83818E-C9BE-4177-8655-546C226C7715</drawing_id>
+    <stage>1</stage>
     <locked_secs>3600</locked_secs>
-    <drawing bodypart="head">
+    <drawing>
       <![CDATA[
         <canvas width="200" height="100" offsetx="0" offsety="0">
           <line>
