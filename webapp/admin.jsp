@@ -67,6 +67,7 @@
 </head>
 <body>
 <h1>Consequences Admin</h1>
+<p><a href="admin.jsp">Refresh</a></p>
 <h2>You</h2>
 <p><a href="?uid=">Click here to reset yourself to someone completely new</a></p>
 <%
