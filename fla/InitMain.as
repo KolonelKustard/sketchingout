@@ -15,10 +15,10 @@ holderClip.friendsEmailEdit = friendsEmail_txt;
 holderClip.countdownClip = countdownClip;
 
 hintsLoader.defaultHint = null;
-hintsLoader.addAssociation(yourName_txt, "uiparts/entername_msg.swf");
-hintsLoader.addAssociation(yourEmail_txt, "uiparts/checkyouremail_msg.swf");
-hintsLoader.addAssociation(sigCanvas, "uiparts/sig_box.swf");
-hintsLoader.addAssociation(friendsEmail_txt, "uiparts/friendsemail_msg.swf");
+hintsLoader.addAssociation(yourName_txt, "uiparts/pleaseentername_msg.swf");
+hintsLoader.addAssociation(yourEmail_txt, "uiparts/enteryouremail_msg.swf");
+hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
+hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
 
 //Set up custom cursor
 /**this.attachMovie("pencil_id", "pencil_mc", this.getNextHighestDepth());
