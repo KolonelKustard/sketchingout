@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="consequences" default="compile" basedir=".">
+	<description>Consequences Development</description>
+	
+	<property name="webapp" value="webapp"/>
+	<property name="sql" value="sql"/>
+	
+	<target name="compile">
+		<ant dir="${webapp}" target="compile"/>
+	</target>
+	
+	<target name="initdb">
+		<ant dir="${sql}" target="recreate"/>
+	</target>
+</project>
