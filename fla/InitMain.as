@@ -281,6 +281,9 @@ function onXMLLoaded(loadedOK: Boolean): Void {
 	if (loadedOK) {
 		holderClip.parseResponse(this);
 	}
+	
+	// Re-enable the submit button
+	send_btn.enabled = true;
 }
 
 /**
@@ -291,6 +294,9 @@ send_btn.onPress = function() {
 	
 	// Above call returns null if an error occured
 	if (submitRequest != null) {
+		// Stop the submit button from working
+		send_btn.enabled = false;
+		
 		var responseXML: XML = new XML();
 		responseXML.ignoreWhite = true;
 		responseXML.onLoad = onXMLLoaded;
