@@ -137,6 +137,15 @@
 		hints.push(newHint);
 	}
 	
+	public function showCachedHint(errSwfUrl: String): Void {
+		for (var num: Number = 0; num < hints.length; num++) {
+			var err: Hint = hints[num];
+			if (err.clipUrl == errSwfUrl) {
+				showHint(num);
+			}
+		}
+	}
+	
 	public function getNextDepth(): Number {
 		return newClipNum++;
 	}
