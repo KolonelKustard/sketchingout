@@ -128,11 +128,22 @@ public class SubmitDrawingRequest implements RequestHandler {
 			String usrName = usrRes.getString("name");
 			String usrEmail = usrRes.getString("email");
 			
-			// Base the 
-			
 			// Decide on whether to insert or update.  If on stage 1 then insert.
 			// Otherwise update.
 			if (stage == 1) {
+				// If inserting, need to leave space for signatures at the bottom of the
+				// image.  So need to get the signature width/height and multiply it
+				// by half the number of stages to get a 2x? square.
+				int sigWidth = 2 * usrRes.getInt("signature_width");
+				int sigHeight = (ConsequencesSettings.MAX_NUM_STAGES / 2) *
+					usrRes.getInt("signature_height");
+				
+				// Use the greatest of the two widths for the width of the image
+				width = Math.max(width, sigWidth);
+				
+				// Add the extra height to the inserted drawing
+				height += sigHeight;
+				
 				// Insert a drawing
 				pstmt = SQLWrapper.insertDrawing(conn, drawingID, distinguishedID,
 					width, height, userID, usrName, usrEmail, lockSecs);
