@@ -350,6 +350,24 @@ public class SQLWrapper {
 		return pstmt;
 	}
 	
+	public static final PreparedStatement getHomepageThumbnails(Connection conn,
+		int numToGet) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  thumbnail_filename " +
+			"FROM " +
+			"  gallery " +
+			"WHERE " +
+			"  thumbnail_filename IS NOT NULL " +
+			"ORDER BY " +
+			"  friendly_id DESC " +
+			"LIMIT " + numToGet
+		);
+			
+		return pstmt;
+	}
+	
 	public static final PreparedStatement getLatestGalleryDrawings(Connection conn, 
 		int offset, int rowCount) 
 		throws SQLException {
@@ -374,7 +392,6 @@ public class SQLWrapper {
 		);
 			
 		return pstmt;
-		
 	}
 	
 	/**
@@ -387,7 +404,8 @@ public class SQLWrapper {
 	 * @throws SQLException
 	 */
 	public static final void saveToGallery(Connection conn, String drawingID,
-		String pdfFilename, String swfFilename) throws SQLException {
+		String thumbnailFilename, String pdfFilename, String swfFilename) throws
+		SQLException {
 		
 		// Get fields to be copied
 		PreparedStatement pstmt = conn.prepareStatement(
@@ -405,6 +423,7 @@ public class SQLWrapper {
 			"  stage_3_author_name, " +
 			"  stage_4_author_id, " +
 			"  stage_4_author_name, " +
+			"  thumbnail_filename, " +
 			"  anim_swf_filename, " +
 			"  pdf_filename) " +
 			
@@ -423,15 +442,17 @@ public class SQLWrapper {
 			"  stage_4_author_id, " +
 			"  stage_4_author_name, " +
 			"  ?, " +
+			"  ?, " +
 			"  ? " +
 			"FROM " +
 			"  drawings " +
 			"WHERE " +
 			"  id = ?"
 		);
-		pstmt.setString(1, swfFilename);
-		pstmt.setString(2, pdfFilename);
-		pstmt.setString(3, drawingID);
+		pstmt.setString(1, thumbnailFilename);
+		pstmt.setString(2, swfFilename);
+		pstmt.setString(3, pdfFilename);
+		pstmt.setString(4, drawingID);
 		
 		pstmt.execute();
 		pstmt.close();
