@@ -19,6 +19,10 @@
 		<ant dir="${sql}" target="recreate"/>
 	</target>
 	
+	<target name="rehash" depends="initdb, rebuild">
+		<ant dir="${webapp}" target="gallerise"/>
+	</target>
+	
 	<target name="smtp">
 		<ant dir="${smtp}" target="run"/>
 	</target>
