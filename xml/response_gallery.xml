@@ -25,6 +25,8 @@
         <stage>4</stage>
         <name>User 4</name>
       </stage_author>
+      <anim_swf_url>http://www.sketchingout.co.uk/drawings/1.swf</anim_swf_url>
+      <pdf_url>http://www.sketchingout.co.uk/drawings/1.pdf</pdf_url>
     </gallery_drawing>
     
     <gallery_drawing>
@@ -48,6 +50,8 @@
         <stage>4</stage>
         <name>User 4</name>
       </stage_author>
+      <anim_swf_url>http://www.sketchingout.co.uk/drawings/1.swf</anim_swf_url>
+      <pdf_url>http://www.sketchingout.co.uk/drawings/1.pdf</pdf_url>
     </gallery_drawing>
     
   </gallery_drawings>
