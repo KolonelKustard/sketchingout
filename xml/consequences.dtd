@@ -1,5 +1,6 @@
 <!ELEMENT consequences (user, drawing)>
-  <!ELEMENT user EMPTY>
+  <!ELEMENT user (signature?)>
+    <!ELEMENT siganture (CDATA)>
   <!ELEMENT drawing (bodypart, send_on_to?)>
     <!ELEMENT bodypart (line+)>
       <!ELEMENT line (point+)>
