@@ -14,6 +14,7 @@ public class SketchingoutEmails {
 	public static final String SUBST_BODY_PART = ":body_part:";
 	public static final String SUBST_A_OR_SOME = ":a_or_some:";
 	public static final String SUBST_THOSE_ARE_OR_THAT_IS = ":those_are_or_that_is:";
+	public static final String SUBST_URL = ":url:";
 	
 	public static final int EMAILS_FROM_NAME = 0;
 	public static final int EMAILS_FROM_EMAIL = 1;
@@ -39,7 +40,8 @@ public class SketchingoutEmails {
 			"Test Person 2",
 			"test2@sketchingout.co.uk",
 			"Test Subject to " + SUBST_NAME + " for drawing " + SUBST_BODY_PART,
-			"Test multiple: " + SUBST_NAME + ", " + SUBST_NAME + ", " + SUBST_NAME
+			"Test multiple: " + SUBST_NAME + ", " + SUBST_NAME + ", " + SUBST_NAME + "\n" +
+			"URL to get back to SketchingOut: " + SUBST_URL
 		}
 	}; 
 }
