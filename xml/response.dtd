@@ -1,4 +1,4 @@
-<!ELEMENT response (user_details?, next_drawing?, gallery_drawing?, errors?)>
+<!ELEMENT response (user_details?, next_drawing?, gallery_drawings?, gallery_drawing?, errors?)>
 
   <!ELEMENT user_details (id, name?, email?, signature?)>
     <!ELEMENT id (#PCDATA)>
@@ -11,10 +11,14 @@
     <!ELEMENT stage (#PCDATA)>
     <!ELEMENT locked_secs (#PCDATA)>
     <!ELEMENT drawing (#PCDATA)>
+    
+  <!ELEMENT gallery_drawings (gallery_drawing*)>
 
-  <!ELEMENT gallery_drawing (drawing_id, num_stages, drawing_stage+)>
+  <!ELEMENT gallery_drawing (drawing_id, width, height, num_stages, stage_author+)>
+    <!ELEMENT width (#PCDATA)>
+    <!ELEMENT height (#PCDATA)>
     <!ELEMENT num_stages (#PCDATA)>
-    <!ELEMENT drawing_stage (stage, name, drawing, signature)>
+    <!ELEMENT stage_author (stage, name)>
     
   <!ELEMENT errors (error+)>
     <!ELEMENT error (src, type, message, stacktrace?)>
