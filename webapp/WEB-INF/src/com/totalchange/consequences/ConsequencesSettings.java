@@ -43,5 +43,37 @@ public class ConsequencesSettings {
 	/**
 	 * The SMTP server port to use when sending emails
 	 */
-	public static final int SMTP_SERVER_PORT = 21;
+	public static final int SMTP_SERVER_PORT = 25;
+	
+	/**
+	 * The email From name
+	 */
+	public static final String EMAIL_FROM_NAME = "Consequences";
+	
+	/**
+	 * The email From address
+	 */
+	public static final String EMAIL_FROM_EMAIL = "consequences@slagtard.cum";
+	
+	/**
+	 * The root URL to access Consequences
+	 */
+	public static final String URL_ROOT = "http://localhost:8080/consequences/";
+	
+	/**
+	 * The full URL to access the main drawing page
+	 */
+	public static final String URL_DRAWING = URL_ROOT + "consequences.jsp";
+	
+	/**
+	 * The user id parameter to be sent to Flash
+	 */
+	public static final String URL_PARAM_USER_ID = "uid";
+	
+	/**
+	 * The drawing id parameter to be sent to Flash and also to be used by the next
+	 * drawing email sent out in a private drawing transaction.  As in gets put in
+	 * the GET query string.
+	 */
+	public static final String URL_PARAM_DRAWING_ID = "did";
 }
