@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.totalchange.consequences.imageparsers.BufferedImageParser;
 import com.totalchange.consequences.imageparsers.ConsequencesImageParser;
 import com.totalchange.consequences.imageparsers.ConsequencesImageParserException;
+import com.totalchange.consequences.imageparsers.SwfAnimatedImageParser;
 import com.totalchange.consequences.imageparsers.SwfImageParser;
 
 /**
@@ -45,6 +46,7 @@ public class DrawingServlet extends HttpServlet {
 			if (type.equals("png")) parser = new BufferedImageParser(type);
 			else if (type.equals("jpg")) parser = new BufferedImageParser(type);
 			else if (type.equals("swf")) parser = new SwfImageParser();
+			else if (type.equals("animswf")) parser = new SwfAnimatedImageParser();
 			else throw new ConsequencesImageParserException(type + " not a supported type.");
 			
 			// Make an image parser
@@ -89,6 +91,7 @@ public class DrawingServlet extends HttpServlet {
 		if (type.equals("png")) return "image/png";
 		else if (type.equals("jpg")) return "image/jpeg";
 		else if (type.equals("swf")) return "application/x-shockwave-flash";
+		else if (type.equals("animswf")) return "application/x-shockwave-flash";
 		else return null;
 	}
 	
