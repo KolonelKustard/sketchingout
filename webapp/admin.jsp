@@ -103,56 +103,123 @@
 	// Close query
 	res.close();
 	pstmt.close();
-%>
-<p>&nbsp;</p>
-<h2>Private Drawings</h2>
-<%
-	// Open query to get all private drawings
-	pstmt = conn.prepareStatement("SELECT friendly_id, id, distinguished_id, locked, " +
-		"stage FROM drawings WHERE completed = 'N' AND distinguished_id IS NOT NULL AND " +
-		"locked > ? ORDER BY friendly_id");
-	pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
-	res = pstmt.executeQuery();
-%>
-<table border="1">
-  <tr>
-    <td><b>Friendly ID</b></td>
-    <td><b>Actual ID</b></td>
-    <td><b>Distinguished ID (sent to recipient user)</b></td>
-    <td><b>Locked Until</b></td>
-    <td><b>Stage</b></td>
-  </tr>
-<%
-	while (res.next()) {
-%>
-  <tr>
-    <td><%= res.getInt("friendly_id") %></td>
-    <td><%= res.getString("id") %></td>
-    <td><%= res.getString("distinguished_id") %></td>
-    <td><%= res.getTimestamp("locked") %></td>
-    <td><%= res.getInt("stage") %></td>
-  </tr>
-<%
+	
+	// Now setup a loop to show drawings in various different states
+	// Setup the standard SQL template
+	String sqlFields = "SELECT friendly_id, id, distinguished_id, completed, locked, " +
+		"stage, stage_1_author_name, stage_1_author_email, stage_2_author_name, " +
+		"stage_2_author_email, stage_3_author_name, stage_3_author_email, " +
+		"stage_4_author_name, stage_4_author_email FROM drawings ";
+	String sqlOrder = " ORDER BY friendly_id";
+
+	// Run through a loop that will get the same values but different where clauses
+	// to show all the drawings...
+	for (int num = 0; num < 4; num++) {
+		String tableTitle = "";
+		
+		// Decide on the values for this stage
+		if (num == 0) {
+			tableTitle = "Available Public Drawings";
+			pstmt = conn.prepareStatement(
+				sqlFields + 
+				"WHERE " +
+				"  completed = 'N' AND " +
+				"  locked < ?" +
+				sqlOrder
+			);
+			
+			pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+		}
+		else if (num == 1) {
+			tableTitle = "Locked Public Drawings";
+			pstmt = conn.prepareStatement(
+				sqlFields + 
+				"WHERE " +
+				"  completed = 'N' AND " +
+				"  distinguished_id IS NULL AND " +
+				"  locked >= ?" +
+				sqlOrder
+			);
+			
+			pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+		}
+		else if (num == 2) {
+			tableTitle = "Locked Private Drawings";
+			pstmt = conn.prepareStatement(
+				sqlFields + 
+				"WHERE " +
+				"  completed = 'N' AND " +
+				"  distinguished_id IS NOT NULL AND " +
+				"  locked >= ?" +
+				sqlOrder
+			);
+			
+			pstmt.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+		}
+		else if (num == 3) {
+			tableTitle = "Complete Drawings";
+			pstmt = conn.prepareStatement(
+				sqlFields + 
+				"WHERE " +
+				"  completed = 'Y'" +
+				sqlOrder
+			);
+		}
+		
+		%>
+		<p>&nbsp;</p>
+		<h2><%= tableTitle %></h2>
+		<table border="1">
+		  <tr>
+		    <td nowrap><b>Friendly ID</b></td>
+		    <td nowrap><b>Actual ID</b></td>
+		    <td nowrap><b>Distinguished ID</b></td>
+		    <td nowrap><b>Complete</b></td>
+		    <td nowrap><b>Locked Until</b></td>
+		    <td nowrap><b>Stage</b></td>
+		    <td nowrap><b>Stage 1 Name</b></td>
+		    <td nowrap><b>Stage 1 Email</b></td>
+		    <td nowrap><b>Stage 2 Name</b></td>
+		    <td nowrap><b>Stage 2 Email</b></td>
+		    <td nowrap><b>Stage 3 Name</b></td>
+		    <td nowrap><b>Stage 3 Email</b></td>
+		    <td nowrap><b>Stage 4 Name</b></td>
+		    <td nowrap><b>Stage 4 Email</b></td>
+		  </tr>
+			<%
+			// Execute query
+			res = pstmt.executeQuery();
+			
+			// Go through results
+			while (res.next()) {
+				%>
+				<tr>
+				  <td nowrap><%= res.getInt("friendly_id") %></td>
+				  <td nowrap><%= res.getString("id") %></td>
+				  <td nowrap><%= res.getString("distinguished_id") %></td>
+				  <td nowrap><%= res.getString("completed") %></td>
+				  <td nowrap><%= res.getTimestamp("locked") %></td>
+				  <td nowrap><%= res.getInt("stage") %></td>
+				  <td nowrap><%= res.getString("stage_1_author_name") %></td>
+				  <td nowrap><%= res.getString("stage_1_author_email") %></td>
+				  <td nowrap><%= res.getString("stage_2_author_name") %></td>
+				  <td nowrap><%= res.getString("stage_2_author_email") %></td>
+				  <td nowrap><%= res.getString("stage_3_author_name") %></td>
+				  <td nowrap><%= res.getString("stage_3_author_email") %></td>
+				  <td nowrap><%= res.getString("stage_4_author_name") %></td>
+				  <td nowrap><%= res.getString("stage_4_author_email") %></td>
+				</tr>
+				<%
+			}
+			%>
+		</table>
+		<%
+		
+		// Close queries
+		res.close();
+		pstmt.close();
 	}
 %>
-</table>
-<%
-	// Close query
-	res.close();
-	pstmt.close();
-%>
-<p>&nbsp;</p>
-<h2>Public Drawings</h2>
-<table border="1">
-</table>
-<p>&nbsp;</p>
-<h2>Locked Drawings</h2>
-<table border="1">
-</table>
-<p>&nbsp;</p>
-<h2>Completed Drawings</h2>
-<table border="1">
-</table>
 </body>
 </html>
 <%
