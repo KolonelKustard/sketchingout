@@ -44,7 +44,7 @@
 		}
 		
 		// If gone over the reminder period, send reminder
-		if ((!sentReminder) && (timeRemaining <= ConsequencesSettings.COUNTDOWN_TIMER_REMINDER)) {
+		if ((!sentReminder) && (timeRemaining <= SketchingoutSettings.COUNTDOWN_TIMER_REMINDER)) {
 			sentReminder = true;
 			if (onNearlyDone != null) onNearlyDone(timeRemaining);
 		}

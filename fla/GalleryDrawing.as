@@ -1,4 +1,4 @@
-﻿class GalleryDrawing {
+class GalleryDrawing {
 	public var id: String;
 	public var width: Number;
 	public var height: Number;
@@ -7,7 +7,7 @@
 	public var authors: Array = new Array();
 	
 	private function getDrawingURL(): String {
-		return ConsequencesSettings.GALLERY_URL + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
+		return SketchingoutSettings.GALLERY_URL + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
 	}
 	
 	public function get urlPNG(): String {

@@ -40,7 +40,7 @@
 	</target>
 	
 	<target name="xml2swf" depends="compile">
-		<java classname="com.totalchange.consequences.ImageParser" fork="yes">
+		<java classname="com.totalchange.sketchingout.ImageParser" fork="yes">
 			<arg line="${args}"/>
 			<classpath>
 				<pathelement path="${dest}"/>

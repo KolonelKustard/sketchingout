@@ -1,4 +1,4 @@
-﻿// **************************************************************
+// **************************************************************
 // * Create and set the properties of the main controller class *
 // **************************************************************
 holderClip = new DrawingPage();
@@ -66,7 +66,7 @@ holderClip.onNewDrawing = function(stage: Number): Void {
 /**
  * This is called by the countdown timer to say that time is running out.
  * The interval at which this function is called is defined in:
- * ConsequencesSettings.COUNTDOWN_TIMER_REMINDER
+ * SketchingoutSettings.COUNTDOWN_TIMER_REMINDER
  */
 countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
 	trace("You have only " + String(timeRemaining / 1000) + " seconds remaining to draw)");
@@ -190,7 +190,7 @@ send_btn.onPress = function() {
 		responseXML.onLoad = onXMLLoaded;
 		
 		onStartLoading();
-		submitRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
+		submitRequest.sendAndLoad(SketchingoutSettings.SKETCHINGOUT_URL, responseXML);
 	}
 }
 
@@ -208,7 +208,7 @@ function requestDrawing(): Void {
 	responseXML.onLoad = onXMLLoaded;
 
 	onStartLoading();
-	initRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
+	initRequest.sendAndLoad(SketchingoutSettings.SKETCHINGOUT_URL, responseXML);
 }
 
 // Initialise the controller

@@ -1,4 +1,4 @@
-﻿class CanvasMovieClip extends MovieClip {
+class CanvasMovieClip extends MovieClip {
 	private var theDrawing: Drawing;
 	private var currLine: Line;
 	private var minX, minY, maxX, maxY: Number;
@@ -27,9 +27,9 @@
 		var dragBottom: Number = linkedDragClip._y + linkedDragClip._height;
 		
 		// See if the offset is ok
-		if ((dragBottom - ConsequencesSettings.DEFAULT_OFFSET_Y) <> bottom) {
+		if ((dragBottom - SketchingoutSettings.DEFAULT_OFFSET_Y) <> bottom) {
 			// Set the location of the drag clip accordingly
-			linkedDragClip._y = (bottom - ConsequencesSettings.DEFAULT_OFFSET_Y) - linkedDragClip._height;
+			linkedDragClip._y = (bottom - SketchingoutSettings.DEFAULT_OFFSET_Y) - linkedDragClip._height;
 		}
 	}
 	

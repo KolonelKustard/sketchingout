@@ -5,18 +5,18 @@
 <web-app>
   
   <servlet>
-    <servlet-name>Consequences</servlet-name>
-    <servlet-class>com.totalchange.consequences.ConsequencesServlet</servlet-class>
+    <servlet-name>Sketchingout</servlet-name>
+    <servlet-class>com.totalchange.sketchingout.SketchingoutServlet</servlet-class>
   </servlet>
   
   <servlet>
     <servlet-name>Drawer</servlet-name>
-    <servlet-class>com.totalchange.consequences.DrawingServlet</servlet-class>
+    <servlet-class>com.totalchange.sketchingout.DrawingServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>Consequences</servlet-name>
-    <url-pattern>/consequences</url-pattern>
+    <servlet-name>Sketchingout</servlet-name>
+    <url-pattern>/sketchingout</url-pattern>
   </servlet-mapping>
   
   <servlet-mapping>

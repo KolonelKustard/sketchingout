@@ -1,5 +1,5 @@
 <%@page import="java.sql.*" %>
-<%@page import="com.totalchange.consequences.*" %>
+<%@page import="com.totalchange.sketchingout.*" %>
 <%
 	// First thing have to do is setup the user cookies.  this page lets the
 	// user id be specified, so try and get it.

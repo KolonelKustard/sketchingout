@@ -91,13 +91,13 @@ class DrawingPage {
 		}
 		
 		var currOffsetY: Number = dragClip.getOffsetY();
-		if (currOffsetY < ConsequencesSettings.MIN_OFFSET_Y) {
-			if (onErrorTooMuchCovered <> null) onErrorTooMuchCovered(currOffsetY, ConsequencesSettings.MIN_OFFSET_Y);
+		if (currOffsetY < SketchingoutSettings.MIN_OFFSET_Y) {
+			if (onErrorTooMuchCovered <> null) onErrorTooMuchCovered(currOffsetY, SketchingoutSettings.MIN_OFFSET_Y);
 			return false;
 		}
 		
-		if (currOffsetY > ConsequencesSettings.MAX_OFFSET_Y) {
-			if (onErrorNotEnoughCovered <> null) onErrorNotEnoughCovered(currOffsetY, ConsequencesSettings.MAX_OFFSET_Y);
+		if (currOffsetY > SketchingoutSettings.MAX_OFFSET_Y) {
+			if (onErrorNotEnoughCovered <> null) onErrorNotEnoughCovered(currOffsetY, SketchingoutSettings.MAX_OFFSET_Y);
 			return false;
 		}
 		

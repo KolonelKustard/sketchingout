@@ -1,4 +1,4 @@
-﻿class DragMovieClip extends MovieClip {
+class DragMovieClip extends MovieClip {
 	public var nextDrawing: CanvasMovieClip;
 	
 	private function mouseOverCanvas(): Boolean {
@@ -18,8 +18,8 @@
 		// Determine if mouse is over the main canvas.  If it is, do nothing.
 		if (mouseOverCanvas()) return;
 		
-		var theTop: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - ConsequencesSettings.MAX_OFFSET_Y) - _height;
-		var theBottom: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - ConsequencesSettings.MIN_OFFSET_Y) - _height;
+		var theTop: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - SketchingoutSettings.MAX_OFFSET_Y) - _height;
+		var theBottom: Number = ((nextDrawing._y + nextDrawing.drawing.getBottom()) - SketchingoutSettings.MIN_OFFSET_Y) - _height;
 		
 		//constrain (locked, left, top, right, bottom)
 		this.startDrag(false, _x, theTop, _x, theBottom);
