@@ -5,6 +5,7 @@
 
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
+	<property name="catalina_work" value="work"/>
 	<property environment="env"/>
 	
 	<target name="makedirs">
@@ -13,6 +14,7 @@
 	
 	<target name="clean">
 		<delete dir="${dest}"/>
+		<delete dir="${catalina_work}"/>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
