@@ -22,6 +22,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
+import com.totalchange.sketchingout.imageparsers.PdfImageParser;
 import com.totalchange.sketchingout.imageparsers.SketchingoutImageParserException;
 
 class CompleteDrawingProcessorException extends Exception {
@@ -44,8 +46,8 @@ class CompleteDrawingProcessorException extends Exception {
  */
 public class CompleteDrawingProcessor {
 	private static final void sendMessage(Session session, String name, String email,
-		DataSource image) 
-		throws MessagingException, UnsupportedEncodingException {
+		DataSource imageDS, DataSource pdfDS) throws MessagingException, 
+		UnsupportedEncodingException {
 		
 		Message msg = new MimeMessage(session);
 		
@@ -69,9 +71,15 @@ public class CompleteDrawingProcessor {
 		
 		// Create and add the image
 		BodyPart img = new MimeBodyPart();
-		img.setDataHandler(new DataHandler(image));
+		img.setDataHandler(new DataHandler(imageDS));
 		img.setFileName("drawing.png");
 		multiPart.addBodyPart(img);
+		
+		// Create and add the pdf
+		BodyPart pdf = new MimeBodyPart();
+		pdf.setDataHandler(new DataHandler(pdfDS));
+		pdf.setFileName("drawing.pdf");
+		multiPart.addBodyPart(pdf);
 		
 		// Put the parts to the message
 		msg.setContent(multiPart);
@@ -100,25 +108,38 @@ public class CompleteDrawingProcessor {
 			// Find out how many stages are involved in this drawing
 			int numStages = res.getInt("stage");
 			
-			// Create the drawing datasource that will serve as the attachment to the
+			// Create the drawing datasources that will serve as the attachment to the
 			// outgoing email
-			DrawingDataSource imageDS;
+			DrawingDataSource imageDS, pdfDS;
 			try {
 				imageDS = new DrawingDataSource(
 					res.getInt("version"),
 					res.getInt("width"),
 					res.getInt("height"),
-					100
+					100,
+					new BufferedImageParser("png")
+				);
+				
+				pdfDS = new DrawingDataSource(
+					res.getInt("version"),
+					res.getInt("width"),
+					res.getInt("height"),
+					100,
+					new PdfImageParser()
 				);
 				
 				// Now go through each stage and construct the drawing
 				for (int num = 0; num < numStages; num++) {
 					imageDS.addStage(res.getCharacterStream("stage_" + (num + 1)));
+					pdfDS.addStage(res.getCharacterStream("stage_" + (num + 1)));
 				}
 				
 				// And add the signatures
 				for (int num = 0; num < numStages; num++) {
 					imageDS.addSignature(res.getCharacterStream("stage_" + 
+						(num + 1) + "_signature"));
+					
+					pdfDS.addSignature(res.getCharacterStream("stage_" + 
 						(num + 1) + "_signature"));
 				}
 			}
@@ -139,7 +160,8 @@ public class CompleteDrawingProcessor {
 						session,
 						res.getString("stage_" + stageStr + "_author_name"),
 						res.getString("stage_" + stageStr + "_author_email"),
-						imageDS
+						imageDS,
+						pdfDS
 					);
 				}
 				catch (Exception e) {
