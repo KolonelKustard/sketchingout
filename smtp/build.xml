@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="consequences" default="compile" basedir=".">
+	<description>Consequences Web Application</description>
+
+	<property name="src" value="src"/>
+	<property name="dest" value="classes"/>
+	
+	<target name="makedirs">
+		<mkdir dir="${dest}"/>
+	</target>
+	
+	<target name="compile" depends="makedirs" description="Compiles the web app">
+		<javac srcdir="${src}" destdir="${dest}"/>
+	</target>
+	
+	<target name="run" depends="compile" description="Runs the Simple SMTP Server">
+		<java classname="com.dumbster.smtp.SimpleSmtpInterceptor" fork="true">
+			<classpath>
+				<pathelement location="${dest}"/>
+			</classpath>
+		</java>
+	</target>
+</project>
