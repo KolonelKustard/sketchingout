@@ -10,16 +10,31 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import com.totalchange.consequences.imageparsers.ConsequencesImageParserException;
 
 class CompleteDrawingProcessorException extends Exception {
 	public CompleteDrawingProcessorException(String msg) {
 		super(msg);
+	}
+	
+	public CompleteDrawingProcessorException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+	
+	public CompleteDrawingProcessorException(Throwable cause) {
+		super(cause);
 	}
 }
 
@@ -28,10 +43,11 @@ class CompleteDrawingProcessorException extends Exception {
  *
  */
 public class CompleteDrawingProcessor {
-	private static final void sendMessage(Session session, String name, String email) 
+	private static final void sendMessage(Session session, String name, String email,
+		DataSource image) 
 		throws MessagingException, UnsupportedEncodingException {
 		
-		MimeMessage msg = new MimeMessage(session);
+		Message msg = new MimeMessage(session);
 		
 		// Who from
 		msg.setFrom(new InternetAddress(ConsequencesSettings.EMAIL_FROM_EMAIL,
@@ -40,10 +56,25 @@ public class CompleteDrawingProcessor {
 		// Who to	
 		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 		
-		// Set subject and text
+		// Set subject
 		msg.setSubject("A drawing you were involved in has been completed.");
-		msg.setText("Not yet implemented.  Need to write the code to make a PNG out " +
-			"of a drawing.");
+		
+		// Create the MIME multi part
+		MimeMultipart multiPart = new MimeMultipart();
+		
+		// Create and add the body part
+		BodyPart body = new MimeBodyPart();
+		body.setText("How do.  Your picture is ready.");
+		multiPart.addBodyPart(body);
+		
+		// Create and add the image
+		BodyPart img = new MimeBodyPart();
+		img.setDataHandler(new DataHandler(image));
+		img.setFileName("drawing.png");
+		multiPart.addBodyPart(img);
+		
+		// Put the parts to the message
+		msg.setContent(multiPart);
 		
 		// Send the message
 		Transport.send(msg);
@@ -69,9 +100,30 @@ public class CompleteDrawingProcessor {
 			// Find out how many stages are involved in this drawing
 			int numStages = res.getInt("stage");
 			
-			// Now go through each stage and construct the drawing
-			for (int num = 0; num < numStages; num++) {
-				// Nothing to do yet...
+			// Create the drawing datasource that will serve as the attachment to the
+			// outgoing email
+			DrawingDataSource imageDS;
+			try {
+				imageDS = new DrawingDataSource(
+					res.getInt("version"),
+					res.getInt("width"),
+					res.getInt("height"),
+					100
+				);
+				
+				// Now go through each stage and construct the drawing
+				for (int num = 0; num < numStages; num++) {
+					imageDS.addStage(res.getCharacterStream("stage_" + (num + 1)));
+				}
+				
+				// And add the signatures
+				for (int num = 0; num < numStages; num++) {
+					imageDS.addSignature(res.getCharacterStream("stage_" + 
+						(num + 1) + "_signature"));
+				}
+			}
+			catch (ConsequencesImageParserException ce) {
+				throw new CompleteDrawingProcessorException(ce);
 			}
 			
 			// Open a session to the mail server
@@ -86,7 +138,8 @@ public class CompleteDrawingProcessor {
 					sendMessage(
 						session,
 						res.getString("stage_" + stageStr + "_author_name"),
-						res.getString("stage_" + stageStr + "_author_email")
+						res.getString("stage_" + stageStr + "_author_email"),
+						imageDS
 					);
 				}
 				catch (Exception e) {
