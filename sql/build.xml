@@ -30,9 +30,19 @@
 		/>
 	</target>
 	
+	<target name="insert" description="Insert dummy data into the database tables">
+		<sql
+			driver="${db_driver}"
+			url="${db_url}"
+			userid="${db_username}"
+			password="${db_password}"
+			src="${db_folder}/insert.sql"
+		/>
+	</target>
+	
 	<target 
 		name="recreate"
-		depends="drop, create"
+		depends="drop, create, insert"
 		description="Drop and re-create the database tables"
 	/>
 </project>
