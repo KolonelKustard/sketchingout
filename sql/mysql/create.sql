@@ -57,6 +57,7 @@ CREATE TABLE gallery(
   stage_3_author_name	VARCHAR(100) NULL,
   stage_4_author_id	VARCHAR(36) NOT NULL REFERENCES users(id),
   stage_4_author_name	VARCHAR(100) NULL,
+  thumbnail_filename	VARCHAR(20) NULL,
   anim_swf_filename	VARCHAR(20) NULL,
   pdf_filename		VARCHAR(20) NULL
 );
