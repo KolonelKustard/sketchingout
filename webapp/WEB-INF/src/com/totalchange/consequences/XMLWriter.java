@@ -23,6 +23,7 @@ import org.xml.sax.Attributes;
  */
 public class XMLWriter extends Writer {
 	private Writer out;
+	private boolean inCData;
 	
 	/**
 	 * <p>Create an XMLWriter instance that outputs to a Writer.</p>
@@ -31,6 +32,8 @@ public class XMLWriter extends Writer {
 	 */
 	public XMLWriter(Writer out) {
 		this.out = out;
+		
+		inCData = false;
 	}
 	
 	/**
@@ -65,6 +68,28 @@ public class XMLWriter extends Writer {
 	 */
 	public void endElement(String localName) throws IOException {
 		out.write("</" + localName + '>');
+	}
+	
+	/**
+	 * Starts an XML CDATA section.  Also stops the processing of char data that
+	 * is written.  MUST start and end the CDATA section after starting an element
+	 * and before ending an element.
+	 * 
+	 * @throws IOException
+	 */
+	public void startCData() throws IOException {
+		out.write("<![CDATA[");
+		inCData = true;
+	}
+	
+	/**
+	 * <p>Ends a CDATA section.</p>
+	 * 
+	 * @throws IOException
+	 */
+	public void endCData() throws IOException {
+		out.write("]]>");
+		inCData = false;
 	}
 	
 	/**
@@ -108,29 +133,34 @@ public class XMLWriter extends Writer {
 	 * @see java.io.Writer#write(char[], int, int)
 	 */
 	public void write(char[] cbuf, int off, int len) throws IOException {
-		for (int i = off; i < off + len; i++) {
-			switch (cbuf[i]) {
-				case '&':
-					out.write("&amp;");
-					break;
-				case '<':
-					out.write("&lt;");
-					break;
-				case '>':
-					out.write("&gt;");
-					break;
-				case '\"':
-					out.write("&quot;");
-					break;
-				default:
-					if (cbuf[i] > '\u007f') {
-						out.write("&#");
-						out.write(Integer.toString(cbuf[i]));
-						out.write(';');
-					} else {
-						out.write(cbuf[i]);
-					}
+		if (!inCData) {
+			for (int i = off; i < off + len; i++) {
+				switch (cbuf[i]) {
+					case '&':
+						out.write("&amp;");
+						break;
+					case '<':
+						out.write("&lt;");
+						break;
+					case '>':
+						out.write("&gt;");
+						break;
+					case '\"':
+						out.write("&quot;");
+						break;
+					default:
+						if (cbuf[i] > '\u007f') {
+							out.write("&#");
+							out.write(Integer.toString(cbuf[i]));
+							out.write(';');
+						} else {
+							out.write(cbuf[i]);
+						}
+				}
 			}
+		}
+		else {
+			out.write(cbuf, off, len);
 		}
 	}
 
