@@ -20,9 +20,6 @@ import com.totalchange.sketchingout.SketchingoutSettings;
  * @author RalphJones
  */
 public class PdfImageParser implements SketchingoutImageParser {
-	
-	private static final String SKETCHING_OUT_FONT = "/DeannasHand.ttf";
-	
 	private static final float MARGIN_LEFT = 50;
 	private static final float MARGIN_RIGHT = 50;
 	private static final float MARGIN_TOP = 80;
@@ -86,7 +83,7 @@ public class PdfImageParser implements SketchingoutImageParser {
 			document.addSubject("Sketching Out Drawing");
 			
 			// Embed the handwriting font
-			BaseFont baseFont = BaseFont.createFont(SKETCHING_OUT_FONT, BaseFont.WINANSI, BaseFont.EMBEDDED);
+			BaseFont baseFont = BaseFont.createFont(SketchingoutSettings.SKETCHING_OUT_FONT, BaseFont.WINANSI, BaseFont.EMBEDDED);
 			
 			// Open the document and begin direct writing to it
 			document.open();
