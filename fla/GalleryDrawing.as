@@ -1,6 +1,4 @@
 ﻿class GalleryDrawing {
-	private static var URL_BASE: String = "http://localhost:8080/consequences/drawing";
-	
 	public var id: String;
 	public var width: Number;
 	public var height: Number;
@@ -9,7 +7,7 @@
 	public var authors: Array = new Array();
 	
 	private function getDrawingURL(): String {
-		return URL_BASE + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
+		return ConsequencesSettings.GALLERY_URL + "?id=" + id + "&scale=" + Math.round(scale) + "&type=";
 	}
 	
 	public function get urlPNG(): String {

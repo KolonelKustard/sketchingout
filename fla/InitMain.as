@@ -5,7 +5,7 @@ holderClip = new DrawingPage();
 
 holderClip.prevDrawing = lastDrawCanvas;
 holderClip.nextDrawing = mainCanvas;
-holderClip.userDetails.userID = _root.uid;
+//holderClip.userDetails.userID = _root.uid;
 holderClip.userDetails.nameEdit = yourName_txt;
 holderClip.userDetails.emailEdit = yourEmail_txt;
 holderClip.userDetails.sigCanvas = sigCanvas;
@@ -151,7 +151,7 @@ send_btn.onPress = function() {
 		responseXML.onLoad = onXMLLoaded;
 		
 		onStartLoading();
-		submitRequest.sendAndLoad("http://localhost:8080/consequences/consequences", responseXML);
+		submitRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
 	}
 }
 
@@ -173,7 +173,7 @@ responseXML.ignoreWhite = true;
 responseXML.onLoad = onXMLLoaded;
 
 onStartLoading();
-initRequest.sendAndLoad("http://localhost:8080/consequences/consequences", responseXML);
+initRequest.sendAndLoad(ConsequencesSettings.CONSEQUENCES_URL, responseXML);
 
 // Stop the playback on this frame
 stop();
