@@ -28,6 +28,7 @@ public class SketchingoutEmail {
 		// Substitute the easy strings
 		substStr(dest, SketchingoutEmails.SUBST_NAME, toName);
 		substStr(dest, SketchingoutEmails.SUBST_EMAIL, toEmail);
+		substStr(dest, SketchingoutEmails.SUBST_URL, SketchingoutSettings.URL_DRAWING);
 		
 		// Change the stage into a body part
 		switch(stage) {
