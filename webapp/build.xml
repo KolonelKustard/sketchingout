@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="consequences" default="compile" basedir=".">
+	<description>Consequences Web Application</description>
+
+	<property name="src" value="WEB-INF/src"/>
+	<property name="dest" value="WEB-INF/classes"/>
+	
+	<target name="makedirs">
+	  <mkdir dir="${dest}"/>
+	</target>
+	
+	<target name="compile" depends="makedirs" description="Compiles the web app">
+		<javac srcdir="${src}" destdir="${dest}" classpath="servlet.jar">
+			<classpath>
+				<fileset dir="${catalina.home}/common/lib/">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+</project>
