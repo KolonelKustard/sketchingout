@@ -42,7 +42,6 @@ class CompleteDrawingProcessorException extends Exception {
 
 /**
  * @author RalphJones
- *
  */
 public class CompleteDrawingProcessor {
 	private static final void sendMessage(Session session, String name, String email,
@@ -92,7 +91,7 @@ public class CompleteDrawingProcessor {
 		Transport.send(msg);
 	}
 	
-	private static final void process(Connection conn, 
+	private static final void processMessages(Connection conn, 
 		String drawingID) throws CompleteDrawingProcessorException, SQLException {
 		
 		// Get the drawing from the database with all the contact details too.
@@ -189,14 +188,24 @@ public class CompleteDrawingProcessor {
 			res.close();
 			pstmt.close();
 		}
-	}
+	} 
 	
 	public static final void process(String drawingID) {
 		try {
 			// Get database connection
 			Connection conn = SQLWrapper.makeConnection();
 			try {
-				process(conn, drawingID);
+				// Process the emails to the participants
+				processMessages(conn, drawingID);
+				
+				// Initiate a transfer of this drawing
+				CompleteDrawingTransfer.transfer(conn, drawingID);
+				
+				// Save this drawing to the gallery
+				CompleteDrawingTransfer.save(conn, drawingID);
+				
+				// Delete the drawing from the active drawings table
+				//SQLWrapper.deleteDrawing(conn, drawingID);
 			}
 			finally {
 				conn.close();
