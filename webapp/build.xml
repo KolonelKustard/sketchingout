@@ -6,6 +6,7 @@
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
 	<property name="catalina_work" value="work"/>
+	<property name="uiparts" value="uiparts"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
 	<property name="war" value="sketching_out.war"/>
 	<property environment="env"/>
@@ -17,6 +18,7 @@
 	<target name="clean">
 		<delete dir="${dest}"/>
 		<delete dir="${catalina_work}"/>
+		<delete dir="${uiparts}"/>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
@@ -28,8 +30,6 @@
 			</classpath>
 		</javac>
 	</target>
-	
-	<target name="rebuild" depends="clean, compile"/>
 	
 	<target name="start_tomcat">
 		<exec executable="${env.CATALINA_HOME}/bin/startup.bat" spawn="true"/>
@@ -50,6 +50,8 @@
 			</classpath>
 		</java>
 	</target>
+	
+	<target name="rebuild" depends="clean, compile, xml2swf"/>
 	
 	<target name="package" depends="compile,xml2swf">
 		<war destfile="${war}" webxml="WEB-INF/web.xml">
