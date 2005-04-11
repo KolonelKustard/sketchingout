@@ -47,6 +47,8 @@ legsHighlight._visible = false;
 feetHighlight._visible = false;
 news_txt._visible = false;
 viewGallery_btn._visible = false;
+clearSig_btn._visible = false;
+clearDrawing_btn._visible = false;
 
 //called when specified drawn UI part has finished
 function showNonDrawUI() {
@@ -58,7 +60,8 @@ function showNonDrawUI() {
 	countdownClip._visible = true;
 	news_txt._visible = true;
 	viewGallery_btn._visible = true;
-	//bodyparts._visible = true;
+	clearSig_btn._visible = true;
+	clearDrawing_btn._visible = true;
 }
 
 
