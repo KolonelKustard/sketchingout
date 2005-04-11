@@ -5,11 +5,22 @@
 
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
+	<property name="lib" value="WEB-INF/lib"/>
 	<property name="catalina_work" value="work"/>
 	<property name="uiparts" value="uiparts"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
 	<property name="war" value="sketching_out.war"/>
 	<property environment="env"/>
+	
+	<path id="sketchingout.classpath">
+		<fileset dir="${env.CATALINA_HOME}/common/lib/">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement path="${dest}"/>
+	</path>
 	
 	<target name="makedirs">
 		<mkdir dir="${dest}"/>
@@ -19,15 +30,12 @@
 		<delete dir="${dest}"/>
 		<delete dir="${catalina_work}"/>
 		<delete dir="${uiparts}"/>
+		<delete file="${war}"/>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
 		<javac srcdir="${src}" destdir="${dest}" classpath="servlet.jar">
-			<classpath>
-				<fileset dir="${env.CATALINA_HOME}/common/lib/">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
+			<classpath refid="sketchingout.classpath"/>
 		</javac>
 	</target>
 	
@@ -42,36 +50,21 @@
 	<target name="xml2swf" depends="compile">
 		<java classname="com.totalchange.sketchingout.ImageParser" fork="yes">
 			<arg line="${args}"/>
-			<classpath>
-				<pathelement path="${dest}"/>
-				<fileset dir="${env.CATALINA_HOME}/common/lib/">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
+			<classpath refid="sketchingout.classpath"/>
 		</java>
 	</target>
 	
 	<target name="complete" depends="compile">
 		<java classname="com.totalchange.sketchingout.CompleteDrawingProcessor" fork="yes">
 			<arg line="${args}"/>
-			<classpath>
-				<pathelement path="${dest}"/>
-				<fileset dir="${env.CATALINA_HOME}/common/lib/">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
+			<classpath refid="sketchingout.classpath"/>
 		</java>
 	</target>
 	
 	<target name="gallerise" depends="compile">
 		<java classname="com.totalchange.sketchingout.CompleteDrawingTransfer" fork="yes">
 			<jvmarg line="-Djava.awt.headless=true"/>
-			<classpath>
-				<pathelement path="${dest}"/>
-				<fileset dir="${env.CATALINA_HOME}/common/lib/">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
+			<classpath refid="sketchingout.classpath"/>
 		</java>
 	</target>
 	
@@ -85,23 +78,22 @@
 			<arg value="${smtpPort}"/>
 			<arg value="${toName}"/>
 			<arg value="${toEmail}"/>
-			<classpath>
-				<pathelement path="${dest}"/>
-				<fileset dir="${env.CATALINA_HOME}/common/lib/">
-					<include name="*.jar"/>
-				</fileset>
-			</classpath>
+			
+			<classpath refid="sketchingout.classpath"/>
 		</java>
 	</target>	
 	
 	<target name="rebuild" depends="clean, compile, xml2swf"/>
 	
-	<target name="package" depends="compile,xml2swf">
+	<target name="package" depends="rebuild">
 		<war destfile="${war}" webxml="WEB-INF/web.xml">
 			<classes dir="${dest}"/>
+			<lib dir="${lib}"/>
 			<zipfileset dir="">
-				<include name="consequences.jsp"/>
-				<include name="consequences.swf"/>
+				<include name="*.html"/>
+				<include name="*.jsp"/>
+				<include name="*.swf"/>
+				<include name="DeannasHand.ttf"/>
 			</zipfileset>
 			<zipfileset dir="uiparts" prefix="uiparts">
 				<include name="*.swf"/>
