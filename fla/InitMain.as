@@ -21,8 +21,10 @@ hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
 hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
 
 // Cache error messages as hints
+hintsLoader.addAssociation(null, "uiparts/wheresdrawing_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/entername_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/checkyouremail_msg.swf");
+hintsLoader.addAssociation(null, "uiparts/friendsemail_gonewrong_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/oopsgonewrong_msg.swf");
 
 
