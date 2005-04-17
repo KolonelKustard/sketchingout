@@ -13,6 +13,7 @@
 	private function clearCanvas(): Void {
 		clear();
 		bottomOfDrawing = 0;
+		moveDragClip();
 	}
 	
 	private function inBounds(theX, theY: Number): Boolean {
