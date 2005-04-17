@@ -1,6 +1,9 @@
 ﻿class ResponseError implements ResponseOperator {
+	public static var ERR_INVALID_DRAWING_ID: Number = 1;
+	
 	public var source: String;
 	public var type: String;
+	public var code: Number = -1;
 	public var message: String;
 	public var fullStackTrace: String;
 	public var stackTrace: Array = new Array();
@@ -31,6 +34,9 @@
 					break;
 				case "type":
 					type = node.firstChild.nodeValue;
+					break;
+				case "code":
+					code = Number(node.firstChild.nodeValue);
 					break;
 				case "message":
 					message = node.firstChild.nodeValue;
