@@ -18,22 +18,30 @@ import java.io.IOException;
  * client as to how to respond to them.</p>
  */
 public class SketchingoutErrors {
+	public static final int ERR_INVALID_DRAWING_ID = 1;
+	
 	/**
 	 * @author RalphJones
 	 *
 	 * <p>Inner class construct for holding errors generated as we go along</p>
 	 */
-	class ConsequencesError {
+	class SketchingoutError {
 		private String source;
 		private String type;
+		private int code;
 		private String message;
 		private StackTraceElement[] trace;
 		
-		public ConsequencesError(Class caller, Exception e) {
+		public SketchingoutError(Class caller, int code, Exception e) {
 			source = caller.getName();
 			type = e.getClass().getName();
+			this.code = code;
 			message = e.getMessage();
 			trace = e.getStackTrace();
+		}
+		
+		public SketchingoutError(Class caller, Exception e) {
+			this(caller, -1, e);
 		}
 		
 		public String getSource() {
@@ -42,6 +50,10 @@ public class SketchingoutErrors {
 		
 		public String getType() {
 			return type;
+		}
+		
+		public int getCode() {
+			return code;
 		}
 		
 		public String getMessage() {
@@ -60,7 +72,11 @@ public class SketchingoutErrors {
 	}
 	
 	public void addException(Class caller, Exception e) {
-		errors.add(new ConsequencesError(caller, e));
+		errors.add(new SketchingoutError(caller, e));
+	}
+	
+	public void addException(Class caller, int errorCode, Exception e) {
+		errors.add(new SketchingoutError(caller, errorCode, e));
 	}
 	
 	public void clear() {
@@ -71,8 +87,8 @@ public class SketchingoutErrors {
 		return errors.size();
 	}
 	
-	public ConsequencesError getError(int index) {
-		return (ConsequencesError) errors.get(index);
+	public SketchingoutError getError(int index) {
+		return (SketchingoutError) errors.get(index);
 	}
 	
 	/**
@@ -85,12 +101,13 @@ public class SketchingoutErrors {
 		
 		for (int num = 0; num < size(); num++) {
 			// Get error
-			ConsequencesError err = getError(num);
+			SketchingoutError err = getError(num);
 			
 			// Output to stream
 			out.startElement(XMLConsts.EL_ERROR);
 			out.writeElement(XMLConsts.EL_ERROR_SRC, err.getSource());
 			out.writeElement(XMLConsts.EL_ERROR_TYPE, err.getType());
+			out.writeElement(XMLConsts.EL_ERROR_CODE, Integer.toString(err.getCode()));
 			out.writeElement(XMLConsts.EL_ERROR_MESSAGE, err.getMessage());
 			
 			// See if there's a stack trace

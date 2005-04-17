@@ -81,8 +81,8 @@ public class XMLHandler extends DefaultHandler {
 					 curr = newHandler;
 				 }
 			}
-			catch (Exception e) {
-				errs.addException(this.getClass(), e);
+			catch (HandlerException e) {
+				errs.addException(this.getClass(), e.getErrorCode(), e);
 			}
 		}
 		
@@ -91,8 +91,8 @@ public class XMLHandler extends DefaultHandler {
 			try {
 				curr.start(out, conn, errs, attributes);
 			}
-			catch (Exception e) {
-				errs.addException(this.getClass(), e);
+			catch (HandlerException e) {
+				errs.addException(this.getClass(), e.getErrorCode(), e);
 			}
 		}
 	}
@@ -108,8 +108,8 @@ public class XMLHandler extends DefaultHandler {
 			try {
 				curr.data(ch, start, length);
 			}
-			catch (Exception e) {
-				errs.addException(this.getClass(), e);
+			catch (HandlerException e) {
+				errs.addException(this.getClass(), e.getErrorCode(), e);
 			}
 		}
 	}
@@ -128,8 +128,8 @@ public class XMLHandler extends DefaultHandler {
 			try {
 				curr.end();
 			}
-			catch (Exception e) {
-				errs.addException(this.getClass(), e);
+			catch (HandlerException e) {
+				errs.addException(this.getClass(), e.getErrorCode(), e);
 			}
 		
 			// No longer need current	

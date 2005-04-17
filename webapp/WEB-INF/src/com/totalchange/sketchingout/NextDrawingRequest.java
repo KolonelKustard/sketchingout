@@ -140,12 +140,21 @@ public class NextDrawingRequest implements RequestHandler {
 						long locked = next.getTimestamp("locked").getTime();
 						int lock = (int) (locked - System.currentTimeMillis()) / 1000;
 						
+						// If the amount of time left is less than the normal amount of
+						// time, reset the locked time.  This makes it a real last ditch
+						// as the distinguished ID will also be reset.
+						if (lock < SketchingoutSettings.DEFAULT_LOCK_SECS) {
+							lock = SketchingoutSettings.DEFAULT_LOCK_SECS;
+							SQLWrapper.lockDrawing(conn, next.getString("id"), lock);
+						}
+						
+						// Send out the drawing
 						outputDrawing(next, out, lock);
 					}
 					else {
-						throw new HandlerException("Could not find drawing specified.  " +
-							"Could be because the locked timeout has expired and the " +
-							"drawing has become public.");
+						throw new HandlerException(SketchingoutErrors.ERR_INVALID_DRAWING_ID,
+							"Could not find drawing specified.  Could be because the locked " +
+							"timeout has expired and the drawing has become public.");
 					}
 				}
 				finally {
@@ -154,6 +163,9 @@ public class NextDrawingRequest implements RequestHandler {
 					pstmt.close();
 				}
 			}
+		}
+		catch (HandlerException he) {
+			errs.addException(this.getClass(), he.getErrorCode(), he);
 		}
 		catch (Exception e) {
 			errs.addException(this.getClass(), e);

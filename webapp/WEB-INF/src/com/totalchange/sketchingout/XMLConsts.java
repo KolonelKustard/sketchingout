@@ -20,6 +20,7 @@ public class XMLConsts {
 	public static final String EL_ERROR = "error";
 	public static final String EL_ERROR_SRC = "src";
 	public static final String EL_ERROR_TYPE = "type";
+	public static final String EL_ERROR_CODE = "code";
 	public static final String EL_ERROR_MESSAGE = "message";
 	public static final String EL_ERROR_STACK_TRACE = "stacktrace";
 	public static final String EL_ERROR_TRACE = "trace";

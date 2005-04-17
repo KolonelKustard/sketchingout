@@ -13,7 +13,18 @@ package com.totalchange.sketchingout;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class HandlerException extends Exception {
+	private int errorCode = -1;
+	
+	public HandlerException(int errorCode, String message) {
+		super(message);
+		this.errorCode = errorCode;
+	}
+	
 	public HandlerException(String message) {
 		super(message);
+	}
+	
+	public int getErrorCode() {
+		return errorCode;
 	}
 }
