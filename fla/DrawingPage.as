@@ -95,7 +95,7 @@
 	 * events if things go wrong.
 	 */
 	private function validateDrawing(): Boolean {
-		if (!nextDrawing.modified) {
+		if (nextDrawing.drawing.lines.length <= 0) {
 			if (onErrorNoDrawing <> null) onErrorNoDrawing();
 			return false;
 		}
