@@ -27,7 +27,7 @@
 		// See if the text in the field should be changed
 		if (secs != secsRemaining) {
 			var hrs: Number = Math.floor((timeRemaining / 1000) / 3600);
-			var mins: Number = Math.floor((timeRemaining / 1000) / 60);
+			var mins: Number = Math.floor(((timeRemaining / 1000) / 60) % 60);
 			
 			minsRemaining = mins;
 			secsRemaining = secs;
