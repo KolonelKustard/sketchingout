@@ -18,6 +18,7 @@
 	public var onErrorTooMuchCovered: Function = null;
 	public var onErrorNotEnoughCovered: Function = null;
 	public var onErrorInvalidFriendsEmail: Function = null;
+	public var onErrorInvalidDrawingID: Function = null;
 	
 	// Generic error event
 	public var onError: Function = null;
@@ -209,6 +210,7 @@
 	 * Parses an XML object that represents a response from the server
 	 */
 	public function parseResponse(xmlResponse: XML): Void {
+		trace(xmlResponse);
 		var response: Response = new Response(xmlResponse);
 		
 		// See what responses there are
@@ -232,7 +234,15 @@
 		if (response.doneWithErrors) {
 			// Use the event handler to handle errors
 			for (var num = 0; num < response.errs.length; num++) {
-				if (onError != null) onError(response.errs[num]);
+				// Deal with the specific error types
+				switch (response.errs[num].code) {
+					case ResponseError.ERR_INVALID_DRAWING_ID:
+						if (onErrorInvalidDrawingID != null) onErrorInvalidDrawingID(response.errs[num]);
+						break;
+					default:
+						if (onError != null) onError(response.errs[num]);
+						break;
+				}
 			}
 		}
 	}
