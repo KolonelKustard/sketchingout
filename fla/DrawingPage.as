@@ -210,7 +210,6 @@
 	 * Parses an XML object that represents a response from the server
 	 */
 	public function parseResponse(xmlResponse: XML): Void {
-		trace(xmlResponse);
 		var response: Response = new Response(xmlResponse);
 		
 		// See what responses there are
