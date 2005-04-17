@@ -190,27 +190,19 @@ holderClip.onErrorNoDrawing = function(): Void {
 }
 
 /**
- * Called if the person covers too much of the drawing with the
- * dragger.
- */
-holderClip.onErrorTooMuchCovered = function(currOffsetY: Number, minOffsetY: Number): Void {
-	trace("Spaz alert: Don't cover up so much: " + currOffsetY + "/" + minOffsetY);
-}
-
-/**
- * Called if the person doesn't cover up enough of the drawing with
- * the dragger.
- */
-holderClip.onErrorNotEnoughCovered = function(currOffsetY: Number, maxOffsetY: Number): Void {
-	trace("Spaz alert: Not enough covered up: " + currOffsetY + "/" + maxOffsetY);
-}
-
-/**
  * Called when the friends email address isn't blank but doesn't have an @
  * sign and a full stop.
  */
 holderClip.onErrorInvalidFriendsEmail = function(): Void {
 	hintsLoader.showCachedHint("uiparts/friendsemail_gonewrong_msg.swf");
+}
+
+/**
+ * Called if the drawing ID that is passed in is not valid.  This could be if the
+ * drawing has already been done or if the private drawing locked time has expired.
+ */
+holderClip.onErrorInvalidDrawingID = function(): Void {
+	trace("Drawing expired");
 }
 
 /**
