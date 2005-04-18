@@ -34,4 +34,5 @@
     <project_file path="./Gallery.fla" filetype="fla" profile="" />
     <project_file path="./GalleryInterface.as" filetype="as" />
     <project_file path="./InitGallery.as" filetype="as" />
+    <project_file path="./TypingMovieClip.as" filetype="as" />
 </flash_project>
