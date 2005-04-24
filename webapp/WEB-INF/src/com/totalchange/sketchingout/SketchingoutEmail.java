@@ -4,7 +4,10 @@
 package com.totalchange.sketchingout;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
 
@@ -35,6 +38,7 @@ public class SketchingoutEmail {
 	private String fromName, fromEmail, senderName, senderEmail, toName, toEmail, subject, body;
 	private String distinguishedID;
 	private int stage;
+	private int lockSecs = 0;
 	
 	private void substStr(StringBuffer buff, String orig, String subst) {
 		int index = buff.indexOf(orig, 0);
@@ -94,6 +98,35 @@ public class SketchingoutEmail {
 				substStr(dest, SketchingoutEmails.SUBST_A_OR_SOME, "some");
 				substStr(dest, SketchingoutEmails.SUBST_THOSE_ARE_OR_THAT_IS, "those are");
 				break;
+		}
+		
+		// See if locked timeout has been set
+		if (lockSecs != 0) {
+			// Calculate hours and mins from the time
+			int hours = lockSecs / (60 * 60);
+			int mins = (lockSecs / 60) % (hours * 60);
+			
+			// Make an hours/mins String
+			String timeLeft = "";
+			if (hours > 0) {
+				timeLeft += hours + "hrs";
+			}
+			if (mins > 0) {
+				if (timeLeft.length() > 0) timeLeft += " ";
+				timeLeft += mins + "mins";
+			}
+			
+			// Get the locked timeout as a date/time
+			long lockedUntil = System.currentTimeMillis() + (lockSecs * 1000);
+			
+			// Convert the date/time to a String
+			DateFormat df = new SimpleDateFormat("dd MMMM yyyy HH:mm");
+			String lockedUntilStr = df.format(new Date(lockedUntil));
+			
+			// Now substitute the text
+			substStr(dest, SketchingoutEmails.SUBST_LOCKED_UNTIL,
+				lockedUntilStr + " GMT (" + timeLeft + ")");
+			
 		}
 		
 		return dest.toString();
@@ -229,6 +262,12 @@ public class SketchingoutEmail {
 	public void setDistinguishedID(String distinguishedID) {
 		this.distinguishedID = distinguishedID;
 	}
+	public int getLockSecs() {
+		return lockSecs;
+	}
+	public void setLockSecs(int lockSecs) {
+		this.lockSecs = lockSecs;
+	}
 	
 	/**
 	 * Tests all the random emails
@@ -285,6 +324,7 @@ public class SketchingoutEmail {
 			email.setToEmail(toEmail);
 			email.setStage(new Random().nextInt(SketchingoutSettings.MAX_NUM_STAGES + 1));
 			email.setDistinguishedID(new RandomGUID().toString());
+			email.setLockSecs(SketchingoutSettings.PRIVATE_LOCK_SECS);
 			email.send();
 		}
 		
