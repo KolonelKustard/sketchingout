@@ -17,19 +17,19 @@ import java.sql.*;
  * <p>The reason an object relational mapping tool like Hibernate hasn't been
  * used is purely because of portability.  We cannot presently afford to pay
  * for decent hosting, so must work towards the lowest spec.  Thus explaining
- * why this current version is using HSQLDB</p>
+ * why this current version is using MySQL.</p>
  */
 public class SQLWrapper {
-	private static final String DB_CLASSNAME = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost/sketchingout";
-	private static final String DB_USERNAME = "";
-	private static final String DB_PASSWORD = "";
-	
 	public static final Connection makeConnection() throws ClassNotFoundException, 
 		SQLException {
 			
-		Class.forName(DB_CLASSNAME);
-		Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+		Class.forName(SketchingoutSettings.DB_CLASSNAME);
+		Connection conn = DriverManager.getConnection(
+			SketchingoutSettings.DB_URL,
+			SketchingoutSettings.DB_USERNAME,
+			SketchingoutSettings.DB_PASSWORD
+		);
+		
 		return conn;
 	}
 	
