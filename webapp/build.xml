@@ -9,7 +9,7 @@
 	<property name="catalina_work" value="work"/>
 	<property name="uiparts" value="uiparts"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
-	<property name="war" value="sketching_out.war"/>
+	<property name="war" value="sketchingout.war"/>
 	<property environment="env"/>
 	
 	<path id="sketchingout.classpath">
