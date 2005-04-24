@@ -12,6 +12,14 @@ package com.totalchange.sketchingout;
  */
 public class SketchingoutSettings {
 	/**
+	 * The database connection settings
+	 */
+	public static final String DB_CLASSNAME = "com.mysql.jdbc.Driver";
+	public static final String DB_URL = "jdbc:mysql://localhost/sketchingout";
+	public static final String DB_USERNAME = "";
+	public static final String DB_PASSWORD = "";
+	
+	/**
 	 * The number of seconds to lock a drawing for once it has been requested.  This
 	 * only applies to publically retrieved drawings.
 	 *
