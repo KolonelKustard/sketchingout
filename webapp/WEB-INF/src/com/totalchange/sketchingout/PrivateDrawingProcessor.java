@@ -13,8 +13,8 @@ import javax.mail.Session;
  */
 public class PrivateDrawingProcessor {
 	public static final void sendDrawingOn(String fromName, String fromEmail,
-		String toEmail, int stage, String distinguishedID) throws MessagingException,
-		UnsupportedEncodingException {
+		String toEmail, int stage, String distinguishedID, int lockSecs)
+		throws MessagingException, UnsupportedEncodingException {
 		
 		// Get SMTP Session
 		Session session = SMTPSessionFactory.getSMTPSession();
@@ -27,6 +27,7 @@ public class PrivateDrawingProcessor {
 		email.setToEmail(toEmail);
 		email.setStage(stage);
 		email.setDistinguishedID(distinguishedID);
+		email.setLockSecs(lockSecs);
 		email.send();
 	}
 }

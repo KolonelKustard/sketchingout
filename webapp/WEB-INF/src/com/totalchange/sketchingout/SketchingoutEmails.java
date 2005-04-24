@@ -17,6 +17,7 @@ public class SketchingoutEmails {
 	public static final String SUBST_A_OR_SOME = ":a_or_some:";
 	public static final String SUBST_THOSE_ARE_OR_THAT_IS = ":those_are_or_that_is:";
 	public static final String SUBST_URL = ":url:";
+	public static final String SUBST_LOCKED_UNTIL = ":locked_until:";
 
 	public static final String CONST_SUBJECT = "Here's your drawing from SketchingOut.co.uk";
 	
@@ -189,6 +190,8 @@ public class SketchingoutEmails {
 			"Your Pal, " + SUBST_FROM_NAME + " <" + SUBST_FROM_EMAIL + "> has invited you to draw a picture! " + 
 			"Click the link below to draw " + SUBST_A_OR_SOME + " " + SUBST_BODY_PART + ":\n\n" +
 			SUBST_URL + "\n\n" +
+			"You've got until " + SUBST_LOCKED_UNTIL + " to do your drawing, so " +
+			"no time to lose!\n\n" +
 			"Kind regards,\n\n" +
 			"www.SketchingOut.co.uk"
 		}
