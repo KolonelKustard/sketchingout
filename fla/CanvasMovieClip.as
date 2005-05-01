@@ -155,6 +155,10 @@
 			}
 		}
 		
+		// Move the drag clip
+		bottomOfDrawing = theDrawing.getBottom();
+		moveDragClip();
+		
 		modified = false;
 	}
 	
@@ -164,6 +168,19 @@
 		
 		// But make sure records that it's modified
 		modified = true;
+	}
+	
+	/**
+	 * This function strips whitespace from the top of the drawing
+	 */
+	public function trim(): Void {
+		// Get the drawing, offset it, then set it back in
+		var moveDrawing: Drawing = drawing;
+		
+		var fromTop: Number = moveDrawing.getTop();
+		moveDrawing.offsetYBy(0 - fromTop);
+		
+		drawing = moveDrawing;
 	}
 	
 	public function set dragClip(dragClip: DragMovieClip) {
