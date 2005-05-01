@@ -52,6 +52,27 @@
 		return Math.ceil(bottom);
 	}
 	
+	public function getTop(): Number {
+		var top: Number = getBottom();
+		
+		// Run through all the lines
+		for (var lineNum: Number = 0; lineNum < lines.length; lineNum++) {
+			var line: Line = lines[lineNum];
+			var points: Array = line.getPoints();
+			
+			// Run through all the points on this line
+			for (var pointNum: Number = 0; pointNum < points.length; pointNum++) {
+				var point: Point = points[pointNum];
+				
+				// If the Y value of this point is greater than the currently known
+				// max Y then set the max Y to this height.
+				if (point.y < top) top = point.y;
+			}
+		}
+		
+		return Math.floor(top);
+	}
+	
 	/**
 	 * This function shrinks the size of a drawing so that the height of the drawing
 	 * becomes the lowest available pixel.
@@ -63,6 +84,23 @@
 		// If the new height is different to the current height of this drawing
 		// then set the height of this drawing to it.
 		if (height <> newHeight) height = newHeight;
+	}
+	
+	/**
+	 * Moves the drawing up or down by the specified amount
+	 */
+	public function offsetYBy(offsetYBy: Number): Void {
+		// Run through every point and move accordingly
+		for (var lineNum: Number = 0; lineNum < lines.length; lineNum++) {
+			var line: Line = lines[lineNum];
+			var points: Array = line.getPoints();
+			
+			// Run through all the points on this line
+			for (var pointNum: Number = 0; pointNum < points.length; pointNum++) {
+				var point: Point = points[pointNum];
+				point.y += offsetYBy;
+			}
+		}
 	}
 	
 	/**
