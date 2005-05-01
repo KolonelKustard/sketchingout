@@ -128,9 +128,12 @@
 		subDraw.stage = nextDrawingResponse.stage + 1;
 		
 		if (friendsEmailEdit.text == "")
-		  subDraw.nextUserEmail = null
+			subDraw.nextUserEmail = null
 		else
-		  subDraw.nextUserEmail = friendsEmailEdit.text;
+			subDraw.nextUserEmail = friendsEmailEdit.text;
+		  
+		// If the stage is the head, strip any whitespace from the top
+		if (subDraw.stage == 1) nextDrawing.trim();
 		
 		// The drawing has to be shrunk and the offset calculated before submission
 		subDraw.drawing = nextDrawing.drawing;
