@@ -46,4 +46,4 @@ gallery.onNext = galleryOnNext;
 gallery.next();
 
 // Now go autonomous
-stop();
+//stop();

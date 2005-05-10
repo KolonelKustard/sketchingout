@@ -15,17 +15,18 @@ holderClip.friendsEmailEdit = friendsEmail_txt;
 holderClip.countdownClip = countdownClip;
 
 hintsLoader.defaultHint = null;
-hintsLoader.addAssociation(yourName_txt, "uiparts/pleaseentername_msg.swf");
+hintsLoader.addAssociation(yourName_txt, "uiparts/entername_msg.swf");
 hintsLoader.addAssociation(yourEmail_txt, "uiparts/enteryouremail_msg.swf");
 hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
 hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
 
 // Cache error messages as hints
 hintsLoader.addAssociation(null, "uiparts/wheresdrawing_msg.swf");
-hintsLoader.addAssociation(null, "uiparts/entername_msg.swf");
+hintsLoader.addAssociation(null, "uiparts/whatsyourname_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/checkyouremail_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/friendsemail_gonewrong_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/oopsgonewrong_msg.swf");
+hintsLoader.addAssociation(null, "uiparts/tooktoolong_msg.swf");
 
 
 //Set up custom cursor
@@ -123,10 +124,7 @@ function onStartLoading(): Void {
  * false is if the server was not reachable.
  */
 function onEndLoading(loadedOK: Boolean): Void {
-	trace("Done " + loadedOK);
-	//focus 'Name' text field
-	//Selection.setFocus("yourEmail_txt");
-		
+	//trace("Done " + loadedOK);	
 }
 
 /**
@@ -178,7 +176,7 @@ countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
  */
 countdownClip.onDone = function(): Void {
 	//ADD HINTS CLIP HERE
-	trace("Oops took too long in drawing.  Fetching another drawing.");
+	hintsLoader.showCachedHint("uiparts/tooktoolong_msg.swf");
 	requestDrawing();
 }
 
@@ -202,14 +200,14 @@ holderClip.onErrorInvalidFriendsEmail = function(): Void {
  * drawing has already been done or if the private drawing locked time has expired.
  */
 holderClip.onErrorInvalidDrawingID = function(): Void {
-	trace("Drawing expired");
+	hintsLoader.showCachedHint("uiparts/drawingexpired_msg.swf");
 }
 
 /**
  * Called when no name is entered in the user details.
  */
 holderClip.userDetails.onErrorNoName = function(): Void {
-	hintsLoader.showCachedHint("uiparts/entername_msg.swf");
+	hintsLoader.showCachedHint("uiparts/whatsyourname_msg.swf");
 }
 
 /**
