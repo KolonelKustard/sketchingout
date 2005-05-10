@@ -77,11 +77,6 @@ logo_ldr.loadMovie("uiparts/logo.swf");
 whatsthis_ldr.onMovieClipPlayed = function(){}
 whatsthis_ldr.loadMovie("uiparts/whatsthis_box.swf");
 
-introtxt_ldr.onMovieClipPlayed = function() {
-	showNonDrawUI();
-}
-introtxt_ldr.loadMovie("uiparts/introtext.swf");
-
 newsbox_ldr.onMovieClipPlayed = function() {}
 newsbox_ldr.loadMovie("uiparts/news_box.swf");
 
@@ -97,10 +92,13 @@ viewgallerybtn_ldr.loadMovie("uiparts/viewgallery_btn.swf");
 hintsbox_ldr.onMovieClipPlayed = function(){}
 hintsbox_ldr.loadMovie("uiparts/hints_box.swf");
 
-txtfldsbtn_ldr.onMovieClipPlayed = function() {}
 txtfldsbtn_ldr.loadMovie("uiparts/txtflds-btn.swf");
 
-
+//likey to be last (and largest) hints clip to load
+//show static UI items when loaded
+txtfldsbtn_ldr.onMovieClipPlayed = function() {
+	showNonDrawUI();
+}
 
 
 
