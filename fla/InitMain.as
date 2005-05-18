@@ -20,6 +20,9 @@ hintsLoader.addAssociation(yourEmail_txt, "uiparts/enteryouremail_msg.swf");
 hintsLoader.addAssociation(sigCanvas, "uiparts/signyourname_msg.swf");
 hintsLoader.addAssociation(friendsEmail_txt, "uiparts/enterafriendsemail_msg.swf");
 
+// Cache useful hints
+hintsLoader.addAssociation(null, "uiparts/success_msg.swf");
+
 // Cache error messages as hints
 hintsLoader.addAssociation(null, "uiparts/wheresdrawing_msg.swf");
 hintsLoader.addAssociation(null, "uiparts/whatsyourname_msg.swf");
@@ -158,13 +161,19 @@ holderClip.onNewDrawing = function(stage: Number): Void {
 }
 
 /**
+ * Called when a drawing has been submitted ok (i.e. with no errors!)
+ */
+holderClip.onDrawingFinished = function(): Void {
+	hintsLoader.showCachedHint("uiparts/success_msg.swf");
+}
+
+/**
  * This is called by the countdown timer to say that time is running out.
  * The interval at which this function is called is defined in:
  * SketchingoutSettings.COUNTDOWN_TIMER_REMINDER
  */
 countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
 	hintsLoader.showCachedHint("uiparts/quick_msg.swf");
-	//trace("You have only " + String(timeRemaining / 1000) + " seconds remaining to draw)");
 }
 
 /**
@@ -173,7 +182,6 @@ countdownClip.onNearlyDone = function(timeRemaining: Number): Void {
  * cock up the locking mechanisms on the server.
  */
 countdownClip.onDone = function(): Void {
-	//ADD HINTS CLIP HERE
 	hintsLoader.showCachedHint("uiparts/tooktoolong_msg.swf");
 	requestDrawing();
 }
