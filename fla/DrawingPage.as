@@ -1,5 +1,6 @@
 ﻿class DrawingPage {
 	private var nextDrawingResponse: NextDrawingResponse = null;
+	private var sentDrawing = false;
 	
 	// Objects public properties
 	public var nextDrawingID: String = null;
@@ -11,6 +12,7 @@
 	public var countdownClip: CountdownMovieClip;
 	
 	// Event handlers
+	public var onDrawingFinished: Function = null;
 	public var onNewDrawing: Function = null;
 	
 	// Error event handlers
@@ -140,6 +142,9 @@
 		subDraw.drawing.offsetY = dragClip.getOffsetY();
 		subDraw.drawing.shrink();
 		
+		// Remember that drawing has been submitted
+		sentDrawing = true;
+		
 		return subDraw;
 	}
 	
@@ -247,5 +252,12 @@
 				}
 			}
 		}
+		
+		// If a drawing was sent then see if was error free?!?
+		if (!response.doneWithErrors && sentDrawing) {
+			if (onDrawingFinished != null) onDrawingFinished();
+		}
+		
+		sentDrawing = false;
 	}
 }
