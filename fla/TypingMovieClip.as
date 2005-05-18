@@ -1,18 +1,24 @@
 ﻿class TypingMovieClip extends MovieClip {
+	private static var LETTERS_PER_SECOND: Number = 60;
+	
 	private var txtFld: TextField;
 	
-	private var theText, subText: String;
+	private var theText: String;
 	private var textLen, textWritten: Number;
+	private var startTime: Number;
 	
 	/**
 	 * Writes the appropriate amount out each frame
 	 */
 	private function onEnterFrame(): Void {
 		if (textWritten < textLen) {
-			subText += theText.charAt(textWritten);
-			txtFld.text = subText;
+			// Work out how much should be written
+			textWritten = Math.ceil(((getTimer() - startTime) / 1000) * LETTERS_PER_SECOND);
 			
-			textWritten++;
+			// Put it in the text field
+			if (textWritten != txtFld.text.length) {
+				txtFld.text = theText.substr(0, textWritten);
+			}
 		}
 	}
 	
@@ -27,11 +33,11 @@
 		// Clear the text box
 		txtFld.text = "";
 		
-		// Make sure the sub text starts as empty
-		subText = "";
-		
 		// Get the appropriate lengths
 		textLen = theText.length;
 		textWritten = 0;
+		
+		// Set the start time for measurement against later on
+		startTime = getTimer();
 	}
 }
