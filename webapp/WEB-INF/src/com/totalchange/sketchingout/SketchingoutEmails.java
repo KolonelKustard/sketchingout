@@ -20,6 +20,7 @@ public class SketchingoutEmails {
 	public static final String SUBST_LOCKED_UNTIL = ":locked_until:";
 
 	public static final String CONST_SUBJECT = "Here's your drawing from SketchingOut.co.uk";
+	public static final String CONST_FOOTER = "\n\nP.S.  Click here to draw again: " + SUBST_URL;
 	
 	public static final int EMAILS_FROM_NAME = SketchingoutEmail.EMAILS_ARRAY_FROM_NAME;
 	public static final int EMAILS_FROM_EMAIL = SketchingoutEmail.EMAILS_ARRAY_FROM_EMAIL;
@@ -33,7 +34,8 @@ public class SketchingoutEmails {
 			"Hi " + SUBST_TO_NAME + ",\n\n" +
 			"The drawing you did on SketchingOut is completed! We think your " + SUBST_BODY_PART + " makes the drawing...!\n\n" +
 			"Kind regards,\n\n" +
-			"Bob"
+			"Bob" +
+			CONST_FOOTER
 		}, 
 		{
 			"Jimmy Jim",
@@ -41,7 +43,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"What on earth is this? its your completed drawing from SketchingOut. Thats what.\n\n" +
 			"Best washes,\n\n" +
-			"jim"
+			"jim" +
+			CONST_FOOTER
 		},
 		{
 			"Wailing Tuff",
@@ -49,7 +52,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Here's your drawing. Remember? SketchingOut? oh well, just have a look anyway.\n\n" +
 			"Love,\n\n" +
-			"Wailing T"
+			"Wailing T" +
+			CONST_FOOTER
 		},
 		{
 			"Devious Honey R. Smooth",
@@ -57,7 +61,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"You have Won...! ...A drawing. Enjoy your prize.\n\n" +
 			"All the best,\n\n" +
-			"Mr. Smooth"
+			"Mr. Smooth" +
+			CONST_FOOTER
 		},
 		{
 			"Stealth Maestro leech Loco",
@@ -65,7 +70,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Crikey, look at the state of this! We think its ace. well done.\n\n" +
 			"Peace,\n\n" +
-			"S. Loco"
+			"S. Loco" +
+			CONST_FOOTER
 		},
 		{
 			"D. Magical Robinson Clinton",
@@ -73,7 +79,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Have you seen this? well have a look, its your finished drawing!\n\n" +
 			"Massive respect,\n\n" +
-			"Mr. Magic"
+			"Mr. Magic" +
+			CONST_FOOTER
 		},
 		{
 			"Master Fly Beazer Slick",
@@ -81,7 +88,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Does this look normal to you? " +SUBST_THOSE_ARE_OR_THAT_IS+ " the strangest " + SUBST_BODY_PART + " We've ever seen!\n\n" +
 			"Shhhh,\n\n" +
-			"Fly"
+			"Fly" +
+			CONST_FOOTER
 		},
 		{
 			"Mack P. Bobby Kicks",
@@ -89,7 +97,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Hey, your drawing is done! lets take a look, arrgghhh! it's hideous!\n\n" +
 			"Check yourself,\n\n" +
-			"Mack"
+			"Mack" +
+			CONST_FOOTER
 		},
 		{
 			"Adam Ant",
@@ -97,7 +106,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Is this not the best picture you've ever seen?!\n\n" +
 			"Kind regards,\n\n" +
-			"The Dandy Highwayman"
+			"The Dandy Highwayman" +
+			CONST_FOOTER
 		},
 		{
 			"Shakin' Stevens",
@@ -105,7 +115,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"I lied about the old house, its rubbish, unlike this picture!\n\n" +
 			"Keep on Rockin',\n\n" +
-			"Shakey"
+			"Shakey" +
+			CONST_FOOTER
 		},
 		{
 			"Your Mum",
@@ -113,7 +124,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Hey that looks like my mother! how dare you!\n\n" +
 			"Tsk,\n\n" +
-			"Mum"
+			"Mum" +
+			CONST_FOOTER
 		},
 		{
 			"A Wellwisher",
@@ -121,7 +133,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"This picture would have been fantastic. If you hadn't drawn " + SUBST_A_OR_SOME + " stupid " + SUBST_BODY_PART + "!\n\n" +
 			"Wishing you well,\n\n" +
-			"From nobody in particular"
+			"From nobody in particular" +
+			CONST_FOOTER
 		},
 		{
 			"E.T.",
@@ -129,7 +142,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Your picture is ready! I bet the other drawers are glad you were involved...\n\n" +
 			"Stay tuned,\n\n" +
-			"E.T"
+			"E.T" +
+			CONST_FOOTER
 		},
 		{
 			"Boney M",
@@ -137,7 +151,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Wow, what an ace piece of drawing teamwork!\n\n" +
 			"You've made my day,\n\n" +
-			"Boney"
+			"Boney" +
+			CONST_FOOTER
 		},
 		{
 			"David Bellamy",
@@ -145,7 +160,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Here's your finished drawing. Make of it what you will.\n\n" +
 			"Lovely,\n\n" +
-			"Mr. B"
+			"Mr. B" +
+			CONST_FOOTER
 		},
 		{
 			"Rolf Harris",
@@ -153,7 +169,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Can you guess what this is yet? No, me neither...!\n\n" +
 			"G'Day,\n\n" +
-			"Rolf"
+			"Rolf" +
+			CONST_FOOTER
 		},
 		{
 			"Bobby Bones",
@@ -161,7 +178,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Here's your drawing. We hope you like it. If you don't, we really are very sorry.\n\n" +
 			"Hope you get better soon,\n\n" +
-			"Bob"
+			"Bob" +
+			CONST_FOOTER
 		},
 		{
 			"Denzil",
@@ -169,7 +187,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Here's your drawing. Wasn't it worth the wait?!\n\n" +
 			"I think so,\n\n" +
-			"Denzil"
+			"Denzil" +
+			CONST_FOOTER
 		},
 		{
 			"Frankie",
@@ -177,7 +196,8 @@ public class SketchingoutEmails {
 			CONST_SUBJECT,
 			"Here's your completed drawing. My 2 year old sister couldn't have done any better...\n\n" +
 			"Relax, don't do it,\n\n" +
-			"Frank"
+			"Frank" +
+			CONST_FOOTER
 		}
 	};
 	
