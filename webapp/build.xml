@@ -11,7 +11,8 @@
 	<property name="catalina_work" value="work"/>
 	<property name="uiparts" value="uiparts"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
-	<property name="war" value="sketchingout.war"/>
+	<property name="war_dir" value="../dist"/>
+	<property name="war" value="${war_dir}/sketchingout.war"/>
 	<property name="settings_file" value="${src}/com/totalchange/sketchingout/SketchingoutSettings.java"/>
 	
 	<property environment="env"/>
@@ -34,7 +35,7 @@
 		<delete dir="${dest}"/>
 		<delete dir="${catalina_work}"/>
 		<delete dir="${uiparts}"/>
-		<delete file="${war}"/>
+		<delete dir="${war_dir}"/>
 	</target>
 	
 	<target name="replace_const">
@@ -142,6 +143,7 @@
 	<target name="rebuild" depends="clean, set_settings, compile, xml2swf"/>
 	
 	<target name="package" depends="rebuild">
+		<mkdir dir="${war_dir}"/>
 		<war destfile="${war}" webxml="WEB-INF/web.xml">
 			<classes dir="${dest}"/>
 			<lib dir="${lib}"/>

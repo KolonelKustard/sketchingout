@@ -3,16 +3,24 @@
 <project name="consequences" default="compile" basedir=".">
 	<description>Consequences Development</description>
 	
+	<property name="flash" value="fla"/>
 	<property name="webapp" value="webapp"/>
 	<property name="sql" value="sql"/>
 	<property name="smtp" value="smtp"/>
 	
 	<target name="compile">
+		<ant dir="${flash}" target="compile"/>
 		<ant dir="${webapp}" target="compile"/>
 	</target>
 	
 	<target name="rebuild">
+		<ant dir="${flash}" target="rebuild"/>
 		<ant dir="${webapp}" target="rebuild"/>
+	</target>
+	
+	<target name="package">
+		<ant dir="${flash}" target="rebuild"/>
+		<ant dir="${webapp}" target="package"/>
 	</target>
 	
 	<target name="initdb">
