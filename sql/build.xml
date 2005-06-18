@@ -2,16 +2,13 @@
 
 <project name="consequences_db" default="recreate" basedir=".">
 	<description>Consequences DB Scripts</description>
-	
+
+	<property file="../build.properties"/>	
 	<property name="db_folder" value="mysql"/>
-	<property name="db_driver" value="com.mysql.jdbc.Driver"/>
-	<property name="db_url" value="jdbc:mysql://localhost/sketchingout"/>
-	<property name="db_username" value=""/>
-	<property name="db_password" value=""/>
 	
 	<target name="create" description="Create the database tables">
 		<sql
-			driver="${db_driver}"
+			driver="${db_classname}"
 			url="${db_url}"
 			userid="${db_username}"
 			password="${db_password}"
@@ -21,7 +18,7 @@
 	
 	<target name="drop" description="Drop the database tables">
 		<sql
-			driver="${db_driver}"
+			driver="${db_classname}"
 			url="${db_url}"
 			userid="${db_username}"
 			password="${db_password}"
@@ -32,7 +29,7 @@
 	
 	<target name="insert" description="Insert dummy data into the database tables">
 		<sql
-			driver="${db_driver}"
+			driver="${db_classname}"
 			url="${db_url}"
 			userid="${db_username}"
 			password="${db_password}"
