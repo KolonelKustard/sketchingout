@@ -6,7 +6,6 @@
 	 * absolute path.
 	 */
 	public static var BASE_URL: String = "http://localhost:8080/sketchingout/";
-	//public static var BASE_URL: String = "";
 	
 	public static var SKETCHINGOUT_URL: String = BASE_URL + "sketchingout";
 	
