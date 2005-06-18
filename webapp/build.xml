@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="consequences" default="compile" basedir=".">
+<project name="SketchingOut Java WebApp Bits" default="compile" basedir=".">
 	<description>Consequences Web Application</description>
+
+	<property file="../build.properties"/>
 
 	<property name="src" value="WEB-INF/src"/>
 	<property name="dest" value="WEB-INF/classes"/>
@@ -10,6 +12,8 @@
 	<property name="uiparts" value="uiparts"/>
 	<property name="args" value="300 200 100 0 uixml uiparts"/>
 	<property name="war" value="sketchingout.war"/>
+	<property name="settings_file" value="${src}/com/totalchange/sketchingout/SketchingoutSettings.java"/>
+	
 	<property environment="env"/>
 	
 	<path id="sketchingout.classpath">
@@ -31,6 +35,58 @@
 		<delete dir="${catalina_work}"/>
 		<delete dir="${uiparts}"/>
 		<delete file="${war}"/>
+	</target>
+	
+	<target name="replace_const">
+		<echo message="Setting ${const} to ${value}"/>
+		<replaceregexp
+			file="${settings_file}"
+			match="${const} = [^;]*;"
+			replace="${const} = ${value};"
+                	byline="true"
+                />
+	</target>
+	
+	<target name="set_settings">
+		<antcall target="replace_const">
+			<param name="const" value="DB_CLASSNAME"/>
+			<param name="value" value="&quot;${db_classname}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="DB_URL"/>
+			<param name="value" value="&quot;${db_url}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="DB_USERNAME"/>
+			<param name="value" value="&quot;${db_username}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="DB_PASSWORD"/>
+			<param name="value" value="&quot;${db_password}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="SMTP_SERVER_ADDR"/>
+			<param name="value" value="&quot;${smtp_server_addr}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="SMTP_SERVER_PORT"/>
+			<param name="value" value="&quot;${smtp_server_port}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="URL_ROOT"/>
+			<param name="value" value="&quot;${url_root}&quot;"/>
+		</antcall>
+		
+		<antcall target="replace_const">
+			<param name="const" value="FS_ROOT"/>
+			<param name="value" value="&quot;${filesystem_root}&quot;"/>
+		</antcall>
 	</target>
 	
 	<target name="compile" depends="makedirs" description="Compiles the web app">
@@ -83,7 +139,7 @@
 		</java>
 	</target>	
 	
-	<target name="rebuild" depends="clean, compile, xml2swf"/>
+	<target name="rebuild" depends="clean, set_settings, compile, xml2swf"/>
 	
 	<target name="package" depends="rebuild">
 		<war destfile="${war}" webxml="WEB-INF/web.xml">
