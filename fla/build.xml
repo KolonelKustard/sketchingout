@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Sketching Out Flash Bits" default="compile">
+	<description>This project builds the Sketching Out Flash applications using Flash MX 2004.</description>
+
+	<!-- load properties from properties files -->
+	<property file="../build.properties"/>
+	
+	<property name="src" value="./"/>
+	<property name="build" value="./build"/>
+	<property name="dest" value="../webapp"/>
+
+	<!-- init task must be called before any others -->
+	<target name="init">
+		<condition property="isWindows">
+			<os family="windows"/>
+		</condition>
+		<tstamp>
+			<format property="time.format" pattern="hh:mm"/>
+		</tstamp>
+		<javac srcdir="${basedir}/build/ant" destdir="${basedir}/build/ant" debug="on"/>
+		<taskdef name="flash" classname="Flash2004" classpath="${basedir}/build/ant"/>
+	</target>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${dest}">
+				<include name="*.swf"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="init">
+		<flash compiler="${flash_executable}" builddir="${build}" outputdir="${dest}" quitAuthoring="true">
+			<fileset dir="${src}">
+				<include name="*.fla"/>
+			</fileset>
+		</flash>
+	</target>
+
+</project>
