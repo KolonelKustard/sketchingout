@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Sketching Out Flash Bits" default="compile">
+<project name="SketchingOut Flash Bits" default="compile" basedir=".">
 	<description>This project builds the Sketching Out Flash applications using Flash MX 2004.</description>
 
 	<!-- load properties from properties files -->
 	<property file="../build.properties"/>
 	
-	<property name="src" value="./"/>
+	<property name="src" value="."/>
 	<property name="build" value="./build"/>
 	<property name="dest" value="../webapp"/>
+	<property name="settings_file" value="${src}/SketchingoutSettings.as"/>
 
 	<!-- init task must be called before any others -->
 	<target name="init">
@@ -30,6 +31,23 @@
 		</delete>
 	</target>
 	
+	<target name="replace_const">
+		<echo message="Setting ${const} to ${value}"/>
+		<replaceregexp
+			file="${settings_file}"
+			match="${const}: (String|Number) = [^;]*;"
+			replace="${const}: \1 = ${value};"
+                	byline="true"
+                />
+	</target>
+	
+	<target name="set_settings">
+		<antcall target="replace_const">
+			<param name="const" value="BASE_URL"/>
+			<param name="value" value="&quot;${url_root}&quot;"/>
+		</antcall>
+	</target>
+	
 	<target name="compile" depends="init">
 		<flash compiler="${flash_executable}" builddir="${build}" outputdir="${dest}" quitAuthoring="true">
 			<fileset dir="${src}">
@@ -37,5 +55,7 @@
 			</fileset>
 		</flash>
 	</target>
+	
+	<target name="rebuild" depends="clean, set_settings, compile"/>
 
 </project>
