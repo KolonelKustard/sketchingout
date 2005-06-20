@@ -15,15 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 
 import com.totalchange.sketchingout.imageparsers.BufferedImageParser;
 import com.totalchange.sketchingout.imageparsers.PdfImageParser;
@@ -145,34 +137,16 @@ public class CompleteDrawingTransfer {
 				CompleteDrawingTransferDataSource ds = new CompleteDrawingTransferDataSource(res);
 				
 				// Now transfer the drawing using email for the time being
-				Message msg = new MimeMessage(SMTPSessionFactory.getSMTPSession());
-				msg.setFrom(new InternetAddress(SketchingoutSettings.EMAIL_FROM_EMAIL, 
-						SketchingoutSettings.EMAIL_FROM_NAME));
-				
-				msg.addRecipient(Message.RecipientType.TO,
-						new InternetAddress(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL));
+				SketchingoutEmail msg = new SketchingoutEmail(SMTPSessionFactory.getSMTPSession());
+				msg.setFromName(SketchingoutSettings.EMAIL_FROM_NAME);
+				msg.setFromEmail(SketchingoutSettings.EMAIL_FROM_EMAIL);
+				msg.setToName(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
+				msg.setToEmail(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
 				
 				msg.setSubject("Complete Drawing no. " + res.getInt("friendly_id"));
+				msg.addAttachment(ds);
 				
-				// Create the MIME multi part
-				MimeMultipart multiPart = new MimeMultipart();
-				
-				// Create and add the body part
-				BodyPart body = new MimeBodyPart();
-				body.setText("Complete drawing no. " + res.getInt("friendly_id"));
-				multiPart.addBodyPart(body);
-				
-				// Create and add the data
-				BodyPart img = new MimeBodyPart();
-				img.setDataHandler(new DataHandler(ds));
-				img.setFileName(ds.getName());
-				multiPart.addBodyPart(img);
-				
-				// Put the parts to the message
-				msg.setContent(multiPart);
-				
-				// Send the message
-				Transport.send(msg);
+				msg.send();
 			}
 			finally {
 				res.close();

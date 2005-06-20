@@ -175,7 +175,23 @@ public class CompleteDrawingProcessor {
 			}
 		}
 		catch (Exception e) {
+			// Print the error
 			e.printStackTrace();
+			
+			// Try and send the error to someone who cares
+			try {
+				SketchingoutEmail errMail = new SketchingoutEmail(SMTPSessionFactory.getSMTPSession());
+				errMail.setFromName("SketchingOut Errors");
+				errMail.setFromEmail(SketchingoutSettings.EMAIL_FROM_EMAIL);
+				errMail.setToName("SketchingOut Errors");
+				errMail.setToEmail(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
+				errMail.setSubject("Error: " + e.getMessage());
+				errMail.setBody("Error occurred:\n\n" + e.getMessage());
+				errMail.send();
+			}
+			catch (Exception me) {
+				me.printStackTrace();
+			}
 		}
 	}
 	
