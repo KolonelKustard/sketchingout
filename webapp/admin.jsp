@@ -68,10 +68,10 @@
 %>
 <html>
 <head>
-<title>Consequences Admin Page</title>
+<title>SketchingOut Admin Page</title>
 </head>
 <body>
-<h1>Consequences Admin</h1>
+<h1>SketchingOut Admin</h1>
 <p><a href="admin.jsp">Refresh</a></p>
 <h2>You</h2>
 <p><a href="?uid=">Click here to reset yourself to someone completely new</a></p>
@@ -330,6 +330,10 @@
   <tr>
   	<td><b>Gallery Directory:</b></td>
   	<td><%= new java.io.File(SketchingoutSettings.FS_DRAWING_STORE).getAbsolutePath() %></td>
+  </tr>
+  <tr>
+  	<td><b>Containers WebApp Root:</b></td>
+  	<td><%= new java.io.File(getServletContext().getRealPath("./")).getAbsolutePath() %></td>
   </tr>
 </table>
 </body>
