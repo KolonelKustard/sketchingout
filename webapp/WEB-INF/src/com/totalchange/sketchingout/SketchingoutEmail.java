@@ -33,6 +33,7 @@ public class SketchingoutEmail {
 	public static final int EMAILS_ARRAY_SUBJECT = 2;
 	public static final int EMAILS_ARRAY_BODY = 3;
 	
+	private Session session;
 	private MimeMessage msg;
 	private ArrayList attachments = new ArrayList();
 	private String fromName, fromEmail, senderName, senderEmail, toName, toEmail, subject, body;
@@ -137,6 +138,8 @@ public class SketchingoutEmail {
 	 * @param session
 	 */
 	public SketchingoutEmail(Session session) {
+		this.session = session;
+		
 		// Create message
 		msg = new MimeMessage(session);
 	}
@@ -193,9 +196,14 @@ public class SketchingoutEmail {
 			mp.addBodyPart(bp);
 		}
 		
-		// Put the parts into the message and send it
+		// Put the parts into the message
 		msg.setContent(mp);
-		Transport.send(msg);
+		
+		// Connect and send
+		Transport transport = session.getTransport("smtp");
+	    transport.connect(SketchingoutSettings.SMTP_SERVER_ADDR, "", "");
+	    transport.sendMessage(msg, msg.getAllRecipients());
+	    transport.close();
 	}
 	
 	public void addAttachment(DataSource attachment) {
