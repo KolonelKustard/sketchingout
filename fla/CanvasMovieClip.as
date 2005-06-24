@@ -7,6 +7,8 @@
 	private var linkedDragClip: DragMovieClip = null;
 	private var bottomOfDrawing: Number;
 	
+	public var color: Number = 0x000000;
+	public var thickness: Number = 1;
 	public var modified: Boolean = false;
 	public var penMovieClip: MovieClip = null;
 	
@@ -46,10 +48,12 @@
 		if (inBounds(currX, currY)) {
 			// Make a new line in the drawing
 			currLine = theDrawing.addLine();
+			currLine.color = color;
+			currLine.thickness = thickness;
 			currLine.addPoint(currX, currY);
 		
 			// Start line actually drawn on the canvas
-			lineStyle(1, 0x000000, 100);
+			lineStyle(thickness, color, 100);
 			moveTo(currX, currY);
 			
 			// Set the bottom of the drawing to here
@@ -133,8 +137,8 @@
 			for (var num: Number = 0; num < lines.length; num++) {
 				var line: Line = lines[num];
 				
-				// No current way of defining line style.  Default to simple!
-				lineStyle(1, 0x000000, 100);
+				// Define the line style
+				lineStyle(line.thickness, line.color, 100);
 				
 				// Get the points of this line
 				var points: Array = line.getPoints();
