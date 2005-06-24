@@ -45,6 +45,13 @@
 		
 		// Set the drag clip into the canvas clip
 		nextDrawing.dragClip = dragClip;
+		
+		// Set the default drawing style
+		nextDrawing.color = SketchingoutSettings.DEFAULT_LINE_COLOR;
+		nextDrawing.thickness = SketchingoutSettings.DEFAULT_LINE_THICKNESS;
+		
+		userDetails.sigCanvas.color = SketchingoutSettings.DEFAULT_LINE_COLOR;
+		userDetails.sigCanvas.thickness = SketchingoutSettings.DEFAULT_LINE_THICKNESS;
 	}
 	
 	/**
