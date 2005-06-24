@@ -6,6 +6,7 @@
  */
 package com.totalchange.sketchingout;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,6 +50,8 @@ public class ImageParser extends DefaultHandler{
 	
 	private int currType = -1;
 	private boolean lineStart;
+	private Color lineColor = new Color(0);
+	private int lineThickness = 1;
 	private int offsetX, offsetY, nextOffsetX, nextOffsetY = 0;
 	private boolean sigOdd = true;
 	
@@ -122,7 +125,7 @@ public class ImageParser extends DefaultHandler{
 				try {
 					// Mid-line, draw to the point (only if reached skip points value)
 					if (currPoint >= loss) {
-						parser.lineTo(scaleIt(x), scaleIt(y));
+						parser.lineTo(scaleIt(x), scaleIt(y), lineThickness, lineColor);
 						currPoint = 0;
 					}
 					else currPoint++;
@@ -133,8 +136,15 @@ public class ImageParser extends DefaultHandler{
 			}
 		}
 		else if (qName.equals(XMLConsts.EL_DRAWING_LINE)) {
-			// If get a new line, just mark that at the start of a line
+			// If get a new line, mark that at the start of a line
 			lineStart = true;
+			
+			// Get the lines properties
+			if (attributes.getValue(XMLConsts.AT_DRAWING_LINE_COLOR) != null)
+				lineColor = new Color(Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_LINE_COLOR)));
+			
+			if (attributes.getValue(XMLConsts.AT_DRAWING_LINE_THICKNESS) != null)
+				lineThickness = Integer.parseInt(attributes.getValue(XMLConsts.AT_DRAWING_LINE_THICKNESS));
 		}
 		else if (qName.equals(XMLConsts.EL_DRAWING_CANVAS)) {
 			// Will need to figure out the positions based on whether this is a drawing
