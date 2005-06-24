@@ -144,6 +144,8 @@ public class CompleteDrawingTransfer {
 				msg.setToEmail(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
 				
 				msg.setSubject("Complete Drawing no. " + res.getInt("friendly_id"));
+				msg.setBody("Complete Drawing no. " + res.getInt("friendly_id"));
+				
 				msg.addAttachment(ds);
 				
 				msg.send();
