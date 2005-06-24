@@ -84,10 +84,6 @@ public class SwfImageParser implements SketchingoutImageParser {
 			Rect canvasRect = new Rect(0, 0, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS);
 			canvas = swf.tagDefineShape(++canvasID, canvasRect);
 			
-			// Define line style
-			canvas.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
-			canvas.setLineStyle(1);
-			
 			// Define matrix to say where this canvas will go
 			canvasPos = new Matrix(x * SWFConstants.TWIPS, y * SWFConstants.TWIPS);
 		}
@@ -115,27 +111,25 @@ public class SwfImageParser implements SketchingoutImageParser {
 	 */
 	public void moveTo(double x, double y)
 		throws SketchingoutImageParserException {
-		
-		try {
-			// Set current position
-			lastPosX = (int)(x * SWFConstants.TWIPS);
-			lastPosY = (int)(y * SWFConstants.TWIPS);
-			
-			// Move to absolute position in this canvas
-			canvas.move(lastPosX, lastPosY);
-		}
-		catch (IOException ie) {
-			throw new SketchingoutImageParserException(ie);
-		}
+
+		lastPosX = (int)(x * SWFConstants.TWIPS);
+		lastPosY = (int)(y * SWFConstants.TWIPS);
 	}
 
 	/**
 	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
-	public void lineTo(double x, double y)
+	public void lineTo(double x, double y, int penWidth, java.awt.Color color)
 		throws SketchingoutImageParserException {
 			
 		try {
+			// Define line style
+			canvas.defineLineStyle(penWidth * SWFConstants.TWIPS, new Color(color.getRed(), color.getGreen(), color.getBlue()));
+			canvas.setLineStyle(1);
+			
+			// Move to absolute position in this canvas
+			canvas.move(lastPosX, lastPosY);
+			
 			// Get new absolute position in twips
 			int newPosX = (int)(x * SWFConstants.TWIPS);
 			int newPosY = (int)(y * SWFConstants.TWIPS);

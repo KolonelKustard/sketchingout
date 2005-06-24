@@ -3,6 +3,7 @@
  */
 package com.totalchange.sketchingout.imageparsers;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -31,8 +32,6 @@ public class PdfImageParser implements SketchingoutImageParser {
 	
 	private static final float URL_SPACE_FROM_BOTTOM = 40;
 	private static final float URL_FONT_SIZE = 14;
-	
-	private static final float LINE_WIDTH = 1;
 	
 	private Document document;
 	private PdfWriter writer;
@@ -108,9 +107,6 @@ public class PdfImageParser implements SketchingoutImageParser {
 			PdfAction action = PdfAction.gotoLocalPage(1, new
 					PdfDestination(PdfDestination.FIT), writer);
 			writer.setOpenAction(action);
-			
-			// Define the line width for the entire drawing
-			cb.setLineWidth(LINE_WIDTH);
 		}
 		catch (DocumentException de) {
 			throw new SketchingoutImageParserException(de);
@@ -169,8 +165,12 @@ public class PdfImageParser implements SketchingoutImageParser {
 	/**
 	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
-	public void lineTo(double x, double y)
+	public void lineTo(double x, double y, int penWidth, Color color)
 			throws SketchingoutImageParserException {
+		
+		// Set line style
+		cb.setLineWidth(penWidth);
+		cb.setColorStroke(color);
 		
 		// See moveTo for explanation.
 		cb.lineTo(

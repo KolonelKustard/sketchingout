@@ -3,6 +3,7 @@
  */
 package com.totalchange.sketchingout.imageparsers;
 
+import java.awt.Color;
 import java.io.OutputStream;
 
 /**
@@ -18,5 +19,5 @@ public interface SketchingoutImageParser {
 	public void endCanvas() throws SketchingoutImageParserException;
 	
 	public void moveTo(double x, double y) throws SketchingoutImageParserException;
-	public void lineTo(double x, double y) throws SketchingoutImageParserException;
+	public void lineTo(double x, double y, int penWidth, Color color) throws SketchingoutImageParserException;
 }

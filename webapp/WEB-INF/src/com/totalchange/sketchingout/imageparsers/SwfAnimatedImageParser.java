@@ -96,37 +96,12 @@ public class SwfAnimatedImageParser implements SketchingoutImageParser {
 		// Define the bounds of this canvas
 		currRect = new Rect(0, 0, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS);
 		currMatrix= new Matrix(x * SWFConstants.TWIPS, y * SWFConstants.TWIPS);
-		/*
-		try {
-			
-			
-			//canvas = swf.tagDefineShape(++canvasID, canvasRect);
-			
-			// Define line style
-			//canvas.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
-			//canvas.setLineStyle(1);
-			
-			// Define matrix to say where this canvas will go
-			
-		}
-		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
-		}
-		*/
 	}
 
 	/**
 	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endCanvas()
 	 */
 	public void endCanvas() throws SketchingoutImageParserException {
-		/*try {
-			// Draw the canvas to the movie
-			canvas.done();
-			swf.tagPlaceObject2(false, -1, 1, canvasID, canvasPos, null, -1, null, 0);
-		}
-		catch (IOException ie) {
-			throw new ConsequencesImageParserException(ie);
-		}*/
 	}
 
 	/**
@@ -145,15 +120,9 @@ public class SwfAnimatedImageParser implements SketchingoutImageParser {
 			// Make a new line
 			currLine = swf.tagDefineShape(++lineID, currRect);
 			
-			currLine.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
-			currLine.setLineStyle(1);
-			
 			// Set current position
 			lastPosX = (int)(x * SWFConstants.TWIPS);
 			lastPosY = (int)(y * SWFConstants.TWIPS);
-			
-			// Move to absolute position in this canvas
-			currLine.move(lastPosX, lastPosY);
 		}
 		catch (IOException ie) {
 			throw new SketchingoutImageParserException(ie);
@@ -163,12 +132,19 @@ public class SwfAnimatedImageParser implements SketchingoutImageParser {
 	/**
 	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
-	public void lineTo(double x, double y)
+	public void lineTo(double x, double y, int penWidth, java.awt.Color color)
 		throws SketchingoutImageParserException {
 			
 		pointNum++;
 		
 		try {
+			// Define line style
+			currLine.defineLineStyle(penWidth * SWFConstants.TWIPS, new Color(color.getRed(), color.getGreen(), color.getBlue()));
+			currLine.setLineStyle(1);
+			
+			// Move to absolute position in this canvas
+			currLine.move(lastPosX, lastPosY);
+			
 			// Get new absolute position in twips
 			int newPosX = (int)(x * SWFConstants.TWIPS);
 			int newPosY = (int)(y * SWFConstants.TWIPS);
@@ -191,12 +167,6 @@ public class SwfAnimatedImageParser implements SketchingoutImageParser {
 				
 				// Make a new line
 				currLine = swf.tagDefineShape(++lineID, currRect);
-				
-				currLine.defineLineStyle(1 * SWFConstants.TWIPS, new Color(0, 0, 0));
-				currLine.setLineStyle(1);
-				
-				// Move to absolute position in this canvas
-				currLine.move(lastPosX, lastPosY);
 				
 				pointNum = 0;
 			}

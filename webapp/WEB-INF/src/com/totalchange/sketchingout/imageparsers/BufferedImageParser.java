@@ -106,11 +106,13 @@ public class BufferedImageParser implements SketchingoutImageParser {
 	/**
 	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
 	 */
-	public void lineTo(double x, double y)
+	public void lineTo(double x, double y, int penWidth, Color color)
 		throws SketchingoutImageParserException {
 			
 		// Draw a line from current pos to new pos
 		line.setLine(posX + offsetX, posY + offsetY, x + offsetX, y + offsetY);
+		
+		graphics2d.setColor(color);
 		graphics2d.draw(line);
 		
 		// Set current pos to where we've drawn to
