@@ -3,6 +3,9 @@
 	private var lastPointX: Number;
 	private var lastPointY: Number;
 	
+	public var thickness: Number = 1;
+	public var color: Number = 0x000000;
+	
 	public function Line() {
 		// Make points array
 		points = new Array();
