@@ -17,4 +17,8 @@
 	public static var COUNTDOWN_TIMER_REMINDER: Number = 1000 * 60;
 	
 	public static var LAST_STAGE_NUM: Number = 4;
+	
+	// The following constants define the default drawing style
+	public static var DEFAULT_LINE_COLOR: Number = 0x0000CC;
+	public static var DEFAULT_LINE_THICKNESS: Number = 1;
 }
