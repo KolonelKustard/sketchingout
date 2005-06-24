@@ -79,6 +79,8 @@ public class XMLConsts {
 	public static final String AT_DRAWING_CANVAS_OFFSET_X = "offsetx";
 	public static final String AT_DRAWING_CANVAS_OFFSET_Y = "offsety";
 	public static final String EL_DRAWING_LINE = "line";
+	public static final String AT_DRAWING_LINE_COLOR = "color";
+	public static final String AT_DRAWING_LINE_THICKNESS = "thickness";
 	public static final String EL_DRAWING_POINT = "point";
 	public static final String AT_DRAWING_POINT_X = "x";
 	public static final String AT_DRAWING_POINT_Y = "y";
