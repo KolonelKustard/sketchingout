@@ -125,6 +125,10 @@
 			// Get line
 			var line: Line = lines[lineNum];
 			
+			// Set line properties
+			lineNode.attributes.thickness = line.thickness;
+			lineNode.attributes.color = line.color;
+			
 			// Go through the points of this line
 			var points: Array = line.getPoints();
 			for (var pointNum: Number = 0; pointNum < points.length; pointNum++) {
@@ -175,6 +179,10 @@
 			if (lineNode.nodeName == "line") {
 				// Make a new line
 				var line: Line = this.addLine();
+				
+				// Line properties
+				line.color = lineNode.attributes.color;
+				line.thickness = lineNode.attributes.thickness;
 				
 				// Now run through all the points on the line, adding them in
 				for (var numPoint: Number = 0; numPoint < lineNode.childNodes.length; numPoint++) {
