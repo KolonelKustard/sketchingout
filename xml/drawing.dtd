@@ -7,5 +7,8 @@
 <!ATTLIST canvas offsetx CDATA #REQUIRED>
 <!ATTLIST canvas offsety CDATA #REQUIRED>
 
+<!ATTLIST line color CDATA #REQUIRED>
+<!ATTLIST line thickness CDATA #REQUIRED>
+
 <!ATTLIST point x CDATA #REQUIRED>
 <!ATTLIST point y CDATA #REQUIRED>
