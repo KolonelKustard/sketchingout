@@ -3,6 +3,8 @@
  */
 package com.totalchange.sketchingout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -160,6 +162,26 @@ public class SketchingoutEmail {
 		setFromEmail(emails[emailNum][EMAILS_ARRAY_FROM_EMAIL]);
 		setSubject(emails[emailNum][EMAILS_ARRAY_SUBJECT]);
 		setBody(emails[emailNum][EMAILS_ARRAY_BODY]);
+	}
+	
+	public SketchingoutEmail(Session session, Throwable exception, String where) {
+		this(session);
+		
+		setFromName(SketchingoutSettings.EMAIL_FROM_NAME);
+		setFromEmail(SketchingoutSettings.EMAIL_FROM_EMAIL);
+		setToName("SketchingOut Errors");
+		setToEmail(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
+		
+		setSubject("ERROR OCCURRED AT: " + where);
+		
+		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		exception.printStackTrace(new PrintStream(bao));
+		
+		setBody(
+			"Error: " + exception.getMessage() + "\n\n" +
+			"Stack Trace:\n\n" +
+			new String(bao.toByteArray())
+		);
 	}
 	
 	/**

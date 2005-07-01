@@ -39,13 +39,7 @@ public class DefaultRequest implements RequestHandler {
 	 * @see com.totalchange.sketchingout.RequestHandler#getChild(java.lang.String)
 	 */
 	public RequestHandler getChild(String name) throws HandlerException {
-		if (name.equals(XMLConsts.EL_USER_DETAILS)) {
-			return new UserRequest();
-		}
-		else if (name.equals(XMLConsts.EL_USER_SUBMIT)) {
-			return new UserSubmitRequest();
-		}
-		else if (name.equals(XMLConsts.EL_NEXT_DRAWING)) {
+		if (name.equals(XMLConsts.EL_NEXT_DRAWING)) {
 			return new NextDrawingRequest();
 		}
 		else if (name.equals(XMLConsts.EL_SUBMIT_DRAWING)) {

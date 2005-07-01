@@ -180,13 +180,10 @@ public class CompleteDrawingProcessor {
 			
 			// Try and send the error to someone who cares
 			try {
-				SketchingoutEmail errMail = new SketchingoutEmail(SMTPSessionFactory.getSMTPSession());
-				errMail.setFromName("SketchingOut Errors");
-				errMail.setFromEmail(SketchingoutSettings.EMAIL_FROM_EMAIL);
-				errMail.setToName("SketchingOut Errors");
-				errMail.setToEmail(SketchingoutSettings.COMPLETE_DRAWING_TO_EMAIL);
-				errMail.setSubject("Error: " + e.getMessage());
-				errMail.setBody("Error occurred:\n\n" + e.getMessage());
+				SketchingoutEmail errMail = new SketchingoutEmail(
+						SMTPSessionFactory.getSMTPSession(), e, 
+						"Complete Drawing Processor");
+				
 				errMail.send();
 			}
 			catch (Exception me) {

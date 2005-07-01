@@ -33,68 +33,6 @@ public class SQLWrapper {
 		return conn;
 	}
 	
-	public static final PreparedStatement getUser(Connection conn, String userID) throws
-		SQLException {
-			
-		PreparedStatement pstmt = conn.prepareStatement(
-			"SELECT " +
-			"  id, name, email, signature_width, signature_height, signature " +
-			"FROM " +
-			"  users " +
-			"WHERE " +
-			"  id = ?"
-		);
-		
-		pstmt.setString(1, userID);
-		
-		return pstmt;
-	}
-	
-	public static final int INS_USER_ID = 1;
-	public static final int INS_USER_NAME = 2;
-	public static final int INS_USER_EMAIL = 3;
-	public static final int INS_USER_SIGNATURE_WIDTH = 4;
-	public static final int INS_USER_SIGNATURE_HEIGHT = 5;
-	public static final int INS_USER_SIGNATURE = 6;
-	public static final PreparedStatement insertUser(Connection conn) throws
-		SQLException {
-			
-		PreparedStatement pstmt = conn.prepareStatement(
-			"INSERT INTO users(" +
-			"  id, name, email, signature_width, signature_height, signature" +
-			") VALUES(" +
-			"  ?, ?, ?, ?, ?, ?" +
-			")"
-		);
-		
-		return pstmt;
-	}
-	
-	public static final int UPD_USER_ID = 6;
-	public static final int UPD_USER_NAME = 1;
-	public static final int UPD_USER_EMAIL = 2;
-	public static final int UPD_USER_SIGNATURE_WIDTH = 3;
-	public static final int UPD_USER_SIGNATURE_HEIGHT = 4;
-	public static final int UPD_USER_SIGNATURE = 5;
-	public static final PreparedStatement updateUser(Connection conn) throws
-		SQLException {
-			
-		PreparedStatement pstmt = conn.prepareStatement(
-			"UPDATE " +
-			"  users " +
-			"SET " +
-			"  name = ?, " +
-			"  email = ?, " +
-			"  signature_width = ?, " +
-			"  signature_height = ?, " +
-			"  signature = ? " +
-			"WHERE " +
-			"  id = ?"
-		);
-		
-		return pstmt;
-	}
-	
 	public static final PreparedStatement getNextDrawingPublic(Connection conn, String userID)
 		throws SQLException {
 		
@@ -506,38 +444,6 @@ public class SQLWrapper {
 					inChar = in.read();
 				}
 			}
-		}
-	}
-	
-	/**
-	 * Utility procedure to copy a clob from one result set to a clob in another
-	 * prepared statement.
-	 * 
-	 * @param in
-	 * @param out
-	 * @param param
-	 * @throws SQLException
-	 * @throws IOException
-	 */
-	public static final void copyClob(Clob in, PreparedStatement out, int param)
-		throws SQLException {
-			
-		if (in == null) {
-			// Set to null
-			out.setString(param, null);
-		}
-		else {
-			// Try and get a reader
-			Reader reader = in.getCharacterStream();
-			
-			if ((reader == null) || (in.length() <= 0)) {
-				// No reader or no chars, set to null
-				out.setString(param, null);
-			}
-			else {
-				// Send the reader to the prepared statement as a char stream
-				out.setCharacterStream(param, reader, (int)in.length());
-			} 
 		}
 	}
 }

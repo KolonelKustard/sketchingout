@@ -25,18 +25,6 @@ public class XMLConsts {
 	public static final String EL_ERROR_STACK_TRACE = "stacktrace";
 	public static final String EL_ERROR_TRACE = "trace";
 	
-	public static final String EL_USER_DETAILS = "user_details";
-	public static final String EL_USER_SUBMIT = "user_submit";
-	public static final String AT_USER_ID = "id";
-	public static final String EL_USER_ID = "id";
-	public static final String AT_USER_NAME = "name";
-	public static final String EL_USER_NAME = "name";
-	public static final String AT_USER_EMAIL = "email";
-	public static final String EL_USER_EMAIL = "email";
-	public static final String AT_USER_SIGNATURE_WIDTH = "signature_width";
-	public static final String AT_USER_SIGNATURE_HEIGHT = "signature_height";
-	public static final String EL_USER_SIGNATURE = "signature";
-	
 	public static final String EL_NEXT_DRAWING = "next_drawing";
 	public static final String AT_NEXT_DRAWING_ID = "drawing_id";
 	public static final String AT_NEXT_DRAWING_USER_ID = "user_id";
@@ -47,13 +35,18 @@ public class XMLConsts {
 	
 	public static final String EL_SUBMIT_DRAWING = "submit_drawing";
 	public static final String AT_SUBMIT_DRAWING_USER_ID = "user_id";
+	public static final String AT_SUBMIT_DRAWING_USER_NAME = "user_name";
+	public static final String AT_SUBMIT_DRAWING_USER_EMAIL = "user_email";
 	public static final String AT_SUBMIT_DRAWING_DRAWING_ID = "drawing_id";
 	public static final String AT_SUBMIT_DRAWING_STAGE = "stage";
 	public static final String AT_SUBMIT_DRAWING_NEXT_USER_EMAIL = "next_user_email";
 	public static final String AT_SUBMIT_DRAWING_WIDTH = "width";
 	public static final String AT_SUBMIT_DRAWING_HEIGHT = "height";
 	public static final String AT_SUBMIT_DRAWING_OFFSET_Y = "offsety";
+	public static final String AT_SUBMIT_DRAWING_SIGNATURE_WIDTH = "signature_width";
+	public static final String AT_SUBMIT_DRAWING_SIGNATURE_HEIGHT = "signature_height";
 	public static final String EL_SUBMIT_DRAWING_DRAWING = "drawing";
+	public static final String EL_SUBMIT_DRAWING_SIGNATURE = "signature";
 	
 	public static final String EL_GALLERY_DRAWINGS = "gallery_drawings";
 	public static final String AT_GALLERY_DRAWINGS_TYPE = "type";
