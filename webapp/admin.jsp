@@ -74,69 +74,13 @@
 <h1>SketchingOut Admin</h1>
 <p><a href="admin.jsp">Refresh</a></p>
 <h2>You</h2>
-<p><a href="?uid=">Click here to reset yourself to someone completely new</a></p>
+<form action="" method="GET">
+	<label for="uid">User ID:</label>
+	<input name="uid" type="text" value="<%= userID %>" size="50"></input>
+	<input name="submit" type="submit" value="Change">
+</form>
 <%
-	// Look up the current user
-	pstmt = SQLWrapper.getUser(conn, userID);
-	res = pstmt.executeQuery();
-	
-	// If got a result, get user details
-	String name = "Blank User";
-	String email = "(not yet submitted)";
-	if (res.first()) {
-		name = res.getString("name");
-		email = res.getString("email");
-	}
-	
-	// Close query
-	res.close();
-	pstmt.close();
-%>
-<table border="1">
-  <tr>
-    <td><b>User ID:</b></td>
-    <td><%= userID %></td>
-  </tr>
-  <tr>
-    <td><b>Name:</b></td>
-    <td><%= name %></td>
-  </tr>
-  <tr>
-    <td><b>Email:</b></td>
-    <td><%= email %></td>
-  </tr>
-</table>
-<p>&nbsp;</p>
-<h2>Users</h2>
-<%
-	// Open a query to get all users
-	pstmt = conn.prepareStatement("SELECT id, name, email FROM users");
-	res = pstmt.executeQuery();
-%>
-<table border="1">
-  <tr>
-    <td><b>ID (click to assume identity)</b></td>
-    <td><b>Name</b></td>
-    <td><b>Email</b></td>
-  </tr>
-<%
-	while (res.next()) {
-%>
-  <tr>
-    <td><a href="?uid=<%= res.getString("id") %>"><%= res.getString("id") %></a></td>
-    <td><%= res.getString("name") %></td>
-    <td><%= res.getString("email") %></td>
-  </tr>
-<%
-	}
-%>
-</table>
-<%
-	// Close query
-	res.close();
-	pstmt.close();
-	
-	// Now setup a loop to show drawings in various different states
+	// Setup a loop to show drawings in various different states
 	// Setup the standard SQL template
 	String sqlFields = "SELECT friendly_id, id, distinguished_id, completed, width, " +
 		"height, locked, stage, stage_1_author_name, stage_1_author_email, " +
@@ -148,6 +92,7 @@
 	// to show all the drawings...
 	for (int num = 0; num < 4; num++) {
 		String tableTitle = "";
+		pstmt = null;
 		
 		// Decide on the values for this stage
 		if (num == 0) {
