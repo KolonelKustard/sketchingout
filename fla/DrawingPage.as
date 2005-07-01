@@ -52,6 +52,9 @@
 		
 		userDetails.sigCanvas.color = SketchingoutSettings.DEFAULT_LINE_COLOR;
 		userDetails.sigCanvas.thickness = SketchingoutSettings.DEFAULT_LINE_THICKNESS;
+		
+		// Load the user from the Flash shared object
+		userDetails.setUserDetails(new User(userDetails.userID));
 	}
 	
 	/**
@@ -69,12 +72,8 @@
 	}
 	
 	public function getInitRequest(): XML {
-		// Construct a request for the initial user details and for the next
-		// drawing to do.
+		// Construct a request for the next drawing
 		var request: Request = new Request();
-		var userRequest: UserDetailsRequest = new UserDetailsRequest();
-		userRequest.userID = userDetails.userID;
-		request.addRequest(userRequest);
 		
 		// See if public or private
 		if (nextDrawingID == null) {
@@ -133,6 +132,8 @@
 		var subDraw: SubmitDrawingRequest = new SubmitDrawingRequest();
 		
 		subDraw.userID = userDetails.userID;
+		subDraw.userName = userDetails.userName;
+		subDraw.userEmail = userDetails.userEmail;
 		subDraw.drawingID = nextDrawingResponse.drawingID;
 		subDraw.stage = nextDrawingResponse.stage + 1;
 		
@@ -148,6 +149,9 @@
 		subDraw.drawing = nextDrawing.drawing;
 		subDraw.drawing.offsetY = dragClip.getOffsetY();
 		subDraw.drawing.shrink();
+		
+		// Just set in the signature
+		subDraw.signature = userDetails.sigCanvas.drawing;
 		
 		// Remember that drawing has been submitted
 		sentDrawing = true;
@@ -169,7 +173,8 @@
 		
 		// Check to see if any user details have changed.
 		if (userDetails.modified()) {
-			request.addRequest(userDetails.getSubmitUserRequest());
+			// Save the user details
+			userDetails.saveUserDetails();
 		}
 		
 		// Always want the submit drawing request
@@ -231,14 +236,7 @@
 		var responses: Array = response.responses;
 		for (var num = 0; num < responses.length; num++) {
 			// Do something based on the instance type
-			if (responses[num] instanceof UserDetailsResponse) {
-				// This is a user details response, get a user object from it
-				var user: User = UserDetailsResponse(responses[num]).user;
-				
-				// Set the user details into the UserDetails instance
-				userDetails.setUserDetails(user);
-			}
-			else if (responses[num] instanceof NextDrawingResponse) {
+			if (responses[num] instanceof NextDrawingResponse) {
 				var nextDrawing: NextDrawingResponse = NextDrawingResponse(responses[num]);
 				setNextDrawing(nextDrawing);
 			}

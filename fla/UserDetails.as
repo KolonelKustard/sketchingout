@@ -75,15 +75,19 @@
 		return true;
 	}
 	
-	public function getSubmitUserRequest(): SubmitUserRequest {
-		// Set in our users values
+	public function saveUserDetails(): Void {
 		user.name = nameEdit.text;
 		user.email = emailEdit.text;
 		user.signature = sigCanvas.drawing;
 		
-		var subUser: SubmitUserRequest = new SubmitUserRequest();
-		subUser.user = this.user;
-		
-		return subUser;
+		user.save();
+	}
+	
+	public function get userName(): String {
+		return user.name;
+	}
+	
+	public function get userEmail(): String {
+		return user.email;
 	}
 }

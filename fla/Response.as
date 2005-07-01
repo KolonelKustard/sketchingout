@@ -41,9 +41,6 @@
 			var responseOp: ResponseOperator = null;
 			
 			switch (rootNode.childNodes[num].nodeName) {
-				case "user_details":
-					responseOp = new UserDetailsResponse();
-					break;
 				case "next_drawing":
 					responseOp = new NextDrawingResponse();
 					break;
