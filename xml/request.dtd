@@ -1,35 +1,29 @@
-<!ELEMENT request (user_details?, user_submit?, next_drawing?, submit_drawing?, gallery_drawings?)>
-  <!ELEMENT user_details EMPTY>
-  <!ELEMENT user_submit (signature?)>
-    <!ELEMENT signature (#PCDATA)>
-    
+<!ELEMENT request (next_drawing?, submit_drawing?, gallery_drawings?)>
+
   <!ELEMENT next_drawing EMPTY>
   
-  <!ELEMENT submit_drawing (drawing)>
+  <!ELEMENT submit_drawing (drawing,signature)>
     <!ELEMENT drawing (#PCDATA)>
+    <!ELEMENT signature (#PCDATA)>
   
   <!ELEMENT gallery_drawings (#PCDATA)>
   
   <!ELEMENT gallery_drawing (#PCDATA)>
 
-<!ATTLIST user_details id CDATA #REQUIRED>
-
-<!ATTLIST user_submit id CDATA #REQUIRED>
-<!ATTLIST user_submit name CDATA #IMPLIED>
-<!ATTLIST user_submit email CDATA #IMPLIED>
-<!ATTLIST user_submit signature_width CDATA #IMPLIED>
-<!ATTLIST user_submit signature_height CDATA #IMPLIED>
-
 <!ATTLIST next_drawing user_id CDATA #REQUIRED>
 <!ATTLIST next_drawing drawing_id CDATA #IMPLIED>
 
 <!ATTLIST submit_drawing user_id CDATA #REQUIRED>
+<!ATTLIST submit_drawing user_name CDATA #REQUIRED>
+<!ATTLIST submit_drawing user_email CDATA #REQUIRED>
 <!ATTLIST submit_drawing drawing_id CDATA #REQUIRED>
 <!ATTLIST submit_drawing stage CDATA #REQUIRED>
 <!ATTLIST submit_drawing next_user_email CDATA #IMPLIED>
 <!ATTLIST submit_drawing width CDATA #REQUIRED>
 <!ATTLIST submit_drawing height CDATA #REQUIRED>
 <!ATTLIST submit_drawing offset_y CDATA #REQUIRED>
+<!ATTLIST submit_drawing signature_width CDATA #IMPLIED>
+<!ATTLIST submit_drawing signature_height CDATA #IMPLIED>
 
 <!ATTLIST gallery_drawings type CDATA #REQUIRED>
 <!ATTLIST gallery_drawings start CDATA #REQUIRED>

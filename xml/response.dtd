@@ -1,10 +1,4 @@
-<!ELEMENT response (user_details?, next_drawing?, gallery_drawings?, gallery_drawing?, errors?)>
-
-  <!ELEMENT user_details (id, name?, email?, signature?)>
-    <!ELEMENT id (#PCDATA)>
-    <!ELEMENT name (#PCDATA)>
-    <!ELEMENT email (#PCDATA)>
-    <!ELEMENT signature (#PCDATA)>
+<!ELEMENT response (next_drawing?, gallery_drawings?, gallery_drawing?, errors?)>
 
   <!ELEMENT next_drawing (drawing_id, stage, locked_secs, drawing?)>
     <!ELEMENT drawing_id (#PCDATA)>
@@ -19,6 +13,7 @@
     <!ELEMENT height (#PCDATA)>
     <!ELEMENT num_stages (#PCDATA)>
     <!ELEMENT stage_author (stage, name)>
+      <!ELEMENT name (#PCDATA)>
     <!ELEMENT anim_swf_url (#PCDATA)>
     <!ELEMENT pdf_url (#PCDATA)>
     
