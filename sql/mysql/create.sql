@@ -40,7 +40,7 @@ CREATE TABLE drawings(
 
 CREATE TABLE gallery(
   id			VARCHAR(36) NOT NULL PRIMARY KEY,
-  friendly_id		INTEGER NOT NULL,
+  friendly_id		INTEGER NOT NULL AUTO_INCREMENT,
   width			SMALLINT NOT NULL,
   height		SMALLINT NOT NULL,
   stage			TINYINT NOT NULL,
@@ -54,5 +54,7 @@ CREATE TABLE gallery(
   stage_4_author_name	VARCHAR(100) NOT NULL,
   thumbnail_filename	VARCHAR(20) NULL,
   anim_swf_filename	VARCHAR(20) NULL,
-  pdf_filename		VARCHAR(20) NULL
+  pdf_filename		VARCHAR(20) NULL,
+  
+  UNIQUE INDEX friendly_ids(friendly_id)
 );
