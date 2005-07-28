@@ -13,6 +13,8 @@ package com.totalchange.sketchingout.imageparsers;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class SketchingoutImageParserException extends Exception {
+	public static final long serialVersionUID = 1;
+	
 	public SketchingoutImageParserException(String msg) {
 		super(msg);
 	}

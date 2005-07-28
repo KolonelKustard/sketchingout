@@ -28,7 +28,7 @@ public class BufferedImageParser implements SketchingoutImageParser {
 	private BufferedImage bufferedImage;
 	private Graphics2D graphics2d;
 	
-	private double offsetX, offsetY, nextOffsetX, nextOffsetY = 0.0d;
+	private double offsetX, offsetY = 0.0d;
 	private double posX, posY = 0.0d;
 	private Line2D line = new Line2D.Double();
 	
