@@ -347,7 +347,8 @@ public class SQLWrapper {
 	}
 	
 	/**
-	 * <p>Copies a drawing from the active drawings table to the gallery table</p>
+	 * <p>Copies a drawing from the active drawings table to the gallery
+	 * table</p>
 	 * 
 	 * @param conn
 	 * @param drawingID
@@ -363,7 +364,6 @@ public class SQLWrapper {
 		PreparedStatement pstmt = conn.prepareStatement(
 			"INSERT INTO gallery( " +
 			"  id, " +
-			"  friendly_id, " +
 			"  width, " +
 			"  height, " +
 			"  stage, " +
@@ -381,7 +381,6 @@ public class SQLWrapper {
 			
 			"SELECT " +
 			"  id, " +
-			"  friendly_id, " +
 			"  width, " +
 			"  height, " +
 			"  stage, " +
@@ -410,6 +409,59 @@ public class SQLWrapper {
 		pstmt.close();
 	}
 	
+	/**
+	 * <p>Gets the oldest drawing ready for deletion</p>
+	 * 
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static final PreparedStatement getOldestGalleryDrawing(
+		Connection conn) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT " +
+			"  id, " +
+			"  thumbnail_filename, " +
+			"  anim_swf_filename, " +
+			"  pdf_filename " +
+			"FROM " +
+			"  gallery " +
+			"ORDER BY " +
+			"  friendly_id ASC " +
+			"LIMIT 1"
+		);
+		
+		return pstmt;
+	}
+	
+	/**
+	 * <p>Deletes a single gallery drawing identified by its unique ID</p>
+	 * 
+	 * @param conn
+	 * @param drawingID
+	 * @throws SQLException
+	 */
+	public static final void deleteGalleryDrawing(Connection conn,
+		String drawingID) throws SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"DELETE FROM gallery WHERE id = ?"
+		);
+		
+		pstmt.setString(1, drawingID);
+		pstmt.execute();
+		pstmt.close();
+	}
+	
+	/**
+	 * <p>Deletes a single drawing from the main drawing table identified by
+	 * unique ID</p>
+	 * 
+	 * @param conn
+	 * @param drawingID
+	 * @throws SQLException
+	 */
 	public static final void deleteDrawing(Connection conn, String drawingID) 
 		throws SQLException {
 		
@@ -423,7 +475,8 @@ public class SQLWrapper {
 	}
 	
 	/**
-	 * Utility procedure to output a blob to the xml writer as the data in an element 
+	 * <p>Utility procedure to output a blob to the xml writer as the data in an
+	 * element</p> 
 	 * 
 	 * @param out
 	 * @param in
