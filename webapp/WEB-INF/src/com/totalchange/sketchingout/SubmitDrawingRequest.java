@@ -18,7 +18,6 @@ import org.xml.sax.Attributes;
  */
 public class SubmitDrawingRequest implements RequestHandler {
 	
-	private Connection conn;
 	private SketchingoutErrors errs;
 	private PreparedStatement pstmt;
 	
@@ -37,8 +36,7 @@ public class SubmitDrawingRequest implements RequestHandler {
 		Attributes attributes)
 		throws HandlerException {
 		
-		// Get reference to connection and errors store
-		this.conn = conn;
+		// Get reference to errors store
 		this.errs = errs;
 		
 		// Make sure statement is null
