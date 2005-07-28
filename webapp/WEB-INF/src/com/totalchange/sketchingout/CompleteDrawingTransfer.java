@@ -22,6 +22,8 @@ import com.totalchange.sketchingout.imageparsers.PdfImageParser;
 import com.totalchange.sketchingout.imageparsers.SwfAnimatedImageParser;
 
 class CompleteDrawingTransferException extends Exception {
+	public static final long serialVersionUID = 1;
+	
 	public CompleteDrawingTransferException(String msg) {
 		super(msg);
 	}

@@ -26,6 +26,7 @@ import com.totalchange.sketchingout.imageparsers.SwfImageParser;
  * @author RalphJones
  */
 public class DrawingServlet extends HttpServlet {
+	public static final long serialVersionUID = 1;
 	
 	private void parseRequest(String type, String drawingID, int scale, int loss,
 		OutputStream out) throws SQLException, ClassNotFoundException,
