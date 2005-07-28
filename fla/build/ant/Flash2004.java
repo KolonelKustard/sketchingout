@@ -48,13 +48,9 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Location;
 import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.types.Mapper;
-import org.apache.tools.ant.types.FilterChain;
-import org.apache.tools.ant.types.FilterSet;
-import org.apache.tools.ant.types.FilterSetCollection;
 import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.util.FileNameMapper;
 import org.apache.tools.ant.util.FlatFileNameMapper;
-import org.apache.tools.ant.util.IdentityMapper;
 import org.apache.tools.ant.util.GlobPatternMapper;
 import org.apache.tools.ant.util.SourceFileScanner;
 import org.apache.tools.ant.taskdefs.ExecuteOn;
@@ -67,10 +63,7 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.TreeMap;
-import java.util.Enumeration;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.lang.reflect.Array;
 
 /**
  * Using an external compiler, builds Flash FLA files into their compiled SWF
