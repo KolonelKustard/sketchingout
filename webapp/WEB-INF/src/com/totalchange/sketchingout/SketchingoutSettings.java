@@ -116,6 +116,23 @@ public class SketchingoutSettings {
 	public static final String SKETCHING_OUT_FONT = FS_ROOT + "DeannasHand.ttf";
 	
 	/**
+	 * How many drawings can be active in the database at once?  This allows a
+	 * restriction to be placed on the size the drawing database pool can rise
+	 * to.
+	 * 
+	 * (10 * 1000) / 150 = 66 (10mb storage - each drawing is 150kb)
+	 */
+	public static final int MAX_ACTIVE_DRAWINGS = 66;
+	
+	/**
+	 * How many drawings can be stored?  This is to allow file storage
+	 * restrictions.
+	 * 
+	 * (10 * 1000) / 150 = 66 (10mb storage - each drawing is 150kb)
+	 */
+	public static final int MAX_STORED_DRAWINGS = 66;
+	
+	/**
 	 * The location on the file system in which to store completed drawings
 	 */
 	public static final String FS_DRAWING_STORE = FS_ROOT + "drawings/";
