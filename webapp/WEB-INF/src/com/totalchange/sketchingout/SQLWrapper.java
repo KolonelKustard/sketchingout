@@ -436,6 +436,52 @@ public class SQLWrapper {
 	}
 	
 	/**
+	 * <p>Gets the number of items currently in storage in the active drawing
+	 * pool</p>
+	 * @return
+	 */
+	public static final int getDrawingPoolSize(Connection conn) throws
+		SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT COUNT(*) FROM drawings"
+		);
+		ResultSet res = pstmt.executeQuery();
+		
+		try {
+			return res.getInt(0);
+		}
+		finally {
+			res.close();
+			pstmt.close();
+		}
+	}
+	
+	/**
+	 * <p>Gets the number of items presently held in the gallery</p>
+	 * 
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public static final int getGallerySize(Connection conn) throws
+		SQLException {
+		
+		PreparedStatement pstmt = conn.prepareStatement(
+			"SELECT COUNT(*) FROM gallery"
+		);
+		ResultSet res = pstmt.executeQuery();
+		
+		try {
+			return res.getInt(0);
+		}
+		finally {
+			res.close();
+			pstmt.close();
+		}
+	}
+	
+	/**
 	 * <p>Deletes a single gallery drawing identified by its unique ID</p>
 	 * 
 	 * @param conn
