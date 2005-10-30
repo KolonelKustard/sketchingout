@@ -45,8 +45,7 @@ public class NextDrawingRequest implements RequestHandler {
 		out.writeElement(XMLConsts.EL_NEXT_DRAWING_LOCKED_SECS, Integer.toString(lockSecs));
 		
 		// Use the stage value to find out which drawing to return
-		Clob draw = null;
-		draw = next.getClob("stage_" + stage);
+		Clob draw = next.getClob("stage_" + stage);
 		
 		// Check have a previous drawing to give
 		if ((draw == null) || (draw.length() <= 0)) {
@@ -71,7 +70,22 @@ public class NextDrawingRequest implements RequestHandler {
 	 * @param out
 	 * @throws IOException
 	 */
-	private void outputNewDrawing(XMLWriter out) throws IOException {
+	private void outputNewDrawing(Connection conn, XMLWriter out) throws
+		IOException, SQLException, HandlerException {
+		
+		// See if a maximum number of active drawings has been specified
+		if (SketchingoutSettings.MAX_ACTIVE_DRAWINGS != -1) {
+			// Check to see if the max is reached
+			if (SQLWrapper.getDrawingPoolSize(conn) >=
+				SketchingoutSettings.MAX_ACTIVE_DRAWINGS)
+				
+				throw new HandlerException(
+						SketchingoutErrors.ERR_ACTIVE_DRAWING_DATABASE_FULL,
+						"Sorry but the active drawing database is full.  No " +
+						"new drawings presently permitted.  Please try again " +
+						"later.");
+		}
+		
 		// Output a new id, stage 0 and a timeout value, but no drawing
 		out.startElement(XMLConsts.EL_NEXT_DRAWING);
 		out.writeElement(XMLConsts.EL_NEXT_DRAWING_ID, new RandomGUID().toString());
@@ -116,7 +130,7 @@ public class NextDrawingRequest implements RequestHandler {
 				}
 				else {
 					// Not got a drawing.  Start a new one!
-					outputNewDrawing(out);
+					outputNewDrawing(conn, out);
 				}
 				
 				// Close query
