@@ -162,10 +162,21 @@ public class CompleteDrawingTransfer {
 		}
 	}
 	
+	/**
+	 * Saves a drawing to the gallery.  The gallery is also a queue - so the first
+	 * added gallery item is removed prior to the last (current) item being added.
+	 * This is an attempt at working within a restrictive file space environment.
+	 * 
+	 * @param conn
+	 * @param drawingID
+	 * @throws CompleteDrawingTransferException
+	 */
 	public static final void save(Connection conn, String drawingID) throws 
 			CompleteDrawingTransferException {
-		// Output the drawing to a file
 		try {
+			// Remove old gallery item(s)
+			GalleryThinner.deleteOldDrawings(conn);
+			
 			// Define filenames for pdf and swf for saving
 			String thumb, pdf, swf = "";
 			
