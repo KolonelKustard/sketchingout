@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class SketchingoutErrors {
 	public static final int ERR_INVALID_DRAWING_ID = 1;
+	public static final int ERR_ACTIVE_DRAWING_DATABASE_FULL = 2;
 	
 	/**
 	 * @author RalphJones
