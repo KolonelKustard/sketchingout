@@ -24,8 +24,6 @@ import javax.xml.parsers.SAXParserFactory;
  * initiate the appropriate response.</p> 
  */
 public class SketchingoutServlet extends HttpServlet {
-	public static final long serialVersionUID = 1;
-
 	/* 
 	 * <p>Handles raw post data as xml and passes it to the SAX parser to decide
 	 * on the appropriate response</p>
