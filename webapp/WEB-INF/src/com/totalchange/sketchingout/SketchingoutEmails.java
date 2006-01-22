@@ -201,6 +201,21 @@ public class SketchingoutEmails {
 		}
 	};
 	
+	public static final String[][] EMAILS_TO_ADDITIONAL_RECIPIENTS = {
+		{
+			"SketchingOut",
+			"whoareyou@sketchingout.co.uk",
+			"Here's a drawing from SketchingOut.co.uk",
+			"Hi " + SUBST_TO_NAME + ",\n\n" +
+			"Your Pal, " + SUBST_FROM_NAME + " <" + SUBST_FROM_EMAIL + "> " +
+			"wanted to send on this drawing to you!  If you like it and " +
+			"fancy a go yourself, click here: " +
+			SUBST_URL + "\n\n" +
+			"Kind regards,\n\n" +
+			"www.SketchingOut.co.uk"
+		}
+	};
+	
 	public static final String[][] EMAILS_TO_FRIENDS = {
 		{
 			"SketchingOut",
