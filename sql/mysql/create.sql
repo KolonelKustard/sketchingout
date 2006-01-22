@@ -28,6 +28,7 @@ CREATE TABLE drawings(
   stage_4_author_email	VARCHAR(100) NULL,
   stage_4		LONGTEXT NULL,
   stage_4_signature	LONGTEXT NULL,
+  additional_recipient	VARCHAR(100) NULL,
   
   -- If the 4th stage author specifies a friend the drawing will be
   -- sent to them too
