@@ -33,7 +33,7 @@
 		var dragBottom: Number = linkedDragClip._y + linkedDragClip._height;
 		
 		// See if the offset is ok
-		if ((dragBottom - SketchingoutSettings.DEFAULT_OFFSET_Y) <> bottom) {
+		if ((dragBottom - SketchingoutSettings.DEFAULT_OFFSET_Y) != bottom) {
 			// Set the location of the drag clip accordingly
 			linkedDragClip._y = (bottom - SketchingoutSettings.DEFAULT_OFFSET_Y) - linkedDragClip._height;
 		}

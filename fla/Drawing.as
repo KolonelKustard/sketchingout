@@ -83,7 +83,7 @@
 		
 		// If the new height is different to the current height of this drawing
 		// then set the height of this drawing to it.
-		if (height <> newHeight) height = newHeight;
+		if (height != newHeight) height = newHeight;
 	}
 	
 	/**
