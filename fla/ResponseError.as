@@ -1,5 +1,6 @@
 ﻿class ResponseError implements ResponseOperator {
 	public static var ERR_INVALID_DRAWING_ID: Number = 1;
+	public static var ERR_ACTIVE_DRAWING_DATABASE_FULL: Number = 1;
 	
 	public var source: String;
 	public var type: String;
