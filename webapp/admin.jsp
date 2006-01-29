@@ -85,7 +85,8 @@
 	String sqlFields = "SELECT friendly_id, id, distinguished_id, completed, width, " +
 		"height, locked, stage, stage_1_author_name, stage_1_author_email, " +
 		"stage_2_author_name, stage_2_author_email, stage_3_author_name, " +
-		"stage_3_author_email, stage_4_author_name, stage_4_author_email FROM drawings ";
+		"stage_3_author_email, stage_4_author_name, stage_4_author_email, " +
+		"additional_recipient FROM drawings ";
 	String sqlOrder = " ORDER BY friendly_id";
 
 	// Run through a loop that will get the same values but different where clauses
@@ -164,6 +165,7 @@
 				<td nowrap><b>Stage 3 Email</b></td>
 				<td nowrap><b>Stage 4 Name</b></td>
 				<td nowrap><b>Stage 4 Email</b></td>
+				<td nowrap><b>Additional Recipient</b></td>
 			</tr>
 			<%
 			// Execute query
@@ -189,6 +191,7 @@
 					<td nowrap><%= res.getString("stage_3_author_email") %></td>
 					<td nowrap><%= res.getString("stage_4_author_name") %></td>
 					<td nowrap><%= res.getString("stage_4_author_email") %></td>
+					<td nowrap><%= res.getString("additional_recipient") %></td>
 					<td nowrap><a href="?complete=<%= res.getString("id") %>">Complete</a></td>
 					<td nowrap><a href="?del_d=<%= res.getString("id") %>">Delete</a></td>
 				</tr>
@@ -252,6 +255,14 @@
 <p>&nbsp;</p>
 <h2>Server Settings</h2>
 <table border="1">
+  <tr>
+    <td><b>Max Active Drawings:</b></td>
+    <td><%= SketchingoutSettings.MAX_ACTIVE_DRAWINGS %></td>
+  </tr>
+  <tr>
+    <td><b>Max Gallery Drawings:</b></td>
+    <td><%= SketchingoutSettings.MAX_STORED_DRAWINGS %></td>
+  </tr>
   <tr>
     <td><b>Public Drawing Lock Time:</b></td>
     <td><%= SketchingoutSettings.DEFAULT_LOCK_SECS %> secs (<%= (double)SketchingoutSettings.DEFAULT_LOCK_SECS / 60 / 60 %>hrs)</td>
