@@ -1,1 +1,0 @@
-This folder will serve as a store for any complete drawings
