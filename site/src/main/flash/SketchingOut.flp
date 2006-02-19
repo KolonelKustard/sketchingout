@@ -1,0 +1,35 @@
+﻿<flash_project name="SketchingOut" version="1">
+    <project_file path="./Drawing.as" filetype="as" />
+    <project_file path="./Line.as" filetype="as" />
+    <project_file path="./Request.as" filetype="as" />
+    <project_file path="./Response.as" filetype="as" />
+    <project_file path="./RequestOperator.as" filetype="as" />
+    <project_file path="./Point.as" filetype="as" />
+    <project_file path="./SubmitDrawingRequest.as" filetype="as" />
+    <project_file path="./User.as" filetype="as" />
+    <project_file path="./PublicDrawingRequest.as" filetype="as" />
+    <project_file path="./PrivateDrawingRequest.as" filetype="as" />
+    <project_file path="./ResponseOperator.as" filetype="as" />
+    <project_file path="./ResponseError.as" filetype="as" />
+    <project_file path="./NextDrawingResponse.as" filetype="as" />
+    <project_file path="./CanvasMovieClip.as" filetype="as" />
+    <project_file path="./GalleryDrawingsResponse.as" filetype="as" />
+    <project_file path="./GalleryDrawingsRequest.as" filetype="as" />
+    <project_file path="./GalleryDrawing.as" filetype="as" />
+    <project_file path="./GalleryDrawingAuthor.as" filetype="as" />
+    <project_file path="./sketchingout.fla" filetype="fla" profile="" def_file="true" />
+    <project_file path="./InitMain.as" filetype="as" />
+    <project_file path="./UserDetails.as" filetype="as" />
+    <project_file path="./DragMovieClip.as" filetype="as" />
+    <project_file path="./DrawingPage.as" filetype="as" />
+    <project_file path="./SketchingoutSettings.as" filetype="as" />
+    <project_file path="./CountdownMovieClip.as" filetype="as" />
+    <project_file path="./DrawInterface.as" filetype="as" />
+    <project_file path="./HintsClip.as" filetype="as" />
+    <project_file path="./Gallery.as" filetype="as" />
+    <project_file path="./Hint.as" filetype="as" />
+    <project_file path="./gallery.fla" filetype="fla" profile="" />
+    <project_file path="./GalleryInterface.as" filetype="as" />
+    <project_file path="./InitGallery.as" filetype="as" />
+    <project_file path="./TypingMovieClip.as" filetype="as" />
+</flash_project>
