@@ -176,7 +176,7 @@ public class SimpleSmtpInterceptor extends JFrame implements SimpleSmtpServerLis
     public static void main(String args[]) {
         SimpleSmtpInterceptor interceptor = new SimpleSmtpInterceptor();
         interceptor.setBounds(0, 0, 800, 500);
-        interceptor.show();
+        interceptor.setVisible(true);
         
         SimpleSmtpServer server = new SimpleSmtpServer(SimpleSmtpServer.DEFAULT_SMTP_PORT);
         server.addListener(interceptor);

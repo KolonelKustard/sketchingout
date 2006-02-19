@@ -14,7 +14,7 @@ public class DummyClient extends Thread {
 
 	private int clientNum;
 	
-	private ClientDetails clientDetails;
+	//private ClientDetails clientDetails;
 	
 	private long lastChangedIdentity;
 
@@ -36,7 +36,7 @@ public class DummyClient extends Thread {
 	 * a fictitious ID.
 	 */
 	private void changeIdentity() {
-		clientDetails = new ClientDetails("test");
+		//clientDetails = new ClientDetails("test");
 	}
 
 	/**
