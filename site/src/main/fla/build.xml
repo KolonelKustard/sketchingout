@@ -19,8 +19,6 @@
 		<tstamp>
 			<format property="time.format" pattern="hh:mm"/>
 		</tstamp>
-		<javac srcdir="${basedir}/build/ant" destdir="${basedir}/build/ant" debug="on"/>
-		<taskdef name="flash" classname="Flash2004" classpath="${basedir}/build/ant"/>
 	</target>
 
 	<target name="clean">
