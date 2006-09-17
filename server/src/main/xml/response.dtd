@@ -1,0 +1,26 @@
+<!ELEMENT response (next_drawing?, gallery_drawings?, gallery_drawing?, errors?)>
+
+  <!ELEMENT next_drawing (drawing_id, stage, locked_secs, drawing?)>
+    <!ELEMENT drawing_id (#PCDATA)>
+    <!ELEMENT stage (#PCDATA)>
+    <!ELEMENT locked_secs (#PCDATA)>
+    <!ELEMENT drawing (#PCDATA)>
+    
+  <!ELEMENT gallery_drawings (gallery_drawing*)>
+
+  <!ELEMENT gallery_drawing (drawing_id, width, height, num_stages, stage_author+, anim_swf_url, pdf_url)>
+    <!ELEMENT width (#PCDATA)>
+    <!ELEMENT height (#PCDATA)>
+    <!ELEMENT num_stages (#PCDATA)>
+    <!ELEMENT stage_author (stage, name)>
+      <!ELEMENT name (#PCDATA)>
+    <!ELEMENT anim_swf_url (#PCDATA)>
+    <!ELEMENT pdf_url (#PCDATA)>
+    
+  <!ELEMENT errors (error+)>
+    <!ELEMENT error (src, type, message, stacktrace?)>
+      <!ELEMENT src (#PCDATA)>
+      <!ELEMENT type (#PCDATA)>
+      <!ELEMENT message (#PCDATA)>
+      <!ELEMENT stacktrace (trace+)>
+        <!ELEMENT trace (#PCDATA)>

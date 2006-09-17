@@ -1,0 +1,149 @@
+/*
+ * Created on 01-Jul-2004
+ */
+package com.totalchange.sketchingout.imageparsers;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import com.anotherbigidea.flash.SWFConstants;
+import com.anotherbigidea.flash.interfaces.SWFShape;
+import com.anotherbigidea.flash.interfaces.SWFTagTypes;
+import com.anotherbigidea.flash.structs.Color;
+import com.anotherbigidea.flash.structs.Matrix;
+import com.anotherbigidea.flash.structs.Rect;
+import com.anotherbigidea.flash.writers.SWFWriter;
+import com.anotherbigidea.flash.writers.TagWriter;
+
+/**
+ * @author RalphJones
+ * 
+ * <p>This implementation of the image parser interface outputs a drawing to an
+ * .swf format file (Macromedia's Flash format).</p>
+ */
+public class SwfImageParser implements SketchingoutImageParser {
+	
+	private SWFTagTypes swf;
+	private SWFShape canvas;
+	private Matrix canvasPos;
+	private int canvasID;
+	
+	private int lastPosX, lastPosY = 0;
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startImage(int, int, java.io.OutputStream)
+	 */
+	public void startImage(int width, int height, OutputStream out)
+		throws SketchingoutImageParserException {
+		
+		// Init
+		canvasID = 0;
+		
+		// Make SWF Movie
+		SWFWriter writer = new SWFWriter(out);
+		writer.setCompression(true);
+		swf = new TagWriter(writer);
+		
+		try {
+			// Set header info
+			swf.header(5, -1, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS,
+				12,	-1);
+			
+			// Set background colour
+			swf.tagSetBackgroundColor(new Color(255,255,255));
+		}
+		catch (IOException ie) {
+			throw new SketchingoutImageParserException(ie);
+		}
+	}
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endImage()
+	 */
+	public void endImage() throws SketchingoutImageParserException {
+		try{
+			// Show the first frame
+			swf.tagShowFrame();
+			
+			// Send the end of the movie
+			swf.tagEnd();
+		}
+		catch (IOException ie) {
+			throw new SketchingoutImageParserException(ie);
+		}
+	}
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#startCanvas(int, int, int, int)
+	 */
+	public void startCanvas(int x, int y, int width, int height)
+		throws SketchingoutImageParserException {
+		
+		try {
+			// Start a new canvas
+			Rect canvasRect = new Rect(0, 0, width * SWFConstants.TWIPS, height * SWFConstants.TWIPS);
+			canvas = swf.tagDefineShape(++canvasID, canvasRect);
+			
+			// Define matrix to say where this canvas will go
+			canvasPos = new Matrix(x * SWFConstants.TWIPS, y * SWFConstants.TWIPS);
+		}
+		catch (IOException ie) {
+			throw new SketchingoutImageParserException(ie);
+		}
+	}
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#endCanvas()
+	 */
+	public void endCanvas() throws SketchingoutImageParserException {
+		try {
+			// Draw the canvas to the movie
+			canvas.done();
+			swf.tagPlaceObject2(false, -1, 1, canvasID, canvasPos, null, -1, null, 0);
+		}
+		catch (IOException ie) {
+			throw new SketchingoutImageParserException(ie);
+		}
+	}
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#moveTo(double, double)
+	 */
+	public void moveTo(double x, double y)
+		throws SketchingoutImageParserException {
+
+		lastPosX = (int)(x * SWFConstants.TWIPS);
+		lastPosY = (int)(y * SWFConstants.TWIPS);
+	}
+
+	/**
+	 * @see com.totalchange.sketchingout.imageparsers.SketchingoutImageParser#lineTo(double, double)
+	 */
+	public void lineTo(double x, double y, int penWidth, java.awt.Color color)
+		throws SketchingoutImageParserException {
+			
+		try {
+			// Define line style
+			canvas.defineLineStyle(penWidth * SWFConstants.TWIPS, new Color(color.getRed(), color.getGreen(), color.getBlue()));
+			canvas.setLineStyle(1);
+			
+			// Move to absolute position in this canvas
+			canvas.move(lastPosX, lastPosY);
+			
+			// Get new absolute position in twips
+			int newPosX = (int)(x * SWFConstants.TWIPS);
+			int newPosY = (int)(y * SWFConstants.TWIPS);
+			
+			// Move to new relative position
+			canvas.line(newPosX - lastPosX, newPosY - lastPosY);
+			
+			// Set last known absolute position to where we are now
+			lastPosX = newPosX;
+			lastPosY = newPosY;
+		}
+		catch (IOException ie) {
+			throw new SketchingoutImageParserException(ie);
+		}
+	}
+
+}
