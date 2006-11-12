@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
+<web-app>
+	<servlet>
+		<servlet-name>DefaultGateway</servlet-name>
+		<display-name>DefaultGateway</display-name>
+		<description>DefaultGateway</description>
+		<servlet-class>org.openamf.DefaultGateway</servlet-class>
+		<init-param>
+			<param-name>OPENAMF_CONFIG</param-name>
+			<param-value>/WEB-INF/openamf-config.xml</param-value>
+			<description>
+				Location of the OpenAMF config file.
+			</description>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DefaultGateway</servlet-name>
+		<url-pattern>/gateway</url-pattern>
+	</servlet-mapping>
+</web-app>
