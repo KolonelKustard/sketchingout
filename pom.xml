@@ -11,11 +11,13 @@
 	<url>http://www.sketchingout.co.uk</url>
 
 	<modules>
-		<module>sketchingout</module>
+		<module>server</module>
 		<module>client</module>
 		<module>smtp</module>
+    <module>actionscript</module>
+    <module>drawer</module>
     <module>maven-xml2swf-plugin</module>
-    <module>site</module>
+    <module>sketchingout</module>
 	</modules>
 	
 	<repositories>
