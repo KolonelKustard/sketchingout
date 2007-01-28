@@ -4,22 +4,22 @@
     "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
 <web-app>
 	<servlet>
-		<servlet-name>DefaultGateway</servlet-name>
-		<display-name>DefaultGateway</display-name>
-		<description>DefaultGateway</description>
-		<servlet-class>org.openamf.DefaultGateway</servlet-class>
-		<init-param>
-			<param-name>OPENAMF_CONFIG</param-name>
-			<param-value>/WEB-INF/openamf-config.xml</param-value>
-			<description>
-				Location of the OpenAMF config file.
-			</description>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<servlet-name>Middleman</servlet-name>
+		<display-name>Middleman</display-name>
+		<servlet-class>com.totalchange.jiffy.FlashMiddlemanServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Flashback</servlet-name>
+		<display-name>Flashback</display-name>
+		<servlet-class>com.totalchange.jiffy.FlashbackServlet</servlet-class>
 	</servlet>
 	
 	<servlet-mapping>
-		<servlet-name>DefaultGateway</servlet-name>
-		<url-pattern>/gateway</url-pattern>
+		<servlet-name>Middleman</servlet-name>
+		<url-pattern>/middleman</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Flashback</servlet-name>
+		<url-pattern>/flashback</url-pattern>
 	</servlet-mapping>
 </web-app>
