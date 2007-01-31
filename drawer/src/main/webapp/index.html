@@ -49,13 +49,18 @@
 </style>
 
 <script type="text/javascript" src="JavaScriptFlashGateway.js"></script>
+<script type="text/javascript" src="flashmediator.js"></script>
 <script type="text/javascript">
 	var uid = new Date().getTime();
 	var flashProxy = new FlashProxy(uid, "JavaScriptFlashGateway.swf");
+	
+	var drawingUpload;
 
 	window.onload = function() {
 		flashProxy.call('setWidth', document.myForm.width.value);
 		flashProxy.call('setHeight', document.myForm.height.value);
+		
+		drawingUpload = new FlashMediator(document.uploadForm, flashProxy, "loadMonkey");
 	}
 </script>
 </head>
@@ -83,8 +88,8 @@
 			<a href="#" onclick="if (window.confirm('Sure?')) flashProxy.call('clear');">Clear</a>
 		</form>
 
-		<form name="uploadForm" action="middleman" method="post" enctype="multipart/form-data" onsubmit="flashProxy.call('loadMonkey', 'bum');" target="spunk">
-			<input type="hidden" name="MNNNnnnnggggghhhhhh" value="bum" />
+		<form name="uploadForm" action="middleman" method="post" enctype="multipart/form-data" target="spunk">
+			<input type="hidden" name="MNNNnnnnggggghhhhhh" value="" />
 			<input type="file" name="file" />
 			<input type="submit" name="submit" value="Submit" />
 		</form>
