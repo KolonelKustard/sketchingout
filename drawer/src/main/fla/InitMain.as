@@ -7,6 +7,9 @@ import com.macromedia.javascript.JavaScriptProxy;
 Stage.scaleMode = "noScale";
 Stage.align = "TL";
 
+// Create background movie clip
+var background: MovieClip = _root.createEmptyMovieClip("background", _root.getNextHighestDepth());
+
 // Create the main drawing canvas
 var canvas: DrawerCanvasMovieClip = DrawerCanvasMovieClip(_root.attachMovie("Canvas", "canvas", _root.getNextHighestDepth()));
 canvas._x = 20;
@@ -15,7 +18,8 @@ canvas._width = 500;
 canvas._height = 300;
 
 // Create and configure the JavaScript proxying thingy
-var client: JavaScriptClient = new JavaScriptClient(canvas);
+var client: JavaScriptClient = new JavaScriptClient();
+client.background = background;
 client.canvas = canvas;
 var proxy: JavaScriptProxy = new JavaScriptProxy(_root.lcId, client);
 
