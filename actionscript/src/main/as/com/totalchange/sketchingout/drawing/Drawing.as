@@ -1,4 +1,4 @@
-﻿import com.totalchange.sketchingout.drawing.Line;
+import com.totalchange.sketchingout.drawing.Line;
 import com.totalchange.sketchingout.drawing.Point;
 
 /**
@@ -110,6 +110,29 @@ class com.totalchange.sketchingout.drawing.Drawing {
 	}
 	
 	/**
+	 * Deletes the last x points from the drawing.
+	 *
+	 * @param x The number of points to remove.
+	 */
+	public function removeLastXPoints(x: Number): Void {
+		for (var num: Number = 0; num < x; num++) {
+			// If there is one, get the last line and remove the last point
+			if (lines.length > 0) {
+				var line: Line = Line(lines[lines.length - 1]);
+				line.getPoints().pop();
+				
+				// If there are no points left on the line, remove the line itself
+				if (line.getPoints().length <= 1) {
+					lines.pop();
+				}
+			} else {
+				// No lines?  Stop here
+				break;
+			}
+		}
+	}
+	
+	/**
 	 * Returns this drawing as a string.  Basically serialises it.
 	 */
 	public function toString(): String {
@@ -187,8 +210,13 @@ class com.totalchange.sketchingout.drawing.Drawing {
 				var line: Line = this.addLine();
 				
 				// Line properties
-				line.color = lineNode.attributes.color;
-				line.thickness = lineNode.attributes.thickness;
+				if (lineNode.attributes.hasOwnProperty("color")) {
+					line.color = lineNode.attributes.color;
+				}
+				
+				if (lineNode.attributes.hasOwnProperty("thickness")) {
+					line.thickness = lineNode.attributes.thickness;
+				}
 				
 				// Now run through all the points on the line, adding them in
 				for (var numPoint: Number = 0; numPoint < lineNode.childNodes.length; numPoint++) {
