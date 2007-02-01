@@ -17,6 +17,8 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
+		font-family: sans-serif;
+		font-size: 9pt;
 	}
 	
 	table {
@@ -32,9 +34,14 @@
 	}
 	
 	form {
-		margin: 0;
-		padding: 0.5em 0 0 0.5em;
-		display: inline;
+		border: 1px solid #CCCCCC;
+		margin: 0.2em;
+		padding: 0.5em;
+		float: left;
+	}
+	
+	input {
+		font-size: 8pt;
 	}
 	
 	iframe {
@@ -55,12 +62,15 @@
 	var flashProxy = new FlashProxy(uid, "JavaScriptFlashGateway.swf");
 	
 	var drawingUpload;
+	var backgroundUpload;
 
 	window.onload = function() {
 		flashProxy.call('setWidth', document.myForm.width.value);
 		flashProxy.call('setHeight', document.myForm.height.value);
+		flashProxy.call('setBackgroundAlpha', document.backgroundForm.alpha.value);
 		
-		drawingUpload = new FlashMediator(document.uploadForm, flashProxy, "loadMonkey");
+		flashMediator(document.drawingForm, flashProxy, "loadDrawing");
+		flashMediator(document.backgroundForm, flashProxy, "loadBackground");
 	}
 </script>
 </head>
@@ -86,12 +96,25 @@
 			<input type="text" name="height" id="height" value="300" size="5" onkeyup="flashProxy.call('setHeight', this.value);" />
 			<a href="#" onmousedown="flashProxy.call('undoStart');" onmouseup="flashProxy.call('undoStop');">Undo</a>
 			<a href="#" onclick="if (window.confirm('Sure?')) flashProxy.call('clear');">Clear</a>
+			<a href="#" onclick="flashProxy.call('save');">Save</a>
 		</form>
 
-		<form name="uploadForm" action="middleman" method="post" enctype="multipart/form-data" target="spunk">
+		<form name="drawingForm" action="middleman" method="post" enctype="multipart/form-data" target="spunk">
 			<input type="hidden" name="MNNNnnnnggggghhhhhh" value="" />
-			<input type="file" name="file" />
+			
+			<label for="drawing">Drawing:</label>
+			<input type="file" name="drawing" id="drawing" accept="text/xml" size="10" />
 			<input type="submit" name="submit" value="Submit" />
+		</form>
+		
+		<form name="backgroundForm" action="middleman" method="post" enctype="multipart/form-data" target="spunk">
+			<input type="hidden" name="MNNNnnnnggggghhhhhh" value="" />
+			
+			<label for="background">Background:</label>
+			<input type="file" name="background" id="background" accept="image/jpg,image/gif" size="10" />
+			<input type="submit" name="submit" value="Submit" />
+			<label for="height">Alpha:</label>
+			<input type="text" name="alpha" id="alpha" value="100" size="5" onkeyup="flashProxy.call('setBackgroundAlpha', this.value);" />
 		</form>
 	</td>
 </tr>
