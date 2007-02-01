@@ -15,10 +15,18 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 	private var linkedDragClip: DragMovieClip = null;
 	private var bottomOfDrawing: Number;
 	
+	private var undo: Boolean = false;
+	private var undoStartMillis: Number;
+	private var undoLastMillis: Number;
+	private var undoCurrVelocity: Number;
+	
 	public var color: Number = 0x000000;
 	public var thickness: Number = 1;
 	public var modified: Boolean = false;
 	public var penMovieClip: MovieClip = null;
+	
+	public var undoAcceleration: Number = 0.00005;
+	public var undoMaxVelocity: Number = 0.1;
 	
 	private function clearCanvas(): Void {
 		clear();
@@ -45,6 +53,37 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 			// Set the location of the drag clip accordingly
 			linkedDragClip._y = (bottom - SketchingoutSettings.DEFAULT_OFFSET_Y) - linkedDragClip._height;
 		}
+	}
+	
+	private function doUndo(): Void {
+		var theDrawing: Drawing = this.drawing;
+		var timeNow: Number = getTimer();
+		
+		// Work out our current velocity (use the acceleration stuff)
+		if (undoCurrVelocity < undoMaxVelocity) {
+			// Work out what velocity should be based on elapsed time
+			// and acceleration
+			undoCurrVelocity = undoAcceleration * (timeNow - undoStartMillis);
+			
+			// Make sure don't go over the max
+			if (undoCurrVelocity > undoMaxVelocity) {
+				undoCurrVelocity = undoMaxVelocity;
+			}
+		} else if (undoCurrVelocity > undoMaxVelocity) {
+			// Make sure don't go over the max
+			undoCurrVelocity = undoMaxVelocity;
+		}
+		
+		// Work out based on time and velocity how many points to remove
+		var pointsToObliterate: Number = 0;
+		if (undoCurrVelocity != 0) {
+			 pointsToObliterate = (timeNow - undoLastMillis) * undoCurrVelocity;
+		}
+		undoLastMillis = timeNow;
+		
+		// Get rid of them and set the revised drawing back in
+		theDrawing.removeLastXPoints(pointsToObliterate);
+		this.drawing = theDrawing;
 	}
 	
 	public function onMouseDown(): Void {
@@ -117,6 +156,12 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		}
 	}
 	
+	public function onEnterFrame(): Void {
+		if (undo) {
+			doUndo();
+		}
+	}
+	
 	public function get drawing(): Drawing {
 		// Make sure the width and height of the canvas match the width and height
 		// of the movie clip
@@ -126,7 +171,7 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		return theDrawing;
 	}
 	
-	public function set drawing(aDrawing: Drawing) {
+	public function set drawing(aDrawing: Drawing): Void {
 		// Parse the drawing, putting it onto this canvas.
 		if (aDrawing == null) {
 			// If is a null drawing then just clear this canvas and make a
@@ -174,7 +219,7 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		modified = false;
 	}
 	
-	public function clearDrawing() {
+	public function clearDrawing(): Void {
 		// Set the drawing to null to clear it
 		drawing = null;
 		
@@ -195,7 +240,18 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		drawing = moveDrawing;
 	}
 	
-	public function set dragClip(dragClip: DragMovieClip) {
+	public function undoStart(): Void {
+		undoStartMillis = getTimer();
+		undoLastMillis = undoStartMillis;
+		undoCurrVelocity = 0;
+		undo = true;
+	}
+	
+	public function undoStop(): Void {
+		undo = false;
+	}
+	
+	public function set dragClip(dragClip: DragMovieClip): Void {
 		linkedDragClip = dragClip;
 		
 		if (linkedDragClip != null) {
@@ -203,6 +259,24 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		}
 		else {
 		}
+	}
+	
+	public function set _width(width: Number): Void {
+		super._width = width;
+		maxX = width;
+	}
+	
+	public function get _width(): Number {
+		return maxX;
+	}
+	
+	public function set _height(height: Number): Void {
+		super._height = height;
+		maxY = height;
+	}
+	
+	public function get _height(): Number {
+		return maxY;
 	}
 	
 	/**
@@ -215,7 +289,10 @@ class com.totalchange.sketchingout.ui.CanvasMovieClip extends MovieClip {
 		// Define the bounds of this drawing tool
 		minX = 0;
 		minY = 0;
-		maxX = _width;
-		maxY = _height;
+		maxX = super._width;
+		maxY = super._height;
+		
+		// Unload any piccies
+//		this.unloadMovie();
 	}
 }
