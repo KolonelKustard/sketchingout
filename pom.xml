@@ -33,7 +33,7 @@
 	</organization>
 
 	<modules>
-		<module>server</module>
+		<module>sketchingout-lib</module>
 		<module>client</module>
 		<module>smtp</module>
 		<module>actionscript</module>
