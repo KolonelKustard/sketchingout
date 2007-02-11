@@ -10,7 +10,7 @@
 	<artifactId>maven-xml2swf-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<name>Maven Xml2Swf Plugin</name>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<dependencies>
 		<dependency>
@@ -40,9 +40,4 @@
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <connection>scm:svn:https://totalchange.no-ip.com/svn/sketchingout/tags/maven-xml2swf-plugin-1.0.0</connection>
-    <url>https://totalchange.no-ip.com/svn/sketchingout/tags/maven-xml2swf-plugin-1.0.0</url>
-  </scm>
 </project>
