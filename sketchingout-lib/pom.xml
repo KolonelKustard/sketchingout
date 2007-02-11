@@ -10,7 +10,7 @@
 	<artifactId>sketchingout-lib</artifactId>
 	<packaging>jar</packaging>
 	<name>SketchingOut Library</name>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<url>http://www.sketchingout.co.uk</url>
 
 	<dependencies>
@@ -64,9 +64,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-  <scm>
-    <connection>scm:svn:https://totalchange.no-ip.com/svn/sketchingout/tags/sketchingout-lib-1.0.0</connection>
-    <url>https://totalchange.no-ip.com/svn/sketchingout/tags/sketchingout-lib-1.0.0</url>
-  </scm>
 </project>
